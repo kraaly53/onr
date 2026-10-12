@@ -7,9 +7,7 @@
   <meta name="description" content="{{ seoDescription or description }}">
   <link rel="icon" href="{{ '/favicon.ico' | asset }}">
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | asset }}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/fonts/main.css">
   <link rel="stylesheet" href="/assets/css/site.css">
   {% if site.designSwitcher %}
   {# Preview only: every design's fonts and styles, plus the saved choice applied before the page paints. #}
@@ -21,7 +19,7 @@
       document.documentElement.dataset.design = ok.indexOf(d) > -1 ? d : ok[0];
     })();
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@500&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&family=Unbounded:wght@400..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/fonts/themes.css">
   {% for d in site.designs %}{% if not loop.first %}<link rel="stylesheet" href="/assets/css/designs/{{ d.id }}.css">
   {% endif %}{% endfor %}
   <link rel="stylesheet" href="/assets/css/designs/switcher.css">

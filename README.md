@@ -420,14 +420,14 @@ Version A as it was before the other designs were added is saved in git as the t
 
 **Adding another design:** add an entry to `designs` in `src/_data/site.json` (e.g. `{"id": "e", "name": "…",
 "note": "…"}`), create `src/assets/css/designs/e.css` with rules starting `:root[data-design="e"]` /
-`[data-design="e"]`, and add any new Google Fonts to the second font link in `_includes/base.njk`.
+`[data-design="e"]`, and add any new fonts to `src/assets/fonts/themes.css` (self-hosted .woff2 files).
 
 **Choosing the final design (before launch):**
 1. Set `"designSwitcher": false` in `src/_data/site.json`. This removes the panel, the extra fonts and the extra
    stylesheets, and the site shows design A.
 2. If the chosen design is **not** A: copy the chosen file's settings into `:root` of `site.css` and its other rules
-   to the end of `site.css` with the `[data-design="x"]` prefixes removed; add its fonts to the first font link
-   in `base.njk`. Then delete `src/assets/css/designs/`, `_includes/design-switcher.njk` and
+   to the end of `site.css` with the `[data-design="x"]` prefixes removed; move its fonts from `assets/fonts/themes.css`
+   into `assets/fonts/main.css`. Then delete `src/assets/css/designs/`, `_includes/design-switcher.njk` and
    `assets/js/design-switcher.js`, and the `designs` list in `site.json`.
 3. Check every page, then update this section to describe the one remaining design.
 
@@ -477,8 +477,7 @@ That's a planned piece of work rather than a settings change — ask for it once
 - **Colours:** midnight navy (`--night` #0a1426) for headers, footer and dark sections; the logo blue
   (`--navy` #1e3f74); warm paper (`--paper` #f6f2ea) for reading sections; amber (`--amber` #ffb23f) for
   buttons, highlights and the play button; a small red "on air" dot (`--red`).
-- **Fonts** (Google Fonts, loaded in `base.njk`): *Bricolage Grotesque* for headings, *Inter* for text,
-  *JetBrains Mono* for small labels.
+- **Fonts:** *Bricolage Grotesque* for headings, *Inter* for text, *JetBrains Mono* for small labels.
 - **Logo:** drawn in code in `_includes/mark.njk` — a circle, a radio tower, signal arcs and an amber
   dot. On Home and Services it sits in a badge with "OVERNIGHT RADIO INC. · LONDON, ONTARIO · SINCE 1998"
   slowly circling it, and signal rings radiating outward. On inner pages it sits in the centre of the signal
@@ -505,6 +504,10 @@ The repository is **github.com/kraaly53/onr**. Every push to `main` runs `.githu
 The FTP login is stored as repository secrets (`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`) under
 Settings → Secrets and variables → Actions. Progress and errors show under the repository's **Actions** tab;
 a deploy can also be re-run from there (**Run workflow**).
+
+**Fonts are self-hosted** in `src/assets/fonts/` (one small CSS file per design, plus the .woff2 files; all
+SIL Open Font License, latin characters only). Nothing loads from Google, so privacy/ad blockers can't strip the
+fonts out. To add a font, download its .woff2 and add an `@font-face` rule to the matching CSS file there.
 
 **Caching:** the hosting keeps copies of pages and files for up to an hour. To stop that hiding updates, every
 build adds a version (`?v=…`) to the CSS and JS links, and `src/.htaccess` asks for pages not to be cached. If a page
