@@ -393,7 +393,7 @@ http://localhost:8080, then commit and push.
 
 ### Design versions (being reviewed)
 
-The site currently has **four switchable designs** sharing the same content. A small **Design** panel in the
+The site currently has **four switchable designs** sharing the same content — the **After Hours themes**, which all use the original After Hours layout. A small **Design** panel in the
 bottom-left corner of every page switches between them; the choice is remembered as you move between pages.
 Click **Design** to tuck the panel away.
 
