@@ -17,7 +17,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /public_html/ryanruttan.com/match3/
+        server-dir: /public_html/ordinaryspoon.com/testing/onr
         port: 21
         protocol: ftp
         timeout: 60000
