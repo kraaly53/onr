@@ -24,7 +24,11 @@ jobs:
 
     - name: Build the site
       # The site is published in a sub-folder, so every link is written with this prefix.
-      run: npm run build
+      run: |
+        npm run build
+        # web server needs to read files (644) and open folders (755); mirror copies these permissions up
+        find _site -type d -exec chmod 755 {} +
+        find _site -type f -exec chmod 644 {} +
       env:
         PATH_PREFIX: /testing/onr/
 
@@ -47,5 +51,14 @@ jobs:
           set net:reconnect-interval-base 5;
           set net:reconnect-interval-max 30;
           open --env-password -u \"$FTP_USERNAME\" -p 21 \"$FTP_SERVER\";
-          mirror --reverse --parallel=2 --no-perms --verbose=1 _site/ \"$REMOTE_DIR\";
+          mirror --reverse --parallel=2 --verbose=1 _site/ \"$REMOTE_DIR\";
         "
+
+    - name: Check the site is live
+      run: |
+        for page in "" team.html assets/css/site.css; do
+          code=$(curl -s -o /dev/null -w '%{http_code}' -L "https://www.ordinaryspoon.com/testing/onr/$page")
+          echo "$code  /testing/onr/$page"
+          [ "$code" = "200" ] || failed=1
+        done
+        [ -z "$failed" ] || { echo "::error::The site isn't loading at https://www.ordinaryspoon.com/testing/onr/"; exit 1; }
