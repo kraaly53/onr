@@ -1,15 +1,30 @@
-{# Preview-only: lets you flip between design versions. Turn off with "designSwitcher": false in site.json. #}
+{# Preview-only: flip between theme versions (A–D) and complete redesigns (concepts).
+   Turn off with "designSwitcher": false in site.json. #}
 <div class="dswitch" data-dswitch>
   <button class="dswitch__toggle" type="button" aria-expanded="true" data-dswitch-toggle>
     <span class="dswitch__dot"></span><span>Design</span> <b data-dswitch-current></b>
   </button>
-  <div class="dswitch__panel" role="radiogroup" aria-label="Choose a design">
-    {% for d in site.designs %}
-    <button type="button" role="radio" data-design-pick="{{ d.id }}">
-      <span class="dswitch__id">{{ d.id | upper }}</span>
-      <span class="dswitch__txt"><strong>{{ d.name }}</strong><small>{{ d.note }}</small></span>
-    </button>
-    {% endfor %}
+  <div class="dswitch__panel">
+    <p class="dswitch__h" id="dswitch-themes">Themes · same layout</p>
+    <div role="radiogroup" aria-labelledby="dswitch-themes" class="dswitch__group">
+      {% for d in site.designs %}
+      <button type="button" role="radio" data-design-pick="{{ d.id }}">
+        <span class="dswitch__id">{{ d.id | upper }}</span>
+        <span class="dswitch__txt"><strong>{{ d.name }}</strong><small>{{ d.note }}</small></span>
+      </button>
+      {% endfor %}
+    </div>
+    {% if site.concepts %}
+    <p class="dswitch__h" id="dswitch-concepts">Complete redesigns</p>
+    <div role="radiogroup" aria-labelledby="dswitch-concepts" class="dswitch__group">
+      {% for c in site.concepts %}
+      <button type="button" role="radio" data-concept-pick="{{ c.id }}" data-name="{{ c.name }}">
+        <span class="dswitch__id dswitch__id--concept">{{ loop.index }}</span>
+        <span class="dswitch__txt"><strong>{{ c.name }}</strong><small>{{ c.note }}</small></span>
+      </button>
+      {% endfor %}
+    </div>
+    {% endif %}
     <button type="button" class="dswitch__link" data-dswitch-copy>Copy link to this design</button>
   </div>
 </div>

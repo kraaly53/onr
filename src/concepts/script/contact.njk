@@ -1,0 +1,25 @@
+---
+permalink: /concepts/script/contact.html
+station: contact
+seoTitle: "Contact | Overnight Radio Inc."
+seoDescription: "Independent production house for GREAT Radio Commercials, Jingles & Ads the very next day!"
+orderKey: "FORM"
+orderValue: "PRODUCTION ORDER"
+---
+<h1 class="slug slug--big">We’d like to hear <mark>from you!</mark></h1>
+<div class="line"><b class="who">ANNCR:</b><p class="said">We like to create things with people. Feel free to say hello!.</p></div>
+<form class="orderform" method="post" action="{{ site.contactEndpoint }}" data-contact data-unit-tag="wpcf7-f{{ site.contactFormId }}-o1">
+  <label class="fillin"><span>YOUR NAME:</span><input type="text" name="your-name" autocomplete="name" placeholder="Put your name here" required maxlength="400"></label>
+  <label class="fillin"><span>YOUR EMAIL:</span><input type="email" name="your-email" autocomplete="email" placeholder="Your email in this box" required maxlength="400"></label>
+  <label class="fillin fillin--area"><span>YOUR MESSAGE (OPTIONAL):</span><textarea class="lined" name="your-message" rows="6" maxlength="2000" placeholder="And your message right here"></textarea></label>
+  <label class="hp" aria-hidden="true">Please leave this field empty. <input type="text" name="honeypot-22" tabindex="-1" autocomplete="off"></label>
+  <button class="typed-btn typed-btn--big" type="submit">[ SEND ]</button>
+  <p class="form__status" data-status role="status" hidden></p>
+</form>
+<p class="more">(MORE)</p>
+<table class="timing">
+  <caption>CONTACT</caption>
+  <tr><th>{{ site.name | upper }}</th><td class="dots"></td><td>{{ site.city }}</td></tr>
+  <tr><th>PHONE</th><td class="dots"></td><td><a href="{{ site.phoneHref }}">{{ site.phone }}</a></td></tr>
+  <tr><th>EMAIL</th><td class="dots"></td><td><a href="mailto:{{ site.email }}?subject=Website%20Inquiry">{{ site.email }}</a></td></tr>
+</table>

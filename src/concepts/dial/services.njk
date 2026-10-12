@@ -1,0 +1,64 @@
+---
+permalink: /concepts/dial/services.html
+station: services
+seoTitle: "Professional Voice Over Services & Rates | Overnight Radio Inc."
+seoDescription: "Over 50 thousand radio spots produced since 1998. Creating national quality productions for broadcasts, at a surprisingly affordable rate!"
+---
+<section class="stationhead">
+  <div class="wrap">
+    <p class="readout"><span class="readout__freq">{{ (stations | findBy("key", station)).freq }}</span><span class="readout__fm">FM</span><span class="readout__now">Our Services</span></p>
+    <h1 class="stationhead__title"><span>Professional</span> Voice Over Services</h1>
+  </div>
+</section>
+
+<section class="panel-sec">
+  <div class="wrap grille-split grille-split--speaker">
+    <div class="speaker speaker--sm" aria-hidden="true"><div class="speaker__cone"><span class="speaker__cap">{% include "mark.njk" %}</span></div></div>
+    <div class="copy">
+      <p class="silk">Need a spot? · Writing &amp; production ...returned the NEXT DAY!</p>
+      <p class="lead">Creativity, and quality are the basis of any successful Radio Ad campaign. We believe that you can and should have national quality commercial productions at any level of broadcasting...and that’s what we offer.</p>
+      <p>With over 50 thousand radio spots produced since 1998, our team has the skills and experience to create national quality commercial productions for broadcast...at a surprisingly affordable rate.</p>
+      <p>If you need top-notch radio spots turned around quickly, and affordably, we are Overnight Radio Inc, and we’re your team.</p>
+      <p class="callout">Writing, acting, announcing, radio commercial production... as much or as little as you need.</p>
+    </div>
+  </div>
+</section>
+
+<section class="panel-sec panel-sec--dark">
+  <div class="wrap">
+    <p class="silk">Specifications</p>
+    <h2 class="h2">Monthly Radio Commercial Package Pricing</h2>
+    <p class="muted">{{ pricing.intro }}</p>
+    <div class="bands">
+      {% for m in pricing.markets %}
+      <article class="band">
+        <header class="band__head"><span class="band__sw">Band {{ loop.index }}</span><h3>{{ m.name }}</h3><p>{{ m.population }}</p></header>
+        {% for tier in ["gold", "silver"] %}{% set t = m[tier] %}
+        <div class="band__row band__row--{{ tier }}">
+          <span class="led{% if tier == 'gold' %} led--on{% endif %}" aria-hidden="true"></span>
+          <span class="band__tier">{{ m.name }} {{ tier | capitalize }}</span>
+          <span class="band__price">{{ t.monthly }}<small>/month</small></span>
+          <span class="band__spec">{{ t.units }} units/month</span>
+          <span class="band__spec">{{ t.perUnit }}/unit</span>
+        </div>
+        {% endfor %}
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="panel-sec">
+  <div class="wrap perspot">
+    <div>
+      <p class="silk">À la carte</p>
+      <h2 class="h2">Per Spot Radio Commercial Pricing</h2>
+      <p>If a commercial monthly package is more than you need, you can purchase them 'per spot' individually.</p>
+    </div>
+    <div class="lcd">
+      <p class="lcd__big">Per spot pricing starts at <b>$175</b> per local broadcast spot* and <b>$75</b> per script*!</p>
+      <p>Internet ads start at <b>$300</b> - North America only</p>
+      <p class="lcd__fine">*Prices refer to a one market broadcast only - *$35 per revision</p>
+    </div>
+  </div>
+</section>

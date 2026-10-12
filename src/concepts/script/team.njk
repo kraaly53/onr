@@ -1,0 +1,48 @@
+---
+permalink: /concepts/script/team.html
+station: team
+seoTitle: "Voice Over Artists, Voice Talent Toronto | Overnight Radio Inc."
+seoDescription: "Overnight's Staff consists of some of the most professional producers & announcers in the industry today. Bringing you the right voice for your radio ad."
+orderKey: "CASTING"
+eleventyComputed:
+  orderValue: "{{ collections.talent.length }} VOICES"
+---
+<h1 class="slug slug--big">Meet the <mark>Team</mark></h1>
+<div class="line"><b class="who">ANNCR:</b><p class="said">Overnight's Staff consists of some of the most professional radio producers, male and female voice over artists working in the industry today. All of our voice over talent have major market experience and bring that "big sound" with them. Over the years, Overnight Radio has constantly been looking for the right voices to represent us and you in the best possible way, and we are proud to say that each one of our voice over talents does just that. Click on the name of a team member below to find out more about them, and to hear their commercial voice over sample.</p></div>
+
+<h2 class="slug">The Production Team</h2>
+<div class="credits">
+  {% for m in collections.production %}
+  <div class="credit">
+    <a class="polaroid polaroid--sm" href="{{ cbase }}{{ m.url }}"><img src="{{ (m.data.cardPhoto or m.data.photo) | asset }}" alt="{{ m.data.name }}" loading="lazy"><span class="clip" aria-hidden="true"></span></a>
+    <div>
+      <p class="credit__role">{{ m.data.role | upper }}</p>
+      <h3 class="credit__name"><a href="{{ cbase }}{{ m.url }}">{{ m.data.cardName or m.data.name }}</a></h3>
+      <p>{{ m.data.summary }}</p>
+      <a class="typed-btn" href="{{ cbase }}{{ m.url }}">[ BIO &amp; {{ m.data.sampleLabel | upper }} ]</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<p class="more">(MORE)</p>
+<div class="casting-head">
+  <h2 class="slug">Talent — Casting Sheet</h2>
+  <label class="fillin"><span>FIND TALENT:</span><input type="search" data-team-search autocomplete="off" aria-label="Find a voice"></label>
+</div>
+<table class="casting">
+  <thead><tr><th>#</th><th></th><th>TALENT</th><th>TYPE</th><th>STATUS</th><th>DEMO</th></tr></thead>
+  <tbody data-talent>
+  {% for m in collections.talent %}
+  <tr class="voice" data-name="{{ (m.data.cardName or m.data.name) | lower }}">
+    <td class="casting__n">{{ loop.index | pad2 }}</td>
+    <td class="casting__pic"><a href="{{ cbase }}{{ m.url }}" tabindex="-1" aria-hidden="true"><img src="{{ (m.data.cardPhoto or m.data.photo) | asset }}" alt="" loading="lazy"></a></td>
+    <td class="casting__name"><a href="{{ cbase }}{{ m.url }}">{{ (m.data.cardName or m.data.name) | upper }}</a></td>
+    <td>{{ "Announcer" if m.data.roster == "non-roster" else (m.data.role or "Announcer") }}</td>
+    <td>{% if m.data.roster == "non-roster" %}<span class="stamp stamp--sm">NON-ROSTER</span><small class="casting__sub">extra units apply</small>{% else %}ROSTER{% endif %}</td>
+    <td><button class="voice__play demo" type="button" data-quickplay="{{ m.data.sampleMp3 | asset }}" aria-label="Play {{ m.data.cardName or m.data.name }}’s sample"><span class="i-play">[ ▶ ]</span><span class="i-pause">[ ❚❚ ]</span></button></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="note" data-team-empty hidden>NO TALENT MATCHES THAT NAME.</p>

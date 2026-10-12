@@ -1,0 +1,66 @@
+---
+permalink: /concepts/dial/team.html
+station: team
+seoTitle: "Voice Over Artists, Voice Talent Toronto | Overnight Radio Inc."
+seoDescription: "Overnight's Staff consists of some of the most professional producers & announcers in the industry today. Bringing you the right voice for your radio ad."
+---
+<section class="stationhead">
+  <div class="wrap">
+    <p class="readout"><span class="readout__freq">{{ (stations | findBy("key", station)).freq }}</span><span class="readout__fm">FM</span><span class="readout__now">Team</span></p>
+    <h1 class="stationhead__title">Meet the <span>Team</span></h1>
+    <p class="stationhead__lede">Overnight's Staff consists of some of the most professional radio producers, male and female voice over artists working in the industry today. All of our voice over talent have major market experience and bring that "big sound" with them. Over the years, Overnight Radio has constantly been looking for the right voices to represent us and you in the best possible way, and we are proud to say that each one of our voice over talents does just that. Click on the name of a team member below to find out more about them, and to hear their commercial voice over sample.</p>
+  </div>
+</section>
+
+<section class="voicedial-sec" data-voicedial>
+  <div class="wrap voicedial__top">
+    <div>
+      <p class="silk">Talent · tune in a voice</p>
+      <p class="voicedial__now" aria-live="polite"><span class="readout__freq" data-vd-freq>88.1</span> <span data-vd-name>Allison</span></p>
+    </div>
+    <div class="voicedial__ctrl">
+      <label class="tuner-search"><span class="sr-only">Find a voice</span><input type="search" placeholder="Find a voice" data-team-search autocomplete="off"></label>
+      <button type="button" class="pushbtn pushbtn--sq" data-vd-step="-1" aria-label="Tune down"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg></button>
+      <button type="button" class="pushbtn pushbtn--sq" data-vd-step="1" aria-label="Tune up"><svg aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+    </div>
+  </div>
+  <div class="voicedial">
+    <span class="voicedial__needle" aria-hidden="true"></span>
+    <ul class="voicedial__track" data-talent data-vd-track>
+      {% for m in collections.talent %}
+      {% set f = (88.1 + loop.index0 * 0.4) | round(1) %}
+      <li class="voice vcard" data-name="{{ (m.data.cardName or m.data.name) | lower }}" data-label="{{ m.data.cardName or m.data.name }}" data-freq="{{ f }}">
+        <a class="vcard__link" href="{{ cbase }}{{ m.url }}">
+          <span class="vcard__freq">{{ f }}</span>
+          <span class="vcard__photo"><img src="{{ (m.data.cardPhoto or m.data.photo) | asset }}" alt="" loading="lazy"></span>
+          <span class="vcard__name">{{ m.data.cardName or m.data.name }}</span>
+          {% if m.data.roster == "non-roster" %}<span class="vcard__flag">Non-roster</span>{% endif %}
+        </a>
+        <button class="voice__play vcard__play" type="button" data-quickplay="{{ m.data.sampleMp3 | asset }}" aria-label="Play {{ m.data.cardName or m.data.name }}’s sample">
+          <svg class="i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="i-pause" aria-hidden="true"><use href="#i-pause"/></svg>
+        </button>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <p class="wrap muted" data-team-empty hidden>No voices match that name.</p>
+</section>
+
+<section class="panel-sec">
+  <div class="wrap">
+    <p class="silk">The Production Team</p>
+    <div class="producers">
+      {% for m in collections.production %}
+      <article class="producer">
+        <a class="producer__photo" href="{{ cbase }}{{ m.url }}"><img src="{{ (m.data.cardPhoto or m.data.photo) | asset }}" alt="{{ m.data.name }}" loading="lazy"></a>
+        <div>
+          <p class="tagline">{{ m.data.role }}</p>
+          <h2 class="producer__name"><a href="{{ cbase }}{{ m.url }}">{{ m.data.cardName or m.data.name }}</a></h2>
+          <p>{{ m.data.summary }}</p>
+          <a class="textlink" href="{{ cbase }}{{ m.url }}">Bio &amp; {{ m.data.sampleLabel | lower }} →</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

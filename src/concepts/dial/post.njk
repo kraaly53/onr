@@ -1,0 +1,29 @@
+---
+pagination:
+  data: collections.posts
+  size: 1
+  alias: post
+permalink: "/concepts/dial{{ post.url }}index.html"
+station: blog
+eleventyComputed:
+  seoTitle: "{{ post.data.title | safe }} | Overnight Radio Inc. Blog"
+  seoDescription: "{{ post.data.description | safe }}"
+---
+{%- set newerPost = collections.posts | getPreviousCollectionItem(post) -%}
+{%- set olderPost = collections.posts | getNextCollectionItem(post) -%}
+<section class="stationhead stationhead--post">
+  <div class="wrap wrap--narrow">
+    <a class="back" href="{{ cbase }}/blog/">← Blog</a>
+    <p class="readout readout--sm"><span class="readout__now">{{ post.date | readableDate }} · {{ post.data.categories | join(" · ") }}</span></p>
+    <h1 class="stationhead__title stationhead__title--post">{{ post.data.title }}</h1>
+    <p class="muted">By {{ post.data.author or "Overnight Radio" }}</p>
+  </div>
+</section>
+<section class="panel-sec">
+  <article class="wrap wrap--narrow liner">{{ post.content | safe }}</article>
+</section>
+<nav class="tunebar wrap wrap--narrow" aria-label="More posts">
+  {% if newerPost %}<a href="{{ cbase }}{{ newerPost.url }}"><small>◀ Newer post</small>{{ newerPost.data.title }}</a>{% else %}<span></span>{% endif %}
+  <a class="tunebar__all" href="{{ cbase }}/blog/">All posts</a>
+  {% if olderPost %}<a class="tunebar__next" href="{{ cbase }}{{ olderPost.url }}"><small>Older post ▶</small>{{ olderPost.data.title }}</a>{% else %}<span></span>{% endif %}
+</nav>

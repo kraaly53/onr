@@ -1,0 +1,27 @@
+---
+permalink: /concepts/night/calculator.html
+station: calculator
+hour: 0.4
+seoTitle: "Commercial Script Calculator | Overnight Radio Inc."
+seoDescription: "Commerical Script Calculator that will calcuate the timing of the commercial."
+scripts: ["/assets/js/calculator.js"]
+---
+<section class="head"><div class="wrap">
+  <p class="stamp-time">Script Calculator</p>
+  <h1 class="mega mega--page">Commercial <span>Script Calculator</span></h1>
+  <p class="hero-lede hero-lede--sm">Enter your script, select the read speed, click the button and we'll tell you how long you commercial will be.</p>
+</div></section>
+<section class="band"><div class="wrap">
+  <form class="glass calc" onsubmit="return false">
+    <div class="calc__panes">
+      <label><span class="eyebrow">Script</span><textarea name="message" id="message" rows="9" placeholder="Enter script here" autofocus></textarea></label>
+      <label><span class="eyebrow">Results</span><textarea name="results" id="results" rows="9" placeholder="Results" readonly></textarea></label>
+    </div>
+    <div class="calc__bar">
+      <label><span class="eyebrow">Script Read Speed</span><select id="speed" name="speed"><option value="1">Slow Read</option><option value="2" selected>Normal Read</option><option value="3">Fast Read</option></select></label>
+      <button type="button" class="btn btn--moon" id="calculateScript">Calculate Length</button>
+      <div class="calc__out"><span class="eyebrow">Total Script Length</span><output id="wlength" name="wlength">0</output></div>
+      <div class="calc__out"><span class="eyebrow">Word Count</span><output id="wcount" name="wcount">0</output></div>
+    </div>
+  </form>
+</div></section>

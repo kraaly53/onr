@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ seoTitle or title }}</title>
+  <meta name="description" content="{{ seoDescription or description }}">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Michroma&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/concepts/dial.css">
+  <link rel="stylesheet" href="/assets/css/designs/switcher.css">
+</head>
+{%- set here = stations | findBy("key", station) -%}
+{%- if not here %}{% set here = stations[0] %}{% endif -%}
+<body data-freq="{{ here.freq }}">
+  {% include "icons.njk" %}
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="receiver">
+    <div class="receiver__plate">
+      <a class="receiver__brand" href="{{ cbase }}/index.html">
+        {% include "mark.njk" %}
+        <span><b>Overnight Radio</b><small>Stereo receiver · Est. 1998</small></span>
+      </a>
+
+      <nav class="dial" aria-label="Main">
+        <div class="dial__glass" data-dial>
+          <ol class="dial__stations">
+            {% for s in stations %}
+            <li style="--pos: {{ ((s.freq - 87.5) / 21 * 100) | round(2) }}%"{% if loop.index0 % 2 %} class="is-low"{% endif %}>
+              <a href="{{ cbase }}{{ s.path }}" title="{{ s.label }}" data-freq="{{ s.freq }}"{% if s.key == here.key %} aria-current="page"{% endif %}>
+                <span class="dial__label">{{ s.short }}</span><span class="sr-only"> ({{ s.label }})</span><span class="dial__mhz">{{ s.freq }}</span>
+              </a>
+            </li>
+            {% endfor %}
+          </ol>
+          <div class="dial__scale" aria-hidden="true">
+            {% for n in range(88, 109) %}<i style="--pos: {{ ((n - 87.5) / 21 * 100) | round(2) }}%"{% if n % 4 == 0 %} class="major" data-n="{{ n }}"{% endif %}></i>{% endfor %}
+          </div>
+          <div class="dial__needle" data-needle style="--pos: {{ ((here.freq - 87.5) / 21 * 100) | round(2) }}%" aria-hidden="true"></div>
+        </div>
+      </nav>
+
+      <div class="receiver__right" aria-hidden="true">
+        <div class="lamps"><span class="lamp is-on">Stereo</span><span class="lamp is-on">Tuned</span></div>
+        <div class="signal"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      {%- set nextStation = stations | findBy("key", here.next) -%}
+      <a class="knob" href="{{ cbase }}{{ nextStation.path }}" data-freq="{{ nextStation.freq }}" aria-label="Tune to next station: {{ nextStation.label }}" title="Tune up: {{ nextStation.label }}"><span></span></a>
+    </div>
+  </header>
+
+  <main id="main">
+    {{ content | safe }}
+  </main>
+
+  <footer class="rear">
+    <div class="wrap rear__grid">
+      <div>
+        <p class="silk">Overnight Radio Inc. — {{ site.city }}</p>
+        <p class="rear__line"><a href="{{ site.phoneHref }}">{{ site.phone }}</a> · <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+        <p class="rear__line"><a href="{{ cbase }}/privacypolicy.html">Privacy Policy</a></p>
+      </div>
+      <ul class="jacks">
+        {% for s in site.social %}
+        <li><a href="{{ s.url }}" target="_blank" rel="noopener" aria-label="{{ s.name }}"><span class="jack"><svg aria-hidden="true"><use href="#i-{{ s.icon }}"/></svg></span><span class="silk">{{ s.name }}</span></a></li>
+        {% endfor %}
+      </ul>
+      <a class="bbb" href="{{ site.bbbUrl }}" target="_blank" rel="noopener"><img src="{{ site.bbbImage }}" height="57" alt="Overnight Radio Inc., Radio Program Producers, London, ON"></a>
+    </div>
+    <p class="wrap silk rear__legal">&copy; Copyright. All rights reserved. {{ site.legalName }}</p>
+  </footer>
+
+  {% if site.designSwitcher %}{% include "design-switcher.njk" %}<script src="/assets/js/design-switcher.js" defer></script>{% endif %}
+  <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/concepts/dial.js" defer></script>
+  {% if scripts %}{% for s in scripts %}<script src="{{ s }}" defer></script>{% endfor %}{% endif %}
+</body>
+</html>

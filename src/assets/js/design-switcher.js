@@ -1,27 +1,70 @@
-// Preview-only design switcher. The chosen design is stored per browser and can be shared with ?design=b.
+// Preview-only design switcher.
+// Themes (A–D) restyle the main site in place; the choice is remembered and can be shared with ?design=b.
+// Complete redesigns ("concepts") are separate copies of the site under /concepts/<id>/ — picking one opens the
+// same page in that concept.
 (() => {
-  const root = document.documentElement;
   const box = document.querySelector("[data-dswitch]");
   if (!box) return;
-  const picks = [...box.querySelectorAll("[data-design-pick]")];
+  const root = document.documentElement;
+  const themePicks = [...box.querySelectorAll("[data-design-pick]")];
+  const conceptPicks = [...box.querySelectorAll("[data-concept-pick]")];
   const current = box.querySelector("[data-dswitch-current]");
   const toggle = box.querySelector("[data-dswitch-toggle]");
   const store = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
   const read = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
 
-  const apply = (id) => {
+  // Where are we? /concepts/dial/team.html → concept "dial", main path "/team.html"
+  const m = location.pathname.match(/^\/concepts\/([^/]+)(\/.*)?$/);
+  const concept = m ? m[1] : null;
+  const mainPath = concept ? m[2] || "/" : location.pathname;
+
+  // Pages every concept has; anything else (blog archives, search) falls back sensibly.
+  const conceptPath = (p) => {
+    if (p === "/" || p === "/index.html") return "/index.html";
+    if (/^\/(services|work|team|calculator|contact|privacypolicy)\.html$/.test(p)) return p;
+    if (/^\/(work|team)\/[\w-]+\.html$/.test(p)) return p;
+    if (/^\/blog\/(page\/\d+\/)?$/.test(p)) return p;
+    if (/^\/blog\/(category|tag|search|\d{4})\//.test(p)) return "/blog/";
+    if (/^\/blog\/[\w-]+\/$/.test(p)) return p;
+    return "/index.html";
+  };
+
+  const label = (txt) => (current.textContent = txt);
+  const check = (list, id, attr) => list.forEach((b) => b.setAttribute("aria-checked", String(b.dataset[attr] === id)));
+
+  const applyTheme = (id) => {
     root.dataset.design = id;
     store("design", id);
-    picks.forEach((b) => b.setAttribute("aria-checked", String(b.dataset.designPick === id)));
-    const name = picks.find((b) => b.dataset.designPick === id)?.querySelector("strong").textContent || "";
-    current.textContent = `${id.toUpperCase()} · ${name}`;
+    check(themePicks, id, "designPick");
+    const name = themePicks.find((b) => b.dataset.designPick === id)?.querySelector("strong").textContent || "";
+    label(`${id.toUpperCase()} · ${name}`);
     const url = new URL(location.href);
     url.searchParams.set("design", id);
     history.replaceState(null, "", url);
   };
 
-  picks.forEach((b) => b.addEventListener("click", () => apply(b.dataset.designPick)));
-  apply(root.dataset.design);
+  themePicks.forEach((b) =>
+    b.addEventListener("click", () => {
+      const id = b.dataset.designPick;
+      if (concept) { store("design", id); location.href = `${mainPath}?design=${id}`; }
+      else applyTheme(id);
+    })
+  );
+  conceptPicks.forEach((b) =>
+    b.addEventListener("click", () => {
+      const id = b.dataset.conceptPick;
+      if (id !== concept) location.href = `/concepts/${id}${conceptPath(mainPath)}`;
+    })
+  );
+
+  if (concept) {
+    check(themePicks, null, "designPick");
+    check(conceptPicks, concept, "conceptPick");
+    label(conceptPicks.find((b) => b.dataset.conceptPick === concept)?.dataset.name || concept);
+  } else {
+    check(conceptPicks, null, "conceptPick");
+    applyTheme(root.dataset.design || themePicks[0]?.dataset.designPick || "a");
+  }
 
   const setOpen = (open) => {
     box.classList.toggle("is-collapsed", !open);

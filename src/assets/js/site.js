@@ -43,9 +43,18 @@
     audio.addEventListener("loadedmetadata", showDur);
     audio.addEventListener("durationchange", showDur);
     if (audio.readyState >= 1) showDur();
+    // Optional text progress bar (used by the Script concept): <span data-bar="24"></span>
+    const bar = $("[data-bar]", el);
+    const drawBar = (pct) => {
+      if (!bar) return;
+      const n = +bar.dataset.bar || 24, on = Math.round((pct / 100) * n);
+      bar.textContent = "█".repeat(on) + "░".repeat(n - on);
+    };
+    drawBar(0);
     audio.addEventListener("timeupdate", () => {
       const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
       fill.style.setProperty("--p", pct + "%");
+      drawBar(pct);
       cur.textContent = fmt(audio.currentTime);
       track.setAttribute("aria-valuenow", Math.round(pct));
     });

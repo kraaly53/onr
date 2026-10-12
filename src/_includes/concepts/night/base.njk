@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ seoTitle or title }}</title>
+  <meta name="description" content="{{ seoDescription or description }}">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/concepts/night.css">
+  <link rel="stylesheet" href="/assets/css/designs/switcher.css">
+</head>
+{# hour: 0 = 6:00 PM (dusk) … 0.5 = midnight … 1 = 6:00 AM (dawn). "scroll" = follows scrolling (home page). #}
+<body data-hour="{{ hour | default(0.5) }}" class="{{ bodyClass }}">
+  {% include "icons.njk" %}
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="sky" aria-hidden="true">
+    <div class="stars stars--a"></div><div class="stars stars--b"></div>
+    <div class="moon"></div>
+    <div class="sun"></div>
+    <div class="skyline"></div>
+  </div>
+
+  <header class="top">
+    <a class="top__brand" href="{{ cbase }}/index.html">{% include "mark.njk" %}<span>Overnight Radio <i>Inc.</i></span></a>
+    <button class="nav-toggle top__toggle" aria-expanded="false" aria-controls="night-nav"><span class="sr-only">Menu</span><span></span></button>
+    <nav id="night-nav" class="nav top__nav" aria-label="Main">
+      <ul>
+        {% for n in nav %}<li><a href="{{ cbase }}{{ n.path }}"{% if n.key == station %} aria-current="page"{% endif %}>{{ n.label }}</a></li>{% endfor %}
+      </ul>
+    </nav>
+    <p class="clock" aria-hidden="true"><span class="clock__dot"></span><span data-clock>12:00</span> <small data-ampm>AM</small></p>
+  </header>
+
+  <main id="main">
+    {{ content | safe }}
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__grid">
+      <div>
+        <p class="foot__brand">{{ site.name }}</p>
+        <p>{{ site.city }}<br><a href="{{ site.phoneHref }}">{{ site.phone }}</a> · <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+      </div>
+      <ul class="foot__social">
+        {% for s in site.social %}<li><a href="{{ s.url }}" target="_blank" rel="noopener" aria-label="{{ s.name }}"><svg aria-hidden="true"><use href="#i-{{ s.icon }}"/></svg></a></li>{% endfor %}
+      </ul>
+      <a class="bbb" href="{{ site.bbbUrl }}" target="_blank" rel="noopener"><img src="{{ site.bbbImage }}" height="57" alt="Overnight Radio Inc., Radio Program Producers, London, ON"></a>
+    </div>
+    <p class="wrap foot__legal">&copy; Copyright. All rights reserved. {{ site.legalName }} - <a href="{{ cbase }}/privacypolicy.html">Privacy Policy</a></p>
+  </footer>
+
+  {% if site.designSwitcher %}{% include "design-switcher.njk" %}<script src="/assets/js/design-switcher.js" defer></script>{% endif %}
+  <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/concepts/night.js" defer></script>
+  {% if scripts %}{% for s in scripts %}<script src="{{ s }}" defer></script>{% endfor %}{% endif %}
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ seoTitle or title }}</title>
+  <meta name="description" content="{{ seoDescription or description }}">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/concepts/script.css">
+  <link rel="stylesheet" href="/assets/css/designs/switcher.css">
+</head>
+{%- set here = rundown | findBy("key", station) or rundown[0] -%}
+<body>
+  {% include "icons.njk" %}
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="desk">
+    <aside class="rundown">
+      <a class="rundown__brand" href="{{ cbase }}/index.html">{% include "mark.njk" %}<span>OVERNIGHT RADIO INC.</span></a>
+      <button class="rundown__toggle nav-toggle" aria-expanded="false" aria-controls="rundown-list">Rundown ▾</button>
+      <nav id="rundown-list" class="rundown__sheet nav" aria-label="Main">
+        <p class="rundown__title">RUNDOWN</p>
+        <ol>
+          {% for r in rundown %}
+          <li><a href="{{ cbase }}{{ r.path }}"{% if r.key == here.key %} aria-current="page"{% endif %}><span class="rundown__t">{{ r.time }}</span><span class="rundown__l">{{ r.label | upper }}</span></a></li>
+          {% endfor %}
+        </ol>
+        <p class="rundown__note pencil">on air the very next day!</p>
+      </nav>
+    </aside>
+
+    <main id="main" class="sheets">
+      <article class="sheet">
+        <span class="holes" aria-hidden="true"><i></i><i></i><i></i></span>
+        <header class="order">
+          <dl>
+            <div><dt>CLIENT:</dt><dd>{{ orderClient or "OVERNIGHT RADIO INC." }}</dd></div>
+            <div><dt>TITLE:</dt><dd>{{ (orderTitle or here.label) | upper }}</dd></div>
+            <div><dt>{{ orderKey or "PAGE" }}:</dt><dd>{{ orderValue or here.time }}</dd></div>
+            <div><dt>AIR:</dt><dd>THE VERY NEXT DAY</dd></div>
+          </dl>
+        </header>
+        {{ content | safe }}
+        <p class="end">— END —</p>
+      </article>
+
+      <footer class="colophon">
+        <p>{{ site.name | upper }} · {{ site.city | upper }}</p>
+        <p><a href="{{ site.phoneHref }}">{{ site.phone }}</a> · <a href="mailto:{{ site.email }}">{{ site.email }}</a> · <a href="{{ cbase }}/privacypolicy.html">PRIVACY POLICY</a></p>
+        <p class="colophon__social">{% for s in site.social %}<a href="{{ s.url }}" target="_blank" rel="noopener">[ {{ s.name | upper }} ]</a> {% endfor %}</p>
+        <a class="bbb" href="{{ site.bbbUrl }}" target="_blank" rel="noopener"><img src="{{ site.bbbImage }}" height="57" alt="Overnight Radio Inc., Radio Program Producers, London, ON"></a>
+        <p class="colophon__legal">&copy; Copyright. All rights reserved. {{ site.legalName }}</p>
+      </footer>
+    </main>
+  </div>
+
+  {% if site.designSwitcher %}{% include "design-switcher.njk" %}<script src="/assets/js/design-switcher.js" defer></script>{% endif %}
+  <script src="/assets/js/site.js" defer></script>
+  {% if scripts %}{% for s in scripts %}<script src="{{ s }}" defer></script>{% endfor %}{% endif %}
+</body>
+</html>

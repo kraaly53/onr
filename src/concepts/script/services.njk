@@ -1,0 +1,42 @@
+---
+permalink: /concepts/script/services.html
+station: services
+seoTitle: "Professional Voice Over Services & Rates | Overnight Radio Inc."
+seoDescription: "Over 50 thousand radio spots produced since 1998. Creating national quality productions for broadcasts, at a surprisingly affordable rate!"
+orderKey: "RATE CARD"
+orderValue: "MONTHLY & PER SPOT"
+---
+<div class="cue">SFX: (PHONE RINGS ONCE)</div>
+<p class="pencil pencil--right pencil--big" aria-hidden="true">Need a spot?</p>
+<h1 class="slug slug--big"><mark>Professional</mark> Voice Over Services</h1>
+<div class="line"><b class="who">ANNCR:</b><p class="said"><strong>Creativity, and quality are the basis of any successful Radio Ad campaign. We believe that you can and should have national quality commercial productions at any level of broadcasting...and that’s what we offer.</strong></p></div>
+<div class="line"><b class="who">ANNCR:</b><p class="said">With over 50 thousand radio spots produced since 1998, our team has the skills and experience to create national quality commercial productions for broadcast...at a surprisingly affordable rate.</p></div>
+<div class="line"><b class="who">ANNCR:</b><p class="said">If you need top-notch radio spots turned around quickly, and affordably, we are Overnight Radio Inc, and we’re your team.</p></div>
+<div class="line line--tag"><b class="who">TAG:</b><p class="said">Writing, acting, announcing, radio commercial production... as much or as little as you need.</p></div>
+<p class="pencil pencil--left" aria-hidden="true">Writing &amp; production ...returned the NEXT DAY!</p>
+
+<p class="more">(MORE)</p>
+<h2 class="slug">Monthly Radio Commercial Package Pricing</h2>
+<p class="note">{{ pricing.intro }}</p>
+<table class="ratecard">
+  <thead><tr><th>PACKAGE</th><th>MARKET</th><th>PER MONTH</th><th>UNITS</th><th>PER UNIT</th></tr></thead>
+  <tbody>
+  {% for m in pricing.markets %}{% for tier in ["gold", "silver"] %}{% set t = m[tier] %}
+    <tr class="{{ 'is-gold' if tier == 'gold' }}">
+      <th scope="row">{{ m.name | upper }} {{ tier | upper }}</th>
+      <td>{{ m.population }}</td>
+      <td class="num">{% if tier == "gold" %}<mark>{{ t.monthly }}/month</mark>{% else %}{{ t.monthly }}/month{% endif %}</td>
+      <td class="num">{{ t.units }} units/month</td>
+      <td class="num">{{ t.perUnit }}/unit</td>
+    </tr>
+  {% endfor %}{% endfor %}
+  </tbody>
+</table>
+<p class="pencil pencil--left" aria-hidden="true">units = scripts, voice overs &amp; production</p>
+
+<p class="more">(MORE)</p>
+<h2 class="slug">Per Spot Radio Commercial Pricing</h2>
+<div class="line"><b class="who">ANNCR:</b><p class="said">If a commercial monthly package is more than you need, you can purchase them 'per spot' individually.</p></div>
+<div class="line line--tag"><b class="who">TAG:</b><p class="said">Per spot pricing starts at <span class="circled">$175</span> per local broadcast spot* and <span class="circled">$75</span> per script*!</p></div>
+<div class="line"><b class="who">ANNCR:</b><p class="said">Internet ads start at $300 - North America only</p></div>
+<p class="note">*Prices refer to a one market broadcast only - *$35 per revision</p>

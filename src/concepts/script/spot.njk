@@ -1,0 +1,22 @@
+---
+pagination:
+  data: collections.spots
+  size: 1
+  alias: s
+permalink: "/concepts/script/work/{{ s.fileSlug }}.html"
+station: work
+orderKey: "STYLE"
+eleventyComputed:
+  seoTitle: "{{ s.data.seoTitle | safe }}"
+  seoDescription: "{{ s.data.seoDescription | safe }}"
+  orderClient: "{{ s.data.title | safe }}"
+  orderTitle: "{{ s.data.title | safe }} ({{ s.data.category | safe }})"
+  orderValue: "{{ s.data.category | safe }}"
+---
+<a class="typed-back" href="{{ cbase }}/work.html">◄ BACK TO THE BINDER</a>
+<h1 class="slug slug--big">{{ s.data.title }} <span class="stamp">{{ s.data.category | upper }}</span></h1>
+{% set p = { mp3: s.data.spotMp3, ogg: s.data.spotOgg, label: s.data.title + " - " + s.data.category + " spot" } %}
+{% include "concepts/script/player.njk" %}
+{% if s.content | trim %}
+<div class="script-lines">{{ s.content | replace("</strong>: ", "</strong> ") | replace("</strong>:", "</strong> ") | safe }}</div>
+{% endif %}

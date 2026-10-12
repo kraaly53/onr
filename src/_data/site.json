@@ -82,5 +82,22 @@
       "name": "Signal",
       "note": "Bold black & signal lime"
     }
+  ],
+  "concepts": [
+    {
+      "id": "dial",
+      "name": "The Dial",
+      "note": "The site as a vintage FM receiver"
+    },
+    {
+      "id": "script",
+      "name": "The Script",
+      "note": "Typed up like a radio script"
+    },
+    {
+      "id": "night",
+      "name": "Night Shift",
+      "note": "Dusk to dawn in one scroll"
+    }
   ]
 }

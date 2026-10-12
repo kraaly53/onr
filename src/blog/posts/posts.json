@@ -3,6 +3,6 @@
   "section": "/blog/",
   "permalink": "/blog/{{ page.fileSlug }}/index.html",
   "eleventyComputed": {
-    "seoTitle": "{{ title }} | Overnight Radio Inc. Blog"
+    "seoTitle": "{{ title | safe }} | Overnight Radio Inc. Blog"
   }
 }

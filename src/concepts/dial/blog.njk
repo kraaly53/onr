@@ -1,0 +1,39 @@
+---
+pagination:
+  data: collections.posts
+  size: 5
+  alias: pagePosts
+permalink: "{% if pagination.pageNumber == 0 %}/concepts/dial/blog/index.html{% else %}/concepts/dial/blog/page/{{ pagination.pageNumber + 1 }}/index.html{% endif %}"
+station: blog
+eleventyComputed:
+  seoTitle: "Blog{% if pagination.pageNumber > 0 %} - Page {{ pagination.pageNumber + 1 }}{% endif %} | Overnight Radio Inc."
+---
+<section class="stationhead">
+  <div class="wrap">
+    <p class="readout"><span class="readout__freq">{{ (stations | findBy("key", station)).freq }}</span><span class="readout__fm">FM</span><span class="readout__now">Blog · Talk radio</span></p>
+    <h1 class="stationhead__title">The Overnight Radio <span>Blog</span></h1>
+    <p class="stationhead__lede">We will be discussing issues relevant to the world of radio production and scripting.</p>
+  </div>
+</section>
+<section class="panel-sec">
+  <div class="wrap">
+    <ol class="schedule">
+      {% for post in pagePosts %}
+      <li class="show">
+        <time class="show__time" datetime="{{ post.date | isoDate }}">{{ post.date | readableDate }}</time>
+        <div>
+          <p class="show__cats">{{ post.data.categories | join(" · ") }}</p>
+          <h2 class="show__title"><a href="{{ cbase }}{{ post.url }}">{{ post.data.title }}</a></h2>
+          <p>{{ post.content | excerpt }}</p>
+          <a class="textlink" href="{{ cbase }}{{ post.url }}">Continue reading →</a>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+    <nav class="tunebar tunebar--blog" aria-label="Blog pages">
+      {% if pagination.href.previous %}<a href="{{ cbase }}{{ pagination.href.previous | replace(cbase, '') }}" rel="prev"><small>◀</small>Newer posts</a>{% else %}<span></span>{% endif %}
+      <span class="tunebar__all">Page {{ pagination.pageNumber + 1 }} of {{ pagination.pages.length }}</span>
+      {% if pagination.href.next %}<a class="tunebar__next" href="{{ cbase }}{{ pagination.href.next | replace(cbase, '') }}" rel="next"><small>▶</small>Older posts</a>{% else %}<span></span>{% endif %}
+    </nav>
+  </div>
+</section>

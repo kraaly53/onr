@@ -1,0 +1,62 @@
+{
+  "layout": "concepts/dial/base.njk",
+  "cbase": "/concepts/dial",
+  "stations": [
+    {
+      "key": "home",
+      "label": "Home",
+      "path": "/index.html",
+      "freq": 88.5,
+      "next": "services",
+      "short": "Home"
+    },
+    {
+      "key": "services",
+      "label": "Our Services",
+      "path": "/services.html",
+      "freq": 91.5,
+      "next": "work",
+      "short": "Services"
+    },
+    {
+      "key": "work",
+      "label": "Our Work",
+      "path": "/work.html",
+      "freq": 94.5,
+      "next": "calculator",
+      "short": "Work"
+    },
+    {
+      "key": "calculator",
+      "label": "Script Calculator",
+      "path": "/calculator.html",
+      "freq": 97.5,
+      "next": "blog",
+      "short": "Calculator"
+    },
+    {
+      "key": "blog",
+      "label": "Blog",
+      "path": "/blog/",
+      "freq": 100.5,
+      "next": "team",
+      "short": "Blog"
+    },
+    {
+      "key": "team",
+      "label": "Team",
+      "path": "/team.html",
+      "freq": 103.5,
+      "next": "contact",
+      "short": "Team"
+    },
+    {
+      "key": "contact",
+      "label": "Contact",
+      "path": "/contact.html",
+      "freq": 106.5,
+      "next": "home",
+      "short": "Contact"
+    }
+  ]
+}

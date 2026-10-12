@@ -9,6 +9,9 @@ content field changed) in the same change.
 - Keep URLs stable: don't rename files in `src/team/`, `src/work/` or `src/blog/posts/`.
 - Four switchable designs (A–D) are under review — see README section 7. Layout/markup changes must work in all
   four; check them with `?design=a|b|c|d`. Design-specific styling goes in `src/assets/css/designs/<id>.css`.
+- Three complete-redesign concepts (Dial, Script, Night Shift) live under `src/concepts/` and share the same content
+  collections — see README section 7. Content-file changes need no concept work; a new page or feature on the main
+  site should be mirrored in each concept (or noted in the README) while they're under review.
 - Keep the site's wording as written by the owner; don't rewrite copy unless asked.
 
 Common requests:

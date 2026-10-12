@@ -1,0 +1,37 @@
+---
+permalink: /concepts/script/work.html
+station: work
+seoTitle: "Radio Ad Examples, Radio Commercial Scripts | Overnight Radio Inc."
+seoDescription: "A sample of Overnight Radio spots that were created from start to finish, in a broad range of styles (Hardsell, Medium, Softsell & Creative)."
+orderKey: "BINDER"
+eleventyComputed:
+  orderValue: "{{ collections.spots.length }} SCRIPTS"
+---
+<h1 class="slug slug--big">Our Work, <mark>Our Pride</mark></h1>
+<div class="line"><b class="who">ANNCR:</b><p class="said">Overnight Radio has produced tens of thousands of top radio commercials from start to finish, covering a broad range of advertising styles from Hardsell, Medium, Softsell to Creative. Listen to some of the radio ad examples that we have produced. All made each client very happy.</p></div>
+
+<div class="binder">
+  <div class="tabs" role="toolbar" aria-label="Filter by style" data-filters>
+    {% for f in ["all", "Hardsell", "Medium", "Softsell", "Creative", "Sample"] %}
+    <button type="button" class="tab tab--{{ f | lower }}{% if f == 'all' %} is-active{% endif %}" data-filter="{{ f }}" aria-pressed="{{ 'true' if f == 'all' else 'false' }}">{{ "SHOW ALL" if f == "all" else f | upper }}</button>
+    {% endfor %}
+  </div>
+  <ol class="index index--binder" data-spots>
+    {% for s in collections.spots %}
+    <li class="spot" data-category="{{ s.data.category }}">
+      <a href="{{ cbase }}{{ s.url }}"><span>{{ s.data.title | upper }}</span><span class="index__dots"></span><span class="index__cat">{{ s.data.category | upper }}</span><span>p.{{ loop.index }}</span></a>
+    </li>
+    {% endfor %}
+  </ol>
+</div>
+
+<p class="more">(MORE)</p>
+<h2 class="slug">What our <mark>Clients</mark> say</h2>
+<div class="clippings">
+  {% for t in testimonials %}
+  <figure class="clipping{% if t.featured %} clipping--big{% endif %}">
+    <blockquote>“{{ t.quote }}”</blockquote>
+    {% if t.name %}<figcaption>— {{ t.name }}</figcaption>{% endif %}
+  </figure>
+  {% endfor %}
+</div>

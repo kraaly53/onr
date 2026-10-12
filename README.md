@@ -89,7 +89,9 @@ overnightradio/
     │   ├── post-card.njk, blog-pager.njk, blog-sidebar.njk ← blog pieces
     │   ├── mark.njk          ← the logo (radio tower + rings), drawn in code
     │   └── icons.njk         ← small icons (play, arrows, social)
+    ├── concepts/             ← complete-redesign concepts (preview only): dial/, script/, night/
     ├── assets/
+    │   ├── concepts/         ← each concept's stylesheet and script
     │   ├── css/site.css      ← all layout and styling; design A
     │   ├── css/designs/      ← designs B, C, D and the switcher's styles (preview only)
     │   └── js/
@@ -312,7 +314,7 @@ revision`) is written directly in `src/services.njk`.
 | `bbbUrl`, `bbbImage` | Better Business Bureau seal in the footer. |
 | `assetBase` | Where photos/audio load from — see section 9. |
 | `contactEndpoint`, `contactFormId` | Where the contact form sends messages — see section 6 and 9. |
-| `designSwitcher`, `designs` | The preview-only design switcher and its list of designs — see section 7. |
+| `designSwitcher`, `designs`, `concepts` | The preview-only design switcher, its themes and its complete-redesign concepts — see section 7. |
 
 ### 4.7 Page wording
 
@@ -383,7 +385,7 @@ http://localhost:8080, then commit and push.
 | Blog search | sidebar on every blog page | Goes to `/blog/search/?s=…`, which searches titles and full text of every post using `/blog/search.json` (built with the site). Old WordPress search links (`/blog/?s=…`) are redirected there. |
 | RSS feed | `/blog/feed.xml` | Full posts, for feed readers. |
 | Reduced motion | everywhere | Visitors who turn on "reduce motion" on their device see no animation. |
-| Design switcher | every page (preview only) | Switches between designs A–D; see section 7. Turned off with `"designSwitcher": false`. |
+| Design switcher | every page (preview only) | Switches between themes A–D and complete redesigns 1–3; see section 7. Turned off with `"designSwitcher": false`. |
 
 ---
 
@@ -424,6 +426,43 @@ Version A as it was before the other designs were added is saved in git as the t
    in `base.njk`. Then delete `src/assets/css/designs/`, `_includes/design-switcher.njk` and
    `assets/js/design-switcher.js`, and the `designs` list in `site.json`.
 3. Check every page, then update this section to describe the one remaining design.
+
+### Complete redesigns ("concepts", being reviewed)
+
+Besides the four themes, there are **three complete redesigns** — different layouts, navigation and
+interactions, not just different colours. Each is a full copy of the site (every page, all announcer and spot
+pages, and the blog with 5 posts per page) under its own address, built from the **same content files**, so an
+edited bio, price or post shows up in every version automatically. They're listed under **Complete redesigns**
+in the Design panel; picking one opens the same page in that concept (blog tag/category/month pages and search
+fall back to the concept's blog listing).
+
+| | Concept | Address | The idea |
+|---|---|---|---|
+| **1** | The Dial | `/concepts/dial/` | The site is a vintage hi-fi FM receiver. The menu is a backlit tuning dial — each page is a "station" and the needle sweeps to it as you move around; the knob tunes to the next page. Facts are VU meters, the logo sits in a speaker grille, Work filters are car-radio preset buttons, the Team page is a scrolling **voice dial** you tune across (needle in the middle, frequency readout, quick-play), announcer pages have a receiver-style player with moving VU meters, and the footer is the rear panel with gold RCA jacks. |
+| **2** | The Script | `/concepts/script/` | The site is radio production paperwork on a desk. Every page is a typed, hole-punched script sheet with a production-order header; the menu is a taped-on **rundown** with a red-pencil check mark. Copy is laid out with ANNCR:/TAG: cues, highlighter and hand-written margin notes; prices are a typed rate card; the Team page is a **casting sheet**; announcers get a paper-clipped Polaroid one-sheet; spots are filed in a tabbed binder and shown as real scripts with a typed "tape" player; the calculator stamps its result; blog posts are **memos**. |
+| **3** | Night Shift | `/concepts/night/` | One night, dusk to dawn. A live sky sits behind every page: on the home page it follows your scroll from a 6 PM sunset through a starry midnight to a 6 AM sunrise ("…the very next day."), with a clock in the corner keeping time and a moon crossing the sky; each other page sits at its own hour. The team appears as a **constellation** (each star is a voice), portraits are moon-round, studio windows glow at 3 AM, and the audio player is a horizon a little sun travels along. |
+
+**Where the concept files live:**
+
+| Concept | Pages | Layout & pieces | Style & behaviour |
+|---|---|---|---|
+| The Dial | `src/concepts/dial/*.njk` (+ `dial.json`: stations & frequencies) | `src/_includes/concepts/dial/` | `src/assets/concepts/dial.css`, `dial.js` |
+| The Script | `src/concepts/script/*.njk` (+ `script.json`: rundown) | `src/_includes/concepts/script/` | `src/assets/concepts/script.css` |
+| Night Shift | `src/concepts/night/*.njk` (+ `night.json`: menu; each page sets its `hour`) | `src/_includes/concepts/night/` | `src/assets/concepts/night.css`, `night.js` |
+
+All concepts reuse the main site's JavaScript (`site.js` for the player, filters, search, quick-play and contact
+form; `calculator.js`; the switcher), so features behave identically. The privacy policy text is shared through
+`_includes/privacy-body.njk`. Concept pages carry `noindex` so search engines ignore them during the review.
+A few short labels exist only in the concepts as part of their framing (e.g. station frequencies, "RUNDOWN",
+"Next in the rundown", the night-time hour stamps); all real site copy is unchanged.
+
+**If a concept is chosen:** its templates become the main pages (replacing `src/index.njk`, `services.njk`, …,
+`_includes/announcer.njk`, `spot.njk`, `post.njk` and `base.njk`), its stylesheet replaces `site.css`, the
+blog archive/search pages are restyled to match, and `src/concepts/`, the themes and the switcher are removed.
+That's a planned piece of work rather than a settings change — ask for it once the choice is made.
+
+**If a concept is not chosen:** delete its folder in `src/concepts/`, its `_includes/concepts/` folder, its files in
+`src/assets/concepts/`, and its entry in `concepts` in `src/_data/site.json`.
 
 ### Design A details (current default)
 
@@ -469,7 +508,8 @@ the build).
 
 ## 9. Before launch — checklist
 
-- [ ] **Pick the final design** and turn off the switcher (section 7, "Choosing the final design").
+- [ ] **Pick the final design** — a theme (A–D) or a complete redesign (1–3) — and turn off the switcher
+      (section 7).
 - [ ] **Move photos and audio into the project.** During the preview they load from the live server
       (`"assetBase": "https://overnightradio.com"` in `site.json`). Copy these folders/files from the current
       server into `src/`: `images/`, `audio/`, `sample/`, `favicon.ico`, `apple-touch-icon*.png`,

@@ -1,0 +1,39 @@
+---
+permalink: /concepts/script/index.html
+station: home
+seoTitle: "Voice Overs, Radio, Advertising & Commercial Production | Overnight Radio Inc."
+seoDescription: "Independent production house for GREAT Radio Commercials, Jingles & Ads the very next day!"
+orderKey: "LENGTH"
+orderValue: ":60"
+---
+<div class="cue">SFX: (STUDIO DOOR CLOSES. ON-AIR LIGHT CLICKS ON.)</div>
+<h1 class="slug slug--big">Welcome to <mark>Overnight Radio Inc.</mark></h1>
+<p class="pencil pencil--right" aria-hidden="true">London, Ontario, Canada</p>
+<div class="line"><b class="who">ANNCR:</b><p class="said said--big">A commercial production house delivering top quality radio ads...<span class="circled">the very next day.</span></p></div>
+<div class="line"><b class="who"></b><p class="said"><a class="typed-btn" href="{{ cbase }}/services.html">[ LEARN MORE ]</a> <a class="typed-btn" href="{{ cbase }}/work.html">[ OUR WORK ]</a></p></div>
+
+<table class="timing" aria-label="Facts">
+  <caption>TIMING SHEET</caption>
+  <tr><th>FOUNDED IN</th><td class="dots"></td><td>1998</td></tr>
+  <tr><th>OVER</th><td class="dots"></td><td><mark>50,000</mark> SPOTS DELIVERED</td></tr>
+  <tr><th>SERVICING CLIENTS AROUND THE WORLD ...</th><td class="dots"></td><td>From North America to Europe ... And Australia to Asia</td></tr>
+</table>
+
+<p class="more">(MORE)</p>
+<div class="cue">MUSIC: BED UP AND UNDER</div>
+<h2 class="slug">What Overnight Radio Can Do For You</h2>
+<div class="line"><b class="who">ANNCR:</b><p class="said"><strong>Whether you’re a radio station, a media group, a podcaster, steaming audio productions, or a private business, we can be of service to you... for commercial voice overs, radio commercial production and radio commercial scripts.</strong></p></div>
+<div class="line"><b class="who">ANNCR:</b><p class="said">We serve clients all over the world, from Toronto to Miami to Vancouver, the Caribbean, Europe to Dubai. We can provide you high quality radio ads. All produced from our studios in London, Canada, west of Toronto.</p></div>
+<div class="line"><b class="who">ANNCR:</b><p class="said">Since 1998, Overnight Radio has been delivering high end commercial productions.</p></div>
+<div class="line"><b class="who">ANNCR:</b><p class="said">We help stations have more commercial voice overs to choose from, expand station creative departments by providing commercial script writing and production... all for much less than adding staff, paying benefits, etc.</p></div>
+<div class="line"><b class="who">ANNCR:</b><p class="said">And we help businesses looking for a sound that will cut through the radio waves... working directly to create effective radio commercials that will make you well known in your market.</p></div>
+<div class="line"><b class="who">ANNCR:</b><p class="said">Anything to do with creating a radio commercial... we are your team... we’ve been honing our talents for more than two decades.</p></div>
+<div class="line line--tag"><b class="who">TAG:</b><p class="said"><mark>For radio commercial production, scripts and voice overs... put our experience and low rates to work for you.</mark> <a href="{{ site.phoneHref }}">Call</a> or <a href="mailto:{{ site.email }}">email</a> today.</p></div>
+
+<p class="more">(MORE)</p>
+<h2 class="slug">Next in the rundown</h2>
+<ol class="index">
+  {% for r in rundown %}{% if r.key != "home" %}
+  <li><a href="{{ cbase }}{{ r.path }}"><span>{{ r.label | upper }}</span><span class="index__dots"></span><span>{{ r.time }}</span></a></li>
+  {% endif %}{% endfor %}
+</ol>
