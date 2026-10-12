@@ -1,5 +1,6 @@
 // Concept 3 — "Night Shift": the sky, moon, sun, stars and clock follow the hour of the night.
-// Home page: the hour follows your scroll (6 PM at the top, 6 AM at the bottom). Other pages: a fixed hour.
+// Home page: scrolling moves the hour forward (a full page of scrolling, either direction, is one night).
+// Other pages: a fixed hour.
 //
 // Smoothness:
 // - This file loads (not deferred) right after the sky, so the first frame is already painted correctly.
@@ -113,22 +114,29 @@
       if (Math.abs(to - from) < 0.0004) { t = from; return; }
       if (to < from) target = to + CYCLE;          // never run backwards: carry on through the day to this hour
       startAt = performance.now(); dur = Math.min(3000, 1000 + 1000 * (target - from)); mode = "glide";
-    } else if (mode !== "glide") {
-      // Following the scroll from somewhere in the daytime stretch: count it as just before dusk
-      t = wrap(t); if (t > 1) t -= CYCLE;
-      mode = "follow";
+    } else {
+      mode = "follow";                              // the hour keeps counting up; paint() wraps it
     }
     if (!raf) raf = requestAnimationFrame(tick);
   };
   addEventListener("pagehide", () => write(wrap(t)));
-  addEventListener("pageshow", (e) => { if (e.persisted) go(isScroll ? scrollHour() : target, "glide"); });
+  addEventListener("pageshow", (e) => { if (e.persisted && !isScroll) go(target, "glide"); });
 
   const start = () => {
     if (isScroll) {
       go(scrollHour(), "glide");
-      // Scrolling takes over from an arrival glide straight away
-      addEventListener("scroll", () => { mode = null; go(scrollHour(), "follow"); }, { passive: true });
-      addEventListener("resize", () => go(scrollHour(), "follow"));
+      // Any scrolling — down or up — moves time forward: one full page of scrolling is one night.
+      // Scrolling takes over from an arrival glide straight away, carrying on from the hour on screen.
+      let lastY = scrollY, travel = null;
+      addEventListener("scroll", () => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        const dy = Math.abs(scrollY - lastY);
+        lastY = scrollY;
+        if (!dy || max <= 0) return;
+        if (mode !== "follow" || travel === null) travel = t;
+        travel += dy / max;
+        go(travel, "follow");
+      }, { passive: true });
     } else {
       go(target, "glide");
     }
