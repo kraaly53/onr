@@ -54,7 +54,7 @@ button { font: inherit; cursor: pointer; }
 /* Moonlight: a soft pool of light in the sky behind the title's last word (placed by night.js) */
 .moonbeam { position: absolute; left: 0; top: 0; width: var(--bw, 300px); height: var(--bh, 160px); border-radius: 50%;
   transform: translate(calc(var(--bx, -999px) - 50%), calc(var(--by, -999px) - 50%));
-  background: radial-gradient(closest-side, rgb(255 244 214 / .42), rgb(255 236 190 / .16) 55%, rgb(255 236 190 / 0) 100%);
+  background: radial-gradient(closest-side, rgb(255 244 214 / .21), rgb(255 236 190 / .08) 55%, rgb(255 236 190 / 0) 100%);
   opacity: 0; transition: opacity 1.4s ease; pointer-events: none; will-change: transform, opacity; }
 .moonbeam.is-on { opacity: var(--moonv, 1); }
 .sun { position: absolute; left: 50%; bottom: -30vh; width: 46vh; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, calc(var(--sun) * -34vh)); will-change: transform, opacity; transition: opacity .6s ease;
@@ -113,7 +113,7 @@ button { font: inherit; cursor: pointer; }
 .mega { font: 800 clamp(44px, 8.4vw, 116px)/.95 var(--display); letter-spacing: -0.03em; margin-bottom: 26px;
   position: relative; filter: drop-shadow(0 0 0 rgb(255 246 220 / 0)) drop-shadow(0 0 0 rgb(255 236 190 / 0)); transition: filter 1.4s ease; }
 /* Lit by the moon once it arrives beside the title */
-.mega.is-moonlit { filter: drop-shadow(0 0 8px rgb(255 246 220 / .7)) drop-shadow(0 0 32px rgb(255 236 190 / .45)); }
+.mega.is-moonlit { filter: drop-shadow(0 0 8px rgb(255 246 220 / .35)) drop-shadow(0 0 32px rgb(255 236 190 / .22)); }
 .mega span { display: block; background: linear-gradient(90deg, #fff, #c9c6ff 40%, #ffc9a8); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .mega--page { font-size: clamp(30px, 6.4vw, 84px); overflow-wrap: anywhere; }
 .mega--page span { display: inline; }
