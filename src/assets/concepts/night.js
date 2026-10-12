@@ -46,7 +46,7 @@
   ].map(([t, ...c]) => [t, ...c.map((h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)))]);
   const mix = (x, y, f) => `rgb(${x.map((v, i) => Math.round(v + (y[i] - v) * f)).join(" ")})`;
 
-  let clock, ampm, lastClock = "";
+  let clock, ampm, lastClock = "", pinned = false, moonEl = null, beam = null;
   const paintHour = (u) => {
     const t = wrap(u);
     let i = 0;
@@ -73,6 +73,7 @@
     s.setProperty("--stars", stars.toFixed(3));
     s.setProperty("--sun", sun.toFixed(3));
     s.setProperty("--moonv", moon.toFixed(3));
+    if (pinned) { moonEl.style.setProperty("--moonv", moon.toFixed(3)); beam.style.setProperty("--moonv", moon.toFixed(3)); }
     clock = clock || document.querySelector("[data-clock]");
     ampm = ampm || document.querySelector("[data-ampm]");
     if (clock) {
@@ -106,8 +107,8 @@
 
   /* ------------------------------------------------------------------ the moon */
 
-  const moonEl = sky.querySelector(".moon");
-  const beam = document.createElement("div");      // soft pool of moonlight behind the title's last word
+  moonEl = sky.querySelector(".moon");
+  beam = document.createElement("div");      // soft pool of moonlight behind the title's last word
   beam.className = "moonbeam";
   sky.appendChild(beam);
   const radius = () => (moonEl ? moonEl.offsetWidth / 2 : 30);
@@ -135,7 +136,7 @@
   // Where the moon rests: just after the last word, a little above its middle. If there isn't room beside the
   // word (titles run to the edge on phones) it rests just above the title, lined up with the end of the word, so
   // it never covers a letter. It never rises behind the menu bar.
-  const restingSpot = () => {
+  const restingSpot = (clampToBar = true) => {
     if (!word) return homeSpot();
     const rects = word.getClientRects();
     const r = rects[rects.length - 1] || word.getBoundingClientRect();
@@ -170,7 +171,7 @@
       x = Math.min(r.right - rad * 0.5, innerWidth - rad - gap);
       y = top - rad - 8;
     }
-    y = Math.max(y, barBottom() + rad + 6);
+    if (clampToBar) y = Math.max(y, barBottom() + rad + 6);
     return { x, y, r };
   };
 
@@ -208,7 +209,7 @@
     const first = restingSpot();
     const dist = Math.hypot(first.x - from.x, first.y - from.y);
     const fromScale = scale;
-    if (reduce || dist < 2) { placeMoon(first); placeBeam(first); sizeMoon(REST_SCALE); settled = true; light(true); return; }
+    if (reduce || dist < 2) { placeMoon(first); placeBeam(first); sizeMoon(REST_SCALE); settled = true; light(true); pinToPage(); return; }
     const dur = Math.min(2200, 1100 + dist * 1.1);
     const lift = Math.min(70, dist * 0.18);        // a soft rising curve rather than a straight line
     const step = (now) => {
@@ -221,23 +222,54 @@
       if (p > 0.7) light(true);
       if (p < 1) { moonAnim = requestAnimationFrame(step); return; }
       settled = true;
+      pinToPage();
     };
     moonAnim = requestAnimationFrame(step);
   };
 
-  // Once it's arrived, the moon stays with the title as the page scrolls or resizes.
+  // Once it's arrived, the moon is pinned to the page beside the title, so it scrolls with the title exactly
+  // (the browser moves it — no lag) and goes off screen with it. Resizing or late-loading fonts re-place it.
+  const pinToPage = () => {
+    if (pinned || !moonEl) return;
+    pinned = true;
+    for (const el of [moonEl, beam]) {
+      el.setAttribute("aria-hidden", "true");
+      el.classList.add("is-pinned");
+      el.style.setProperty("--moonv", sky.style.getPropertyValue("--moonv"));
+      document.body.appendChild(el);
+    }
+    moonEl.style.setProperty("--ms", scale.toFixed(3));
+    placePinned();
+  };
+  const placePinned = () => {
+    const spot = restingSpot(false), sx = scrollX, sy = scrollY;
+    moonEl.style.setProperty("--mx", (spot.x + sx).toFixed(1) + "px");
+    moonEl.style.setProperty("--my", (spot.y + sy).toFixed(1) + "px");
+    if (spot.r) {
+      const { r } = spot;
+      beam.style.setProperty("--bx", (r.left + r.width / 2 + sx).toFixed(1) + "px");
+      beam.style.setProperty("--by", (r.top + r.height / 2 + sy).toFixed(1) + "px");
+      beam.style.setProperty("--bw", (r.width * 2.4 + 120).toFixed(0) + "px");
+      beam.style.setProperty("--bh", (r.height * 2.2 + 60).toFixed(0) + "px");
+    }
+  };
   let follow = 0;
   const reattach = () => {
-    if (!settled) return;
+    if (!pinned) return;
     cancelAnimationFrame(follow);
-    follow = requestAnimationFrame(() => { const s = restingSpot(); placeMoon(s); placeBeam(s); });
+    follow = requestAnimationFrame(placePinned);
   };
-  addEventListener("scroll", reattach, { passive: true });
   addEventListener("resize", reattach);
 
   addEventListener("pagehide", () => {
     store.set("nightHour", String(wrap(hour)));
-    if (pos) store.set("nightMoon", JSON.stringify({ fx: pos.x / innerWidth, fy: pos.y / innerHeight, s: scale }));
+    // remember where the moon is on screen, kept inside the window so the next page can float it in from there
+    let x = pos ? pos.x : innerWidth / 2, y = pos ? pos.y : innerHeight / 3;
+    if (pinned) { const b = moonEl.getBoundingClientRect(); x = b.left + b.width / 2; y = b.top + b.height / 2; }
+    const rad = radius() * scale;
+    x = Math.min(Math.max(x, rad), innerWidth - rad);
+    y = Math.min(Math.max(y, barBottom() + rad), innerHeight - rad);
+    store.set("nightMoon", JSON.stringify({ fx: x / innerWidth, fy: y / innerHeight, s: scale }));
   });
 
   /* ------------------------------------------------------------------ start */

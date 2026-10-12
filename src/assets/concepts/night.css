@@ -57,6 +57,8 @@ button { font: inherit; cursor: pointer; }
   background: radial-gradient(closest-side, rgb(255 244 214 / .21), rgb(255 236 190 / .08) 55%, rgb(255 236 190 / 0) 100%);
   opacity: 0; transition: opacity 1.4s ease; pointer-events: none; will-change: transform, opacity; }
 .moonbeam.is-on { opacity: var(--moonv, 1); }
+/* Once settled, the moon and its light are pinned to the page (night.js) so they scroll with the title */
+.moon.is-pinned, .moonbeam.is-pinned { position: absolute; z-index: -1; pointer-events: none; }
 .sun { position: absolute; left: 50%; bottom: -30vh; width: 46vh; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, calc(var(--sun) * -34vh)); will-change: transform, opacity; transition: opacity .6s ease;
   background: radial-gradient(circle, #fff3c4, var(--sunc) 40%, rgb(255 140 90 / 0) 70%); opacity: var(--sun); filter: blur(2px); }
 .skyline { position: absolute; left: 0; right: 0; bottom: 0; height: 90px; opacity: .9;
