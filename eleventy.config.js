@@ -64,6 +64,14 @@ export default function (eleventyConfig) {
   );
   eleventyConfig.addCollection("spots", (api) => api.getFilteredByGlob("src/work/*.md").sort(byOrder));
 
+  // Cache-busting: every build adds ?v=<build time> to the site's own CSS and JS links, so browsers and the
+  // hosting's cache fetch fresh copies after each deploy instead of reusing old ones.
+  const buildVersion = Date.now().toString(36);
+  eleventyConfig.addTransform("asset-version", (content, outputPath) => {
+    if (!outputPath || !outputPath.endsWith(".html")) return content;
+    return content.replace(/((?:href|src)=")([^"?#]*\/assets\/[^"?#]+\.(?:css|js))(")/g, `$1$2?v=${buildVersion}$3`);
+  });
+
   // ---- Blog ----
   const posts = (api) => api.getFilteredByGlob("src/blog/posts/*.md").sort((a, b) => b.date - a.date);
   eleventyConfig.addCollection("posts", posts);
