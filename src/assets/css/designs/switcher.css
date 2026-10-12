@@ -1,6 +1,6 @@
 /* Preview-only design switcher. Deliberately neutral so it looks the same on every design. */
 .dswitch {
-  position: fixed; left: 16px; bottom: 16px; z-index: 1000; width: 280px; max-width: calc(100vw - 32px);
+  position: fixed; left: 16px; bottom: 16px; z-index: 1000; width: 330px; max-width: calc(100vw - 32px);
   font: 500 13px/1.3 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; color: #111;
   background: #fff; border-radius: 16px; box-shadow: 0 18px 50px -12px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.08);
   overflow: hidden;
@@ -13,11 +13,7 @@
 .dswitch.is-collapsed { width: auto; }
 .dswitch.is-collapsed .dswitch__panel { display: none; }
 .dswitch.is-collapsed .dswitch__toggle b { margin-left: 4px; }
-.dswitch [data-design-pick], .dswitch [data-concept-pick] { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; width: 100%; }
-.dswitch [data-design-pick]:hover, .dswitch [data-concept-pick]:hover { background: #f2f2f2; }
-.dswitch [data-design-pick][aria-checked="true"], .dswitch [data-concept-pick][aria-checked="true"] { background: #111; color: #fff; }
 .dswitch__id { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: #ececec; color: #111; font-weight: 700; flex: none; }
-.dswitch [aria-checked="true"] .dswitch__id { background: #fff; }
 .dswitch__txt { display: grid; }
 .dswitch__txt strong { font-weight: 600; }
 .dswitch__txt small { font-size: 12px; opacity: .65; }
@@ -34,3 +30,18 @@
 .dswitch__toggle:hover .dswitch__chev { background: #e2e2e2; }
 .dswitch.is-collapsed .dswitch__chev { transform: rotate(180deg); }
 .dswitch .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* One list of designs; After Hours carries its theme buttons A–D */
+.dswitch .dswitch__item { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; width: 100%; }
+.dswitch .dswitch__item:hover { background: #f2f2f2; }
+.dswitch .dswitch__item[aria-checked="true"] { background: #111; color: #fff; }
+.dswitch__row { display: flex; align-items: center; gap: 4px; border-radius: 10px; }
+.dswitch__row .dswitch__item { flex: 1; min-width: 0; }
+.dswitch__row:has(.dswitch__item[aria-checked="true"]) { background: #111; color: #fff; }
+.dswitch__row:has(.dswitch__item[aria-checked="true"]) .dswitch__item { background: transparent; }
+.dswitch__chips { display: flex; gap: 3px; padding-right: 8px; flex: none; }
+.dswitch__chips button { display: grid; place-items: center; padding: 0; width: 26px; height: 26px; border-radius: 7px; text-align: center !important; font-weight: 700 !important; font-size: 12px !important; background: #ececec !important; color: #111 !important; }
+.dswitch__chips button:hover { background: #ddd !important; }
+.dswitch__chips button[aria-checked="true"] { background: #111 !important; color: #fff !important; }
+.dswitch__row:has(.dswitch__item[aria-checked="true"]) .dswitch__chips button { background: rgb(255 255 255 / .16) !important; color: #fff !important; }
+.dswitch__row:has(.dswitch__item[aria-checked="true"]) .dswitch__chips button[aria-checked="true"] { background: #ffb23f !important; color: #111 !important; }
+.dswitch__txt small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

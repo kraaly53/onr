@@ -1,4 +1,4 @@
-{# Preview-only: flip between theme versions (A–D) and complete redesigns (concepts).
+{# Preview-only: flip between the designs — After Hours (with its themes A–D) and the complete redesigns (concepts).
    Turn off with "designSwitcher": false in site.json. #}
 <div class="dswitch" data-dswitch>
   <button class="dswitch__toggle" type="button" aria-expanded="true" data-dswitch-toggle>
@@ -7,26 +7,25 @@
     <span class="sr-only" data-dswitch-hint>Hide design options</span>
   </button>
   <div class="dswitch__panel">
-    <p class="dswitch__h" id="dswitch-themes">After Hours themes · same layout</p>
-    <div role="radiogroup" aria-labelledby="dswitch-themes" class="dswitch__group">
-      {% for d in site.designs %}
-      <button type="button" role="radio" data-design-pick="{{ d.id }}">
-        <span class="dswitch__id">{{ d.id | upper }}</span>
-        <span class="dswitch__txt"><strong>{{ d.name }}</strong><small>{{ d.note }}</small></span>
-      </button>
-      {% endfor %}
-    </div>
-    {% if site.concepts %}
-    <p class="dswitch__h" id="dswitch-concepts">Complete redesigns</p>
-    <div role="radiogroup" aria-labelledby="dswitch-concepts" class="dswitch__group">
+    <p class="dswitch__h" id="dswitch-designs">Designs</p>
+    <div role="group" aria-labelledby="dswitch-designs" class="dswitch__group">
+      {# After Hours: the original layout, with its four themes as A–D buttons beside it #}
+      <div class="dswitch__row">
+        <button type="button" role="radio" class="dswitch__item" data-concept-pick="main" data-name="After Hours">
+          <span class="dswitch__id dswitch__id--concept">1</span>
+          <span class="dswitch__txt"><strong>After Hours</strong><small>The original redesign</small></span>
+        </button>
+        <div class="dswitch__chips" role="radiogroup" aria-label="After Hours theme">
+          {% for d in site.designs %}<button type="button" role="radio" data-design-pick="{{ d.id }}" data-name="{{ d.name }}" title="Theme {{ d.id | upper }}: {{ d.name }} — {{ d.note }}" aria-label="Theme {{ d.id | upper }}: {{ d.name }}">{{ d.id | upper }}</button>{% endfor %}
+        </div>
+      </div>
       {% for c in site.concepts %}
-      <button type="button" role="radio" data-concept-pick="{{ c.id }}" data-name="{{ c.name }}">
-        <span class="dswitch__id dswitch__id--concept">{{ loop.index }}</span>
+      <button type="button" role="radio" class="dswitch__item" data-concept-pick="{{ c.id }}" data-name="{{ c.name }}">
+        <span class="dswitch__id dswitch__id--concept">{{ loop.index + 1 }}</span>
         <span class="dswitch__txt"><strong>{{ c.name }}</strong><small>{{ c.note }}</small></span>
       </button>
       {% endfor %}
     </div>
-    {% endif %}
     <button type="button" class="dswitch__link" data-dswitch-copy>Copy link to this design</button>
   </div>
 </div>

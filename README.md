@@ -393,9 +393,13 @@ http://localhost:8080, then commit and push.
 
 ### Design versions (being reviewed)
 
-The site currently has **four switchable designs** sharing the same content — the **After Hours themes**, which all use the original After Hours layout. A small **Design** panel in the
-bottom-left corner of every page switches between them; the choice is remembered as you move between pages.
-Click **Design** to tuck the panel away.
+**The Design panel** (bottom-left corner of every page, preview only) lists the designs under review: **1 After
+Hours** (the original redesign) and the complete redesigns **2 The Dial**, **3 The Script** and **4 Night Shift**.
+After Hours has four themes — **A** After Hours, **B** Rate Card, **C** Golden Hour, **D** Signal — shown as
+small A–D buttons beside it (hover one to see its name). The arrow at the top of the panel tucks it away or brings
+it back, and the choice is remembered as you move between pages.
+
+The four After Hours themes share the same layout and content; only the styling changes.
 
 | | Name | Look | Stylesheet |
 |---|---|---|---|
@@ -432,7 +436,7 @@ Version A as it was before the other designs were added is saved in git as the t
 Besides the four themes, there are **three complete redesigns** — different layouts, navigation and
 interactions, not just different colours. Each is a full copy of the site (every page, all announcer and spot
 pages, and the blog with 5 posts per page) under its own address, built from the **same content files**, so an
-edited bio, price or post shows up in every version automatically. They're listed under **Complete redesigns**
+edited bio, price or post shows up in every version automatically. They're listed as designs 2–4
 in the Design panel; picking one opens the same page in that concept (blog tag/category/month pages and search
 fall back to the concept's blog listing).
 

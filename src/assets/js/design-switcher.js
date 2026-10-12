@@ -1,7 +1,8 @@
 // Preview-only design switcher.
-// Themes (A–D) restyle the main site in place; the choice is remembered and can be shared with ?design=b.
-// Complete redesigns ("concepts") are separate copies of the site under /concepts/<id>/ — picking one opens the
-// same page in that concept.
+// Designs: After Hours (the main site) and the complete redesigns ("concepts", separate copies of the site under
+// /concepts/<id>/ — picking one opens the same page in that concept).
+// After Hours has four themes, A–D, shown as buttons beside it: they restyle the site in place; the choice is
+// remembered and can be shared with ?design=b.
 (() => {
   const box = document.querySelector("[data-dswitch]");
   if (!box) return;
@@ -32,37 +33,38 @@
   const label = (txt) => (current.textContent = txt);
   const check = (list, id, attr) => list.forEach((b) => b.setAttribute("aria-checked", String(b.dataset[attr] === id)));
 
+  const showTheme = (id) => check(themePicks, id, "designPick");
+
   const applyTheme = (id) => {
     root.dataset.design = id;
     store("design", id);
-    check(themePicks, id, "designPick");
-    const name = themePicks.find((b) => b.dataset.designPick === id)?.querySelector("strong").textContent || "";
-    label(`${id.toUpperCase()} · ${name}`);
+    showTheme(id);
+    label(`After Hours · ${id.toUpperCase()}`);
     const url = new URL(location.href);
     url.searchParams.set("design", id);
     history.replaceState(null, "", url);
   };
 
+  // From a concept, After Hours (or one of its themes) opens the same page on the main site.
+  const toMain = (id) => { store("design", id); location.href = `${mainPath}?design=${id}`; };
+
   themePicks.forEach((b) =>
-    b.addEventListener("click", () => {
-      const id = b.dataset.designPick;
-      if (concept) { store("design", id); location.href = `${mainPath}?design=${id}`; }
-      else applyTheme(id);
-    })
+    b.addEventListener("click", () => (concept ? toMain(b.dataset.designPick) : applyTheme(b.dataset.designPick)))
   );
   conceptPicks.forEach((b) =>
     b.addEventListener("click", () => {
       const id = b.dataset.conceptPick;
+      if (id === "main") { if (concept) toMain(read("design") || "a"); return; }
       if (id !== concept) location.href = `/concepts/${id}${conceptPath(mainPath)}`;
     })
   );
 
   if (concept) {
-    check(themePicks, null, "designPick");
     check(conceptPicks, concept, "conceptPick");
+    showTheme(read("design") || "a");
     label(conceptPicks.find((b) => b.dataset.conceptPick === concept)?.dataset.name || concept);
   } else {
-    check(conceptPicks, null, "conceptPick");
+    check(conceptPicks, "main", "conceptPick");
     applyTheme(root.dataset.design || themePicks[0]?.dataset.designPick || "a");
   }
 
