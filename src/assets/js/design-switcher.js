@@ -69,6 +69,9 @@
   const setOpen = (open) => {
     box.classList.toggle("is-collapsed", !open);
     toggle.setAttribute("aria-expanded", String(open));
+    toggle.title = open ? "Hide design options" : "Show design options";
+    const hint = box.querySelector("[data-dswitch-hint]");
+    if (hint) hint.textContent = toggle.title;
     store("designSwitcherOpen", open ? "1" : "0");
   };
   setOpen(read("designSwitcherOpen") !== "0");
