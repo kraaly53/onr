@@ -59,5 +59,28 @@
       "url": "/contact.html"
     }
   ],
-  "url": "https://overnightradio.com"
+  "url": "https://overnightradio.com",
+  "designSwitcher": true,
+  "designs": [
+    {
+      "id": "a",
+      "name": "After Hours",
+      "note": "Midnight navy, amber on-air lamp"
+    },
+    {
+      "id": "b",
+      "name": "Rate Card",
+      "note": "Editorial print, ink & red"
+    },
+    {
+      "id": "c",
+      "name": "Golden Hour",
+      "note": "Warm 70s AM radio"
+    },
+    {
+      "id": "d",
+      "name": "Signal",
+      "note": "Bold black & signal lime"
+    }
+  ]
 }

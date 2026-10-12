@@ -5,6 +5,7 @@ layout: base.njk
 {%- set olderPost = collections.posts | getNextCollectionItem(page) -%}
 <section class="pagehead pagehead--post">
   <div class="rings rings--head" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="rings__logo">{% include "mark.njk" %}</span></div>
+  <div class="deco-stripes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   <div class="wrap wrap--narrow">
     <a class="back" href="/blog/"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg> Blog</a>
     <p class="postmeta postmeta--night">

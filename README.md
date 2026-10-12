@@ -90,7 +90,8 @@ overnightradio/
     │   ├── mark.njk          ← the logo (radio tower + rings), drawn in code
     │   └── icons.njk         ← small icons (play, arrows, social)
     ├── assets/
-    │   ├── css/site.css      ← all styling
+    │   ├── css/site.css      ← all layout and styling; design A
+    │   ├── css/designs/      ← designs B, C, D and the switcher's styles (preview only)
     │   └── js/
     │       ├── site.js       ← menu, audio player, team quick-play & search, work filter, contact form
     │       ├── calculator.js ← Script Calculator
@@ -311,6 +312,7 @@ revision`) is written directly in `src/services.njk`.
 | `bbbUrl`, `bbbImage` | Better Business Bureau seal in the footer. |
 | `assetBase` | Where photos/audio load from — see section 9. |
 | `contactEndpoint`, `contactFormId` | Where the contact form sends messages — see section 6 and 9. |
+| `designSwitcher`, `designs` | The preview-only design switcher and its list of designs — see section 7. |
 
 ### 4.7 Page wording
 
@@ -381,13 +383,49 @@ http://localhost:8080, then commit and push.
 | Blog search | sidebar on every blog page | Goes to `/blog/search/?s=…`, which searches titles and full text of every post using `/blog/search.json` (built with the site). Old WordPress search links (`/blog/?s=…`) are redirected there. |
 | RSS feed | `/blog/feed.xml` | Full posts, for feed readers. |
 | Reduced motion | everywhere | Visitors who turn on "reduce motion" on their device see no animation. |
+| Design switcher | every page (preview only) | Switches between designs A–D; see section 7. Turned off with `"designSwitcher": false`. |
 
 ---
 
 ## 7. Design guide
 
-All styling is in `src/assets/css/site.css`. Colours, fonts and sizes are set once at the top (`:root`) —
-change them there and they change everywhere.
+### Design versions (being reviewed)
+
+The site currently has **four switchable designs** sharing the same content. A small **Design** panel in the
+bottom-left corner of every page switches between them; the choice is remembered as you move between pages.
+Click **Design** to tuck the panel away.
+
+| | Name | Look | Stylesheet |
+|---|---|---|---|
+| **A** | After Hours | Midnight navy from the logo, warm paper, amber "on-air" accent; modern grotesque type. The original redesign. | `assets/css/site.css` |
+| **B** | Rate Card | Editorial print: newsprint, black ink, tomato red, big serif headlines (Instrument Serif), hairline rules, square corners, drop caps on blog posts. | `assets/css/designs/b.css` |
+| **C** | Golden Hour | Warm 1970s AM radio: chocolate, cream, mustard and burnt orange; soft retro serif (Fraunces); sunset stripes, a striped sun behind the logo, chunky offset shadows, sepia photos. | `assets/css/designs/c.css` |
+| **D** | Signal | Loud and modern: black, off-white and signal lime; wide capitals (Unbounded); graph-paper grid, scrolling ticker, highlighter headlines, lime-duotone photos on hover, giant outlined footer wordmark. | `assets/css/designs/d.css` |
+
+**Sharing a specific design:** add `?design=a`, `b`, `c` or `d` to any address, e.g.
+`/team.html?design=c` — or use **Copy link to this design** in the panel.
+
+**How it works:** `site.css` is design A and holds every page's layout. Each colour, font and corner radius is a
+named setting at the top of `site.css` (`:root`). Designs B–D re-set those settings and restyle specific parts,
+and everything they change is scoped to `[data-design="b"]` (etc.), so they never affect each other. A short
+script in `_includes/base.njk` applies the saved design before the page appears (no flash). Some designs use
+decorative extras that are hidden in the others: `.deco-stripes` (C) and `.deco-ticker` (D) in the page markup.
+Version A as it was before the other designs were added is saved in git as the tag `design-a-after-hours`.
+
+**Adding another design:** add an entry to `designs` in `src/_data/site.json` (e.g. `{"id": "e", "name": "…",
+"note": "…"}`), create `src/assets/css/designs/e.css` with rules starting `:root[data-design="e"]` /
+`[data-design="e"]`, and add any new Google Fonts to the second font link in `_includes/base.njk`.
+
+**Choosing the final design (before launch):**
+1. Set `"designSwitcher": false` in `src/_data/site.json`. This removes the panel, the extra fonts and the extra
+   stylesheets, and the site shows design A.
+2. If the chosen design is **not** A: copy the chosen file's settings into `:root` of `site.css` and its other rules
+   to the end of `site.css` with the `[data-design="x"]` prefixes removed; add its fonts to the first font link
+   in `base.njk`. Then delete `src/assets/css/designs/`, `_includes/design-switcher.njk` and
+   `assets/js/design-switcher.js`, and the `designs` list in `site.json`.
+3. Check every page, then update this section to describe the one remaining design.
+
+### Design A details (current default)
 
 - **Colours:** midnight navy (`--night` #0a1426) for headers, footer and dark sections; the logo blue
   (`--navy` #1e3f74); warm paper (`--paper` #f6f2ea) for reading sections; amber (`--amber` #ffb23f) for
@@ -395,12 +433,13 @@ change them there and they change everywhere.
 - **Fonts** (Google Fonts, loaded in `base.njk`): *Bricolage Grotesque* for headings, *Inter* for text,
   *JetBrains Mono* for small labels.
 - **Logo:** drawn in code in `_includes/mark.njk` — a circle, a radio tower, signal arcs and an amber
-  dot. On Home and Services it sits in a navy badge with "OVERNIGHT RADIO INC. · LONDON, ONTARIO · SINCE 1998"
-  slowly circling it, and signal rings radiating outward.
-- **Recurring motif:** the concentric "signal rings" from the logo appear behind page headings.
-- **Highlighted words:** in page headings, wrap a word in `<strong>` to show it in amber, e.g.
-  `heading: "Meet the <strong>Team</strong>"`.
-- **Phones:** every page is checked at 375px wide with no sideways scrolling.
+  dot. On Home and Services it sits in a badge with "OVERNIGHT RADIO INC. · LONDON, ONTARIO · SINCE 1998"
+  slowly circling it, and signal rings radiating outward. On inner pages it sits in the centre of the signal
+  rings at the top of the page (partly off the edge, by design).
+- **Highlighted words:** in page headings, wrap a word in `<strong>` to show it in the accent colour, e.g.
+  `heading: "Meet the <strong>Team</strong>"`. (Each design styles this its own way — amber, red italic,
+  mustard italic or a lime highlighter.)
+- **Phones:** every page is checked at 375px wide with no sideways scrolling, in all four designs.
 
 ---
 
@@ -430,6 +469,7 @@ the build).
 
 ## 9. Before launch — checklist
 
+- [ ] **Pick the final design** and turn off the switcher (section 7, "Choosing the final design").
 - [ ] **Move photos and audio into the project.** During the preview they load from the live server
       (`"assetBase": "https://overnightradio.com"` in `site.json`). Copy these folders/files from the current
       server into `src/`: `images/`, `audio/`, `sample/`, `favicon.ico`, `apple-touch-icon*.png`,

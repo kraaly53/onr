@@ -7,6 +7,8 @@ content field changed) in the same change.
 - Static site built with Eleventy 3. Edit only files in `src/`; `_site/` is generated.
 - Preview: `npm start` (http://localhost:8080). Build: `npm run build`.
 - Keep URLs stable: don't rename files in `src/team/`, `src/work/` or `src/blog/posts/`.
+- Four switchable designs (A–D) are under review — see README section 7. Layout/markup changes must work in all
+  four; check them with `?design=a|b|c|d`. Design-specific styling goes in `src/assets/css/designs/<id>.css`.
 - Keep the site's wording as written by the owner; don't rewrite copy unless asked.
 
 Common requests:
