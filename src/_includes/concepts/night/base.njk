@@ -12,8 +12,9 @@
   <link rel="stylesheet" href="/assets/concepts/night.css">
   <link rel="stylesheet" href="/assets/css/designs/switcher.css">
 </head>
-{# hour: 0 = 6:00 PM (dusk) … 0.5 = midnight … 1 = 6:00 AM (dawn). "scroll" = follows scrolling (home page). #}
-<body data-hour="{{ hour | default(0.5) }}" class="{{ bodyClass }}">
+{# hour: 0 = 6:00 PM (dusk) … 0.5 = midnight … 1 = 6:00 AM (dawn). Pages step through the night in menu order.
+   scrollSpan (home only): how far into the evening scrolling the page can carry you. #}
+<body data-hour="{{ hour | default(0.5) }}"{% if scrollSpan %} data-scroll-span="{{ scrollSpan }}"{% endif %} class="{{ bodyClass }}">
   {% include "icons.njk" %}
   <a class="skip" href="#main">Skip to content</a>
 
@@ -23,8 +24,6 @@
     <div class="sun"></div>
     <div class="skyline"></div>
   </div>
-  {# Runs before the page is first painted, so the sky never flashes or jumps. #}
-  <script src="/assets/concepts/night.js"></script>
 
   <header class="top">
     <a class="top__brand" href="{{ cbase }}/index.html">{% include "mark.njk" %}<span>Overnight Radio <i>Inc.</i></span></a>
@@ -36,6 +35,8 @@
     </nav>
     <p class="clock" aria-hidden="true"><span class="clock__dot"></span><span data-clock>12:00</span> <small data-ampm>AM</small></p>
   </header>
+  {# Runs before the page is first painted (after the sky and clock exist), so nothing flashes or jumps. #}
+  <script src="/assets/concepts/night.js"></script>
 
   <main id="main">
     {{ content | safe }}

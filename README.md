@@ -440,7 +440,7 @@ fall back to the concept's blog listing).
 |---|---|---|---|
 | **1** | The Dial | `/concepts/dial/` | The site is a vintage hi-fi FM receiver. The menu is a backlit tuning dial — each page is a "station" and the needle sweeps to it as you move around; the knob tunes to the next page. Facts are VU meters, the logo sits in a speaker grille, Work filters are car-radio preset buttons, the Team page is a scrolling **voice dial** you tune across (needle in the middle, frequency readout, quick-play), announcer pages have a receiver-style player with moving VU meters, and the footer is the rear panel with gold RCA jacks. |
 | **2** | The Script | `/concepts/script/` | The site is radio production paperwork on a desk. Every page is a typed, hole-punched script sheet with a production-order header; the menu is a taped-on **rundown** with a red-pencil check mark. Copy is laid out with ANNCR:/TAG: cues, highlighter and hand-written margin notes; prices are a typed rate card; the Team page is a **casting sheet**; announcers get a paper-clipped Polaroid one-sheet; spots are filed in a tabbed binder and shown as real scripts with a typed "tape" player; the calculator stamps its result; blog posts are **memos**. |
-| **3** | Night Shift | `/concepts/night/` | One night, dusk to dawn. A live sky sits behind every page: on the home page scrolling carries you from a 6 PM sunset through a starry midnight to a 6 AM sunrise ("…the very next day."), with a clock in the corner keeping time and a moon crossing the sky; each other page sits at its own hour, and moving between pages the sky, clock and moon glide from the previous page's hour to the new one (the moon follows its arc). Time only runs forward: going to an earlier hour carries on through dawn and a short daytime stretch (the sun fades, the sky warms back to dusk, the moon rises again) to that hour the next evening. On the home page any scrolling, down or up, moves time forward: one full page of scrolling is one night, so scrolling back up carries on into the next day and evening. The team appears as a **constellation** (each star is a voice), portraits are moon-round, studio windows glow at 3 AM, and the audio player is a horizon a little sun travels along. |
+| **3** | Night Shift | `/concepts/night/` | One night across the whole site. Each page sits at an hour, in menu order — Home at a 6 PM sunset, then Our Services, Our Work, Script Calculator, Blog, Team, and Contact at first light (~5 AM) — and a clock in the corner keeps time. Clicking between pages, the sky, stars, clock and moon glide on from the previous page's hour; the moon crosses the sky left to right on a shallow arc just below the menu bar and never leaves the screen. Time only runs forward: going back to an earlier page carries on through dawn and the day (the pale moon drifts back across the sky) to that hour the next evening. On Home, scrolling nudges the evening on a little. The team appears as a **constellation** (each star is a voice), portraits are moon-round, studio windows glow, and the audio player is a horizon a little sun travels along. In browsers that support it, pages cross-fade while the menu bar stays put. |
 
 **Where the concept files live:**
 
@@ -448,13 +448,13 @@ fall back to the concept's blog listing).
 |---|---|---|---|
 | The Dial | `src/concepts/dial/*.njk` (+ `dial.json`: stations & frequencies) | `src/_includes/concepts/dial/` | `src/assets/concepts/dial.css`, `dial.js` |
 | The Script | `src/concepts/script/*.njk` (+ `script.json`: rundown) | `src/_includes/concepts/script/` | `src/assets/concepts/script.css` |
-| Night Shift | `src/concepts/night/*.njk` (+ `night.json`: menu; each page sets its `hour`) | `src/_includes/concepts/night/` | `src/assets/concepts/night.css`, `night.js` |
+| Night Shift | `src/concepts/night/*.njk` (+ `night.json`: menu; each page sets its `hour`, 0 = 6 PM … 1 = 6 AM, in menu order) | `src/_includes/concepts/night/` | `src/assets/concepts/night.css`, `night.js` |
 
 All concepts reuse the main site's JavaScript (`site.js` for the player, filters, search, quick-play and contact
 form; `calculator.js`; the switcher), so features behave identically. The privacy policy text is shared through
 `_includes/privacy-body.njk`. Concept pages carry `noindex` so search engines ignore them during the review.
 A few short labels exist only in the concepts as part of their framing (e.g. station frequencies, "RUNDOWN",
-"Next in the rundown", the night-time hour stamps); all real site copy is unchanged.
+"Next in the rundown", the home page section labels); all real site copy is unchanged.
 
 **If a concept is chosen:** its templates become the main pages (replacing `src/index.njk`, `services.njk`, …,
 `_includes/announcer.njk`, `spot.njk`, `post.njk` and `base.njk`), its stylesheet replaces `site.css`, the

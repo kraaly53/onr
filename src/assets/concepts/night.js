@@ -1,29 +1,31 @@
-// Concept 3 — "Night Shift": the sky, moon, sun, stars and clock follow the hour of the night.
-// Home page: scrolling moves the hour forward (a full page of scrolling, either direction, is one night).
-// Other pages: a fixed hour.
+// Concept 3 — "Night Shift": one night across the whole site.
 //
-// Smoothness:
-// - This file loads (not deferred) right after the sky, so the first frame is already painted correctly.
-// - The hour you were at on the previous page is remembered; each page starts there and glides to its own hour,
-//   so the moon travels along its arc between pages instead of jumping.
-// - One animation loop eases the hour toward its target; only the sky layer's settings change each frame and the
-//   moon/sun move with transforms, so the rest of the page isn't restyled.
+// Each page sits at an hour of the night, in menu order: Home is dusk (6 PM) … Contact is first light (~5 AM).
+// Moving between pages, the sky, stars, clock and moon glide from the hour you were at to the new page's hour —
+// the moon travels left → right across the sky on an arc that always stays fully on screen.
+// Time only runs forward: going back to an earlier page carries on through dawn and a short daytime stretch, while
+// the moon drifts back across the sky as a pale daytime moon, ready to rise again at dusk.
+// On Home, scrolling nudges the evening on a little (forward only), up to the page's scroll span.
+//
+// Smoothness: this file runs before the first paint (not deferred, placed right after the header), each page starts at the previous page's hour,
+// motion is eased in and out, only the sky layer's settings change per frame, and the moon/sun move by transform.
 (() => {
   const sky = document.querySelector(".sky");
   const body = document.body;
   if (!sky) return;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const isScroll = body.dataset.hour === "scroll";
+  const num = (v, d) => { const n = parseFloat(v); return isNaN(n) ? d : n; };
+  const pageHour = num(body.dataset.hour, 0.5);
+  const scrollSpan = num(body.dataset.scrollSpan, 0);
   const read = () => { try { return parseFloat(sessionStorage.getItem("nightHour")); } catch { return NaN; } };
   const write = (v) => { try { sessionStorage.setItem("nightHour", String(v)); } catch {} };
 
-  // The hour runs 0 (6 PM dusk) → 1 (6 AM dawn). Time only ever moves forward: going to an earlier hour carries on
-  // through a short "daytime" stretch (1 → 1.35: the sun fades, the sky warms back to dusk, the moon rises again)
-  // and wraps round to the next evening.
-  const DAY = 0.35, CYCLE = 1 + DAY;
+  // 0 → 1 is the night (6 PM → 6 AM); 1 → CYCLE is the daytime stretch back round to dusk.
+  // The day is as long as the night, so the pale moon drifts back across the sky at the same easy pace.
+  const DAY = 1, CYCLE = 1 + DAY;
   const wrap = (u) => ((u % CYCLE) + CYCLE) % CYCLE;
 
-  // Sky colours through the night (and the daytime stretch back to dusk): [t, top, middle, horizon]
+  // Sky colours: [hour, top, middle, horizon]
   const keys = [
     [0.00, "#2a3a7a", "#b8678a", "#f6ad6a"],
     [0.14, "#141d4d", "#3b2f6b", "#7a4a7a"],
@@ -32,11 +34,32 @@
     [0.70, "#070a22", "#10173d", "#1e2654"],
     [0.86, "#1d2456", "#4f3c7c", "#c47d8c"],
     [1.00, "#6d8fcf", "#f0b6a6", "#ffd89a"],
-    [1.12, "#7da0d8", "#e9c2b4", "#ffe0a8"],
-    [1.35, "#2a3a7a", "#b8678a", "#f6ad6a"],
+    [1.25, "#7da0d8", "#e9c2b4", "#ffe0a8"],
+    [1.75, "#7da0d8", "#e9c2b4", "#ffe0a8"],
+    [2.00, "#2a3a7a", "#b8678a", "#f6ad6a"],
   ].map(([t, ...c]) => [t, ...c.map((h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)))]);
   const mix = (x, y, f) => `rgb(${x.map((v, i) => Math.round(v + (y[i] - v) * f)).join(" ")})`;
   const smooth = (a, b, x) => { const k = Math.min(1, Math.max(0, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
+  // Steady drift with a short, soft start and finish (so the moon turns round gently at dawn and dusk)
+  const drift = (p, a = 0.15) => {
+    const v = 1 / (1 - a);
+    if (p < a) return (v * p * p) / (2 * a);
+    if (p < 1 - a) return v * (a / 2 + (p - a));
+    return 1 - (v * (1 - p) * (1 - p)) / (2 * a);
+  };
+
+  // The moon's path: a shallow arc in the clear strip just below the menu bar (above the page headings),
+  // never nearer than 10% to either side. Heights are measured from the real header, so it works on phones too.
+  const LEFT = 10, RIGHT = 90;
+  let HIGH = 0, LOW = 0;                           // px from the top of the window
+  const measure = () => {
+    const bar = document.querySelector(".top");
+    const moonEl = sky.querySelector(".moon");
+    const below = bar ? bar.getBoundingClientRect().height : 70;
+    const r = moonEl ? moonEl.offsetWidth / 2 : 30;
+    HIGH = below + r + 6;
+    LOW = HIGH + Math.max(14, innerHeight * 0.03);
+  };
 
   let clock, ampm, lastClock = "";
   const paint = (u) => {
@@ -49,26 +72,31 @@
     s.setProperty("--sky-top", mix(a[0], b[0], f));
     s.setProperty("--sky-mid", mix(a[1], b[1], f));
     s.setProperty("--sky-low", mix(a[2], b[2], f));
+
     let stars, sun, moon, mx, my, mins;
     if (t <= 1) {
-      // Night: stars come out and fade, the moon arcs across the right-hand sky (clear of the headlines)
-      stars = t < 0.5 ? smooth(0.04, 0.3, t) : 1 - smooth(0.78, 0.96, t);
+      stars = t < 0.5 ? smooth(0.04, 0.3, t) : 1 - smooth(0.8, 0.98, t);
       sun = smooth(0.84, 1, t);
-      moon = 1 - sun;
-      mx = 62 + t * 32; my = 70 - Math.sin(Math.PI * t) * 58;
-      mins = 18 * 60 + t * 720;                  // 6:00 PM → 6:00 AM
+      moon = 1 - 0.6 * sun;                        // pales at first light but stays in the sky
+      mx = LEFT + (RIGHT - LEFT) * t;
+      my = LOW - Math.sin(Math.PI * t) * (LOW - HIGH);
+      mins = 18 * 60 + t * 720;                    // 6:00 PM → 6:00 AM
     } else {
-      // Daytime stretch: the sun fades, the moon fades back in where it rises at dusk
+      // Daytime: the sun sets again; the pale moon drifts back across a slightly lower path to its rising spot
       const d = (t - 1) / DAY;
-      stars = 0; sun = 1 - smooth(0, 0.8, d); moon = smooth(0.35, 1, d);
-      mx = 62; my = 70;
-      mins = 6 * 60 + d * 720;                   // 6:00 AM → 6:00 PM
+      stars = 0;
+      sun = 1 - smooth(0, 0.8, d);
+      moon = d < 0.6 ? 0.4 - 0.15 * smooth(0, 0.6, d) : 0.25 + 0.75 * smooth(0.6, 1, d);
+      mx = RIGHT - (RIGHT - LEFT) * drift(d);
+      my = LOW - Math.sin(Math.PI * d) * (LOW - HIGH) * 0.3;
+      mins = 6 * 60 + d * 720;                     // 6:00 AM → 6:00 PM
     }
     s.setProperty("--stars", stars.toFixed(3));
     s.setProperty("--sun", sun.toFixed(3));
     s.setProperty("--moonv", moon.toFixed(3));
     s.setProperty("--mx", mx.toFixed(2) + "vw");
-    s.setProperty("--my", my.toFixed(2) + "vh");
+    s.setProperty("--my", my.toFixed(1) + "px");
+
     clock = clock || document.querySelector("[data-clock]");
     ampm = ampm || document.querySelector("[data-ampm]");
     if (clock) {
@@ -78,68 +106,70 @@
     }
   };
 
-  const scrollHour = () => {
-    const max = document.documentElement.scrollHeight - innerHeight;
-    return max > 0 ? Math.min(1, scrollY / max) : 0;
-  };
-  let target = isScroll ? 0 : parseFloat(body.dataset.hour) || 0.5;
+  measure();
+  addEventListener("resize", () => { measure(); paint(t); });
+
+  // Start where the last page left off.
   const prev = read();
-  let t = !reduce && !isNaN(prev) ? prev : target;
+  let t = !reduce && !isNaN(prev) ? prev : pageHour;
   paint(t);
 
-  // Two kinds of motion:
-  // - glide: page to page — eases in and out over 1–1.8 s (longer for bigger jumps through the night)
-  // - follow: scrolling on the home page — eases toward the scroll position each frame
-  let raf = 0, mode = null, from = 0, startAt = 0, dur = 0;
-  const easeInOut = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+  // Motion: "glide" between pages (eased in and out); "follow" eases toward a moving target (Home scrolling).
+  let target = t, raf = 0, mode = null, from = 0, startAt = 0, dur = 0, afterGlide = null;
+  const easeInOut = (p) => (1 - Math.cos(Math.PI * p)) / 2;   // gentle sine ease in and out
   const tick = (now) => {
     if (mode === "glide") {
       const p = Math.min(1, (now - startAt) / dur);
       t = from + (target - from) * easeInOut(p);
       paint(t);
       if (p < 1) { raf = requestAnimationFrame(tick); return; }
-      t = wrap(target);
-    } else {
-      const d = target - t;
-      if (Math.abs(d) > 0.0004) { t += d * 0.14; paint(t); raf = requestAnimationFrame(tick); return; }
-      t = target; paint(t);
+      raf = 0; mode = null;
+      if (afterGlide) afterGlide();
+      return;
     }
-    raf = 0; mode = null;
+    const d = target - t;
+    if (Math.abs(d) > 0.0003) { t += d * 0.12; paint(t); raf = requestAnimationFrame(tick); return; }
+    t = target; paint(t); raf = 0; mode = null;
   };
-  const go = (to, how) => {
+  // Glide forward to an hour; returns the (unwrapped) value we'll arrive at.
+  const glideTo = (hour) => {
+    from = t;
+    let dest = hour;
+    while (dest < from - 0.0003) dest += CYCLE;    // never run backwards: carry on through the day
+    target = dest;
+    if (reduce || Math.abs(dest - from) < 0.0003) { t = dest; paint(t); if (afterGlide) afterGlide(); return dest; }
+    // ~1.25 s to the next page; longer trips (e.g. back through the day) take longer, up to ~4 s
+    dur = Math.min(4000, 1000 + 1700 * (dest - from));
+    startAt = performance.now(); mode = "glide";
+    if (!raf) raf = requestAnimationFrame(tick);
+    return dest;
+  };
+  const followTo = (to) => {
     target = to;
-    if (reduce) { t = target; paint(t); return; }
-    if (how === "glide") {
-      from = wrap(t);
-      if (Math.abs(to - from) < 0.0004) { t = from; return; }
-      if (to < from) target = to + CYCLE;          // never run backwards: carry on through the day to this hour
-      startAt = performance.now(); dur = Math.min(3000, 1000 + 1000 * (target - from)); mode = "glide";
-    } else {
-      mode = "follow";                              // the hour keeps counting up; paint() wraps it
-    }
+    if (reduce) { t = to; paint(t); return; }
+    mode = "follow";
     if (!raf) raf = requestAnimationFrame(tick);
   };
+
   addEventListener("pagehide", () => write(wrap(t)));
-  addEventListener("pageshow", (e) => { if (e.persisted && !isScroll) go(target, "glide"); });
+  addEventListener("pageshow", (e) => { if (e.persisted) glideTo(pageHour); });
 
   const start = () => {
-    if (isScroll) {
-      go(scrollHour(), "glide");
-      // Any scrolling — down or up — moves time forward: one full page of scrolling is one night.
-      // Scrolling takes over from an arrival glide straight away, carrying on from the hour on screen.
-      let lastY = scrollY, travel = null;
+    // Home: scrolling (either direction) moves the evening on a little — forward only, up to scrollSpan.
+    let nudge = 0, base = 0;
+    if (scrollSpan > 0) {
+      afterGlide = () => { if (nudge > 0) followTo(base + nudge); };
+      let lastY = scrollY;
       addEventListener("scroll", () => {
         const max = document.documentElement.scrollHeight - innerHeight;
         const dy = Math.abs(scrollY - lastY);
         lastY = scrollY;
-        if (!dy || max <= 0) return;
-        if (mode !== "follow" || travel === null) travel = t;
-        travel += dy / max;
-        go(travel, "follow");
+        if (!dy || max <= 0 || nudge >= scrollSpan) return;
+        nudge = Math.min(scrollSpan, nudge + (dy / max) * scrollSpan);
+        if (mode !== "glide") followTo(base + nudge);
       }, { passive: true });
-    } else {
-      go(target, "glide");
     }
+    base = glideTo(pageHour);
 
     // Team: join each star to its nearest neighbours (a minimum spanning tree), leaving out long jumps,
     // so the voices form a handful of constellations.

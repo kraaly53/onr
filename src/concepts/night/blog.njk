@@ -5,7 +5,7 @@ pagination:
   alias: pagePosts
 permalink: "{% if pagination.pageNumber == 0 %}/concepts/night/blog/index.html{% else %}/concepts/night/blog/page/{{ pagination.pageNumber + 1 }}/index.html{% endif %}"
 station: blog
-hour: 0.66
+hour: 0.6
 eleventyComputed:
   seoTitle: "Blog{% if pagination.pageNumber > 0 %} - Page {{ pagination.pageNumber + 1 }}{% endif %} | Overnight Radio Inc."
 ---
