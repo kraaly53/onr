@@ -47,10 +47,16 @@ button { font: inherit; cursor: pointer; }
   background-size: 260px 260px; animation: twinkle 3.6s ease-in-out infinite alternate-reverse; }
 @keyframes twinkle { from { filter: brightness(.6); } to { filter: brightness(1.3); } }
 /* moved with a transform (no layout work); --mx/--my are vw/vh set by night.js */
-.moon { position: absolute; left: 0; top: 0; width: clamp(44px, 4.8vw, 66px); aspect-ratio: 1; border-radius: 50%; transform: translate(calc(var(--mx) - 50%), calc(var(--my) - 50%)); will-change: transform, opacity;
+.moon { position: absolute; left: 0; top: 0; width: clamp(34px, 4.8vw, 66px); aspect-ratio: 1; border-radius: 50%; transform: translate(calc(var(--mx) - 50%), calc(var(--my) - 50%)); will-change: transform, opacity;
   background: radial-gradient(circle at 35% 35%, #fffef6, var(--moon) 45%, #d8d3bf 75%);
   box-shadow: 0 0 40px 12px rgb(244 241 228 / .25), inset -9px -7px 0 rgb(0 0 0 / .08); opacity: var(--moonv, 1); transition: opacity .6s ease; }
 .moon::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 60% 40%, rgb(0 0 0 / .07) 0 9%, transparent 10%), radial-gradient(circle at 38% 66%, rgb(0 0 0 / .06) 0 7%, transparent 8%), radial-gradient(circle at 70% 70%, rgb(0 0 0 / .05) 0 5%, transparent 6%); }
+/* Moonlight: a soft pool of light in the sky behind the title's last word (placed by night.js) */
+.moonbeam { position: absolute; left: 0; top: 0; width: var(--bw, 300px); height: var(--bh, 160px); border-radius: 50%;
+  transform: translate(calc(var(--bx, -999px) - 50%), calc(var(--by, -999px) - 50%));
+  background: radial-gradient(closest-side, rgb(255 244 214 / .42), rgb(255 236 190 / .16) 55%, rgb(255 236 190 / 0) 100%);
+  opacity: 0; transition: opacity 1.4s ease; pointer-events: none; will-change: transform, opacity; }
+.moonbeam.is-on { opacity: var(--moonv, 1); }
 .sun { position: absolute; left: 50%; bottom: -30vh; width: 46vh; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, calc(var(--sun) * -34vh)); will-change: transform, opacity; transition: opacity .6s ease;
   background: radial-gradient(circle, #fff3c4, var(--sunc) 40%, rgb(255 140 90 / 0) 70%); opacity: var(--sun); filter: blur(2px); }
 .skyline { position: absolute; left: 0; right: 0; bottom: 0; height: 90px; opacity: .9;
@@ -104,7 +110,10 @@ button { font: inherit; cursor: pointer; }
 .stamp-time { display: inline-flex; align-items: center; gap: 10px; font: 700 12px/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--soft); margin-bottom: 22px; }
 .stamp-time::before { content: ""; width: 28px; height: 1px; background: currentColor; }
 .eyebrow { font: 700 11.5px/1.4 var(--display); letter-spacing: .18em; text-transform: uppercase; color: var(--soft); margin-bottom: 10px; }
-.mega { font: 800 clamp(44px, 8.4vw, 116px)/.95 var(--display); letter-spacing: -0.03em; margin-bottom: 26px; }
+.mega { font: 800 clamp(44px, 8.4vw, 116px)/.95 var(--display); letter-spacing: -0.03em; margin-bottom: 26px;
+  position: relative; filter: drop-shadow(0 0 0 rgb(255 246 220 / 0)) drop-shadow(0 0 0 rgb(255 236 190 / 0)); transition: filter 1.4s ease; }
+/* Lit by the moon once it arrives beside the title */
+.mega.is-moonlit { filter: drop-shadow(0 0 8px rgb(255 246 220 / .7)) drop-shadow(0 0 32px rgb(255 236 190 / .45)); }
 .mega span { display: block; background: linear-gradient(90deg, #fff, #c9c6ff 40%, #ffc9a8); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .mega--page { font-size: clamp(30px, 6.4vw, 84px); overflow-wrap: anywhere; }
 .mega--page span { display: inline; }
