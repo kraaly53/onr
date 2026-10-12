@@ -1,4 +1,6 @@
 # Builds the site and uploads it to the test server on every push to main.
+name: Deploy Website via FTP
+
 on:
   push:
     branches:
