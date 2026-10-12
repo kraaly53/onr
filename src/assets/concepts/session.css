@@ -362,3 +362,4 @@ a.bus__val:hover { color: var(--track); }
   .nudge { grid-template-columns: 1fr 1fr; } .nudge__count { display: none; } .nudge__next { grid-column: 2; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+.headline__line { display: block; }
