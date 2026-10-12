@@ -209,13 +209,15 @@ button { font: inherit; cursor: pointer; }
 .star { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; text-decoration: none; z-index: 1; }
 .star__dot { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 0 16px 4px rgb(201 198 255 / .85);
   animation: twinkle 2.4s ease-in-out var(--d) infinite alternate; transition: transform .2s; }
-.star__card { position: absolute; left: 14px; top: -24px; display: flex; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; border-radius: 999px; white-space: nowrap;
-  background: rgb(18 20 50 / .9); border: 1px solid var(--line); font: 700 14px var(--display); opacity: 0; transform: translateY(6px); pointer-events: none; transition: .2s; }
-.star__card img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+.star__card { position: absolute; left: 20px; top: 0; display: flex; align-items: center; gap: 14px; width: max-content; padding: 8px 22px 8px 8px; border-radius: 999px; white-space: nowrap;
+  background: rgb(18 20 50 / .92); border: 1px solid var(--line); box-shadow: 0 14px 34px -12px rgb(0 0 0 / .7), 0 0 30px rgb(201 198 255 / .18);
+  font: 700 18px/1.2 var(--display); opacity: 0; transform: translateY(-50%) translateX(-6px); pointer-events: none; transition: opacity .2s, transform .2s; }
+.star__card img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex: none; filter: grayscale(1) brightness(1.05); box-shadow: 0 0 0 2px rgb(244 241 228 / .7), 0 0 18px rgb(244 241 228 / .35); }
+.star__card span { flex: none; }
 .star:hover, .star:focus-visible { z-index: 5; }
 .star:hover .star__dot, .star:focus-visible .star__dot { transform: scale(1.6); background: #ffe2b8; }
-.star:hover .star__card, .star:focus-visible .star__card { opacity: 1; transform: none; }
-.star--left .star__card { left: auto; right: 14px; }
+.star:hover .star__card, .star:focus-visible .star__card { opacity: 1; transform: translateY(-50%); }
+.star--left .star__card { left: auto; right: 20px; flex-direction: row-reverse; padding: 8px 8px 8px 22px; transform: translateY(-50%) translateX(6px); }
 
 .producers { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 40px; }
 .producer { display: grid; grid-template-columns: 140px 1fr; gap: 22px; align-items: center; }
