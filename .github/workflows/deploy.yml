@@ -43,7 +43,7 @@ jobs:
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}   # read by --env-password, so any characters are safe
-        REMOTE_DIR: /ordinaryspoon.com/testing/onr   # FTP login starts in the hosting root; each site has its own folder there
+        REMOTE_DIR: /ordinaryspoon.com/testing/onr   # the FTP login already starts inside public_html, so this is public_html/ordinaryspoon.com/testing/onr
       run: |
         lftp -c "
           set ftp:ssl-allow no;
