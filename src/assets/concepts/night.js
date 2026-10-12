@@ -111,6 +111,7 @@
   beam.className = "moonbeam";
   sky.appendChild(beam);
   const radius = () => (moonEl ? moonEl.offsetWidth / 2 : 30);
+  const REST_SCALE = 1.3;                          // the moon grows a little as it settles beside the title
   const barBottom = () => { const b = document.querySelector(".top"); return b ? b.getBoundingClientRect().bottom : 70; };
 
   // Home's opening spot: up in the evening sky, top left, above the title
@@ -138,7 +139,7 @@
     if (!word) return homeSpot();
     const rects = word.getClientRects();
     const r = rects[rects.length - 1] || word.getBoundingClientRect();
-    const rad = radius(), gap = 14;
+    const rad = radius() * REST_SCALE, gap = 14;
     let x, y;
     // would the moon beside the word touch any letters of the title (e.g. the line above on a phone)?
     const touchesTitle = (cx, cy) => {
@@ -154,8 +155,11 @@
       return false;
     };
     const multiLine = title.getBoundingClientRect().height > r.height * 1.6;
-    const bx = r.right + gap + rad * 0.85, by = r.top + r.height * (multiLine ? 0.5 : 0.3);
-    if (r.right + gap + rad * 2 <= innerWidth - gap && !touchesTitle(bx, by)) {
+    const bx = r.right + gap + rad * 0.85;
+    const roomBeside = r.right + gap + rad * 2 <= innerWidth - gap;
+    // beside the word: try a little above its middle, then a little lower if that would touch the line above
+    const by = [r.top + r.height * (multiLine ? 0.5 : 0.3), r.top + r.height * 0.62].find((cy) => roomBeside && !touchesTitle(bx, cy));
+    if (by !== undefined) {
       x = bx;
       y = by;
     } else {
@@ -171,6 +175,8 @@
   };
 
   let pos = null, settled = false, lit = false;
+  let scale = 1;
+  const sizeMoon = (k) => { scale = k; sky.style.setProperty("--ms", k.toFixed(3)); };
   const placeMoon = (p) => {
     pos = p;
     sky.style.setProperty("--mx", p.x.toFixed(1) + "px");
@@ -194,13 +200,15 @@
   // Start: where the moon was on the previous page, or Home's opening spot on a first visit.
   const saved = (() => { try { return JSON.parse(store.get("nightMoon") || "null"); } catch { return null; } })();
   placeMoon(saved && !reduce ? { x: saved.fx * innerWidth, y: saved.fy * innerHeight } : homeSpot());
+  sizeMoon(saved && !reduce && saved.s ? saved.s : 1);
 
   let moonAnim = 0;
   const floatToTitle = (delay) => {
     const from = { ...pos }, startAt = performance.now() + delay;
     const first = restingSpot();
     const dist = Math.hypot(first.x - from.x, first.y - from.y);
-    if (reduce || dist < 2) { placeMoon(first); placeBeam(first); settled = true; light(true); return; }
+    const fromScale = scale;
+    if (reduce || dist < 2) { placeMoon(first); placeBeam(first); sizeMoon(REST_SCALE); settled = true; light(true); return; }
     const dur = Math.min(2200, 1100 + dist * 1.1);
     const lift = Math.min(70, dist * 0.18);        // a soft rising curve rather than a straight line
     const step = (now) => {
@@ -208,6 +216,7 @@
       const p = Math.min(1, (now - startAt) / dur), e = ease(p);
       const to = restingSpot();                    // the title can move (fonts, scrolling) while we travel
       placeMoon({ x: from.x + (to.x - from.x) * e, y: from.y + (to.y - from.y) * e - Math.sin(Math.PI * p) * lift });
+      sizeMoon(fromScale + (REST_SCALE - fromScale) * e);
       placeBeam(to);
       if (p > 0.7) light(true);
       if (p < 1) { moonAnim = requestAnimationFrame(step); return; }
@@ -228,7 +237,7 @@
 
   addEventListener("pagehide", () => {
     store.set("nightHour", String(wrap(hour)));
-    if (pos) store.set("nightMoon", JSON.stringify({ fx: pos.x / innerWidth, fy: pos.y / innerHeight }));
+    if (pos) store.set("nightMoon", JSON.stringify({ fx: pos.x / innerWidth, fy: pos.y / innerHeight, s: scale }));
   });
 
   /* ------------------------------------------------------------------ start */

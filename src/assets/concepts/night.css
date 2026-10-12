@@ -47,7 +47,7 @@ button { font: inherit; cursor: pointer; }
   background-size: 260px 260px; animation: twinkle 3.6s ease-in-out infinite alternate-reverse; }
 @keyframes twinkle { from { filter: brightness(.6); } to { filter: brightness(1.3); } }
 /* moved with a transform (no layout work); --mx/--my are vw/vh set by night.js */
-.moon { position: absolute; left: 0; top: 0; width: clamp(34px, 4.8vw, 66px); aspect-ratio: 1; border-radius: 50%; transform: translate(calc(var(--mx) - 50%), calc(var(--my) - 50%)); will-change: transform, opacity;
+.moon { position: absolute; left: 0; top: 0; width: clamp(34px, 4.8vw, 66px); aspect-ratio: 1; border-radius: 50%; transform: translate(calc(var(--mx) - 50%), calc(var(--my) - 50%)) scale(var(--ms, 1)); will-change: transform, opacity;
   background: radial-gradient(circle at 35% 35%, #fffef6, var(--moon) 45%, #d8d3bf 75%);
   box-shadow: 0 0 40px 12px rgb(244 241 228 / .25), inset -9px -7px 0 rgb(0 0 0 / .08); opacity: var(--moonv, 1); transition: opacity .6s ease; }
 .moon::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 60% 40%, rgb(0 0 0 / .07) 0 9%, transparent 10%), radial-gradient(circle at 38% 66%, rgb(0 0 0 / .06) 0 7%, transparent 8%), radial-gradient(circle at 70% 70%, rgb(0 0 0 / .05) 0 5%, transparent 6%); }
