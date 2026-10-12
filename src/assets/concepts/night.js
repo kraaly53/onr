@@ -16,7 +16,13 @@
   const read = () => { try { return parseFloat(sessionStorage.getItem("nightHour")); } catch { return NaN; } };
   const write = (v) => { try { sessionStorage.setItem("nightHour", String(v)); } catch {} };
 
-  // Sky colours through the night: [t, top, middle, horizon]
+  // The hour runs 0 (6 PM dusk) → 1 (6 AM dawn). Time only ever moves forward: going to an earlier hour carries on
+  // through a short "daytime" stretch (1 → 1.35: the sun fades, the sky warms back to dusk, the moon rises again)
+  // and wraps round to the next evening.
+  const DAY = 0.35, CYCLE = 1 + DAY;
+  const wrap = (u) => ((u % CYCLE) + CYCLE) % CYCLE;
+
+  // Sky colours through the night (and the daytime stretch back to dusk): [t, top, middle, horizon]
   const keys = [
     [0.00, "#2a3a7a", "#b8678a", "#f6ad6a"],
     [0.14, "#141d4d", "#3b2f6b", "#7a4a7a"],
@@ -25,13 +31,15 @@
     [0.70, "#070a22", "#10173d", "#1e2654"],
     [0.86, "#1d2456", "#4f3c7c", "#c47d8c"],
     [1.00, "#6d8fcf", "#f0b6a6", "#ffd89a"],
+    [1.12, "#7da0d8", "#e9c2b4", "#ffe0a8"],
+    [1.35, "#2a3a7a", "#b8678a", "#f6ad6a"],
   ].map(([t, ...c]) => [t, ...c.map((h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)))]);
   const mix = (x, y, f) => `rgb(${x.map((v, i) => Math.round(v + (y[i] - v) * f)).join(" ")})`;
   const smooth = (a, b, x) => { const k = Math.min(1, Math.max(0, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
 
   let clock, ampm, lastClock = "";
-  const paint = (t) => {
-    t = Math.min(1, Math.max(0, t));
+  const paint = (u) => {
+    const t = wrap(u);
     let i = 0;
     while (i < keys.length - 2 && t > keys[i + 1][0]) i++;
     const [t0, ...a] = keys[i], [t1, ...b] = keys[i + 1];
@@ -40,17 +48,31 @@
     s.setProperty("--sky-top", mix(a[0], b[0], f));
     s.setProperty("--sky-mid", mix(a[1], b[1], f));
     s.setProperty("--sky-low", mix(a[2], b[2], f));
-    s.setProperty("--stars", (t < 0.5 ? smooth(0.04, 0.3, t) : 1 - smooth(0.78, 0.96, t)).toFixed(3));
-    s.setProperty("--sun", smooth(0.84, 1, t).toFixed(3));
-    // The moon arcs across the right-hand sky, clear of the headlines
-    s.setProperty("--mx", (62 + t * 32).toFixed(2) + "vw");
-    s.setProperty("--my", (70 - Math.sin(Math.PI * t) * 58).toFixed(2) + "vh");
-    // Clock: 6:00 PM → 6:00 AM
+    let stars, sun, moon, mx, my, mins;
+    if (t <= 1) {
+      // Night: stars come out and fade, the moon arcs across the right-hand sky (clear of the headlines)
+      stars = t < 0.5 ? smooth(0.04, 0.3, t) : 1 - smooth(0.78, 0.96, t);
+      sun = smooth(0.84, 1, t);
+      moon = 1 - sun;
+      mx = 62 + t * 32; my = 70 - Math.sin(Math.PI * t) * 58;
+      mins = 18 * 60 + t * 720;                  // 6:00 PM → 6:00 AM
+    } else {
+      // Daytime stretch: the sun fades, the moon fades back in where it rises at dusk
+      const d = (t - 1) / DAY;
+      stars = 0; sun = 1 - smooth(0, 0.8, d); moon = smooth(0.35, 1, d);
+      mx = 62; my = 70;
+      mins = 6 * 60 + d * 720;                   // 6:00 AM → 6:00 PM
+    }
+    s.setProperty("--stars", stars.toFixed(3));
+    s.setProperty("--sun", sun.toFixed(3));
+    s.setProperty("--moonv", moon.toFixed(3));
+    s.setProperty("--mx", mx.toFixed(2) + "vw");
+    s.setProperty("--my", my.toFixed(2) + "vh");
     clock = clock || document.querySelector("[data-clock]");
     ampm = ampm || document.querySelector("[data-ampm]");
     if (clock) {
-      const mins = Math.round(18 * 60 + t * 720) % 1440, h = Math.floor(mins / 60), m = mins % 60;
-      const txt = `${h % 12 === 0 ? 12 : h % 12}:${String(m).padStart(2, "0")}`;
+      const m = Math.round(mins) % 1440, h = Math.floor(m / 60), mm = m % 60;
+      const txt = `${h % 12 === 0 ? 12 : h % 12}:${String(mm).padStart(2, "0")}`;
       if (txt !== lastClock) { clock.textContent = txt; ampm.textContent = h >= 12 ? "PM" : "AM"; lastClock = txt; }
     }
   };
@@ -75,6 +97,7 @@
       t = from + (target - from) * easeInOut(p);
       paint(t);
       if (p < 1) { raf = requestAnimationFrame(tick); return; }
+      t = wrap(target);
     } else {
       const d = target - t;
       if (Math.abs(d) > 0.0004) { t += d * 0.14; paint(t); raf = requestAnimationFrame(tick); return; }
@@ -86,19 +109,25 @@
     target = to;
     if (reduce) { t = target; paint(t); return; }
     if (how === "glide") {
-      if (Math.abs(to - t) < 0.0004) return;
-      from = t; startAt = performance.now(); dur = 1000 + 800 * Math.abs(to - t); mode = "glide";
-    } else if (mode !== "glide") mode = "follow";
+      from = wrap(t);
+      if (Math.abs(to - from) < 0.0004) { t = from; return; }
+      if (to < from) target = to + CYCLE;          // never run backwards: carry on through the day to this hour
+      startAt = performance.now(); dur = Math.min(3000, 1000 + 1000 * (target - from)); mode = "glide";
+    } else if (mode !== "glide") {
+      // Following the scroll from somewhere in the daytime stretch: count it as just before dusk
+      t = wrap(t); if (t > 1) t -= CYCLE;
+      mode = "follow";
+    }
     if (!raf) raf = requestAnimationFrame(tick);
   };
-  addEventListener("pagehide", () => write(t));
+  addEventListener("pagehide", () => write(wrap(t)));
   addEventListener("pageshow", (e) => { if (e.persisted) go(isScroll ? scrollHour() : target, "glide"); });
 
   const start = () => {
     if (isScroll) {
       go(scrollHour(), "glide");
       // Scrolling takes over from an arrival glide straight away
-      addEventListener("scroll", () => { mode = "follow"; go(scrollHour(), "follow"); }, { passive: true });
+      addEventListener("scroll", () => { mode = null; go(scrollHour(), "follow"); }, { passive: true });
       addEventListener("resize", () => go(scrollHour(), "follow"));
     } else {
       go(target, "glide");
