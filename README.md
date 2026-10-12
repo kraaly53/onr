@@ -497,14 +497,15 @@ That's a planned piece of work rather than a settings change — ask for it once
 The repository is **github.com/kraaly53/onr**. Every push to `main` runs `.github/workflows/deploy.yml`, which:
 
 1. installs and builds the site with `PATH_PREFIX=/testing/onr/` (so every link points inside that folder), then
-2. uploads the finished `_site/` folder by FTP to `/public_html/ordinaryspoon.com/testing/onr/`.
+2. uploads the finished `_site/` folder by FTP (using `lftp`, which reconnects if the server drops the connection)
+   to `/public_html/ordinaryspoon.com/testing/onr/`.
 
 The FTP login is stored as repository secrets (`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`) under
 Settings → Secrets and variables → Actions. Progress and errors show under the repository's **Actions** tab;
-a deploy can also be re-run from there (**Run workflow**). Only changed files are uploaded after the first deploy.
+a deploy can also be re-run from there (**Run workflow**).
 
 **Moving to the real domain later:** change `PATH_PREFIX` in the workflow to `/` (or remove it) and change
-`server-dir` to the domain's web root.
+`REMOTE_DIR` to the domain's web root.
 
 ### Any static host
 

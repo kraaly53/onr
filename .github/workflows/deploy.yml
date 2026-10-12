@@ -28,14 +28,24 @@ jobs:
       env:
         PATH_PREFIX: /testing/onr/
 
-    - name: Sync files to server
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./_site/
-        server-dir: /public_html/ordinaryspoon.com/testing/onr/
-        port: 21
-        protocol: ftp
-        timeout: 60000
+    - name: Install lftp
+      run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+    - name: Upload to server
+      # lftp reconnects and retries automatically, so a dropped FTP connection doesn't stop the deploy.
+      env:
+        FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}   # read by --env-password, so any characters are safe
+        REMOTE_DIR: /public_html/ordinaryspoon.com/testing/onr
+      run: |
+        lftp -c "
+          set ftp:ssl-allow no;
+          set ftp:passive-mode yes;
+          set net:timeout 30;
+          set net:max-retries 10;
+          set net:reconnect-interval-base 5;
+          set net:reconnect-interval-max 30;
+          open --env-password -u \"$FTP_USERNAME\" -p 21 \"$FTP_SERVER\";
+          mirror --reverse --parallel=2 --no-perms --verbose=1 _site/ \"$REMOTE_DIR\";
+        "
