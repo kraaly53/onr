@@ -1,0 +1,63 @@
+{
+  "name": "Overnight Radio Inc.",
+  "legalName": "Overnight Radio Productions Inc.",
+  "city": "London, Ontario, Canada",
+  "phone": "519.660.0742",
+  "phoneHref": "tel:+15196600742",
+  "email": "info@overnightradio.com",
+  "blogUrl": "/blog/",
+  "assetBase": "https://overnightradio.com",
+  "contactEndpoint": "https://overnightradio.com/blog/wp-json/contact-form-7/v1/contact-forms/315/feedback",
+  "contactFormId": "315",
+  "bbbUrl": "https://www.bbb.org/western-ontario/business-reviews/radio-program-producers/overnight-radio-in-london-on-1057314#bbbseal",
+  "bbbImage": "https://seal-london.bbb.org/logo/rbhzbum/overnight-radio-1057314.png",
+  "social": [
+    {
+      "name": "Twitter",
+      "url": "https://twitter.com/overnight_radio",
+      "icon": "x"
+    },
+    {
+      "name": "Facebook",
+      "url": "https://www.facebook.com/OvernightRadio/",
+      "icon": "facebook"
+    },
+    {
+      "name": "YouTube",
+      "url": "https://www.youtube.com/channel/UCwUsf86vbJFInLmfddvI6nw/featured?view_as=public",
+      "icon": "youtube"
+    },
+    {
+      "name": "LinkedIn",
+      "url": "https://www.linkedin.com/company/overnight-radio-inc",
+      "icon": "linkedin"
+    }
+  ],
+  "nav": [
+    {
+      "label": "Our Services",
+      "url": "/services.html"
+    },
+    {
+      "label": "Our Work",
+      "url": "/work.html"
+    },
+    {
+      "label": "Script Calculator",
+      "url": "/calculator.html"
+    },
+    {
+      "label": "Blog",
+      "url": "/blog/"
+    },
+    {
+      "label": "Team",
+      "url": "/team.html"
+    },
+    {
+      "label": "Contact",
+      "url": "/contact.html"
+    }
+  ],
+  "url": "https://overnightradio.com"
+}

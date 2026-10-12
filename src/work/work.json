@@ -1,0 +1,4 @@
+{
+  "layout": "spot.njk",
+  "permalink": "/work/{{ page.fileSlug }}.html"
+}

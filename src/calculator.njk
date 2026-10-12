@@ -1,0 +1,39 @@
+---
+layout: base.njk
+permalink: /calculator.html
+seoTitle: "Commercial Script Calculator | Overnight Radio Inc."
+seoDescription: "Commerical Script Calculator that will calcuate the timing of the commercial."
+eyebrow: Script Calculator
+heading: "Commercial <strong>Script Calculator</strong>"
+lede: "Enter your script, select the read speed, click the button and we'll tell you how long you commercial will be."
+scripts: ["/assets/js/calculator.js"]
+---
+{% include "page-head.njk" %}
+
+<section class="section section--paper section--flush-top">
+  <div class="wrap">
+    <form class="console" id="script-calculator" onsubmit="return false">
+      <div class="console__pane">
+        <label for="message" class="console__label">Script</label>
+        <textarea name="message" id="message" rows="10" placeholder="Enter script here" autofocus></textarea>
+      </div>
+      <div class="console__pane">
+        <label for="results" class="console__label">Results</label>
+        <textarea name="results" id="results" rows="10" placeholder="Results" readonly></textarea>
+      </div>
+      <div class="console__bar">
+        <label class="console__speed">
+          <span class="console__label">Script Read Speed</span>
+          <select id="speed" name="speed">
+            <option value="1">Slow Read</option>
+            <option value="2" selected>Normal Read</option>
+            <option value="3">Fast Read</option>
+          </select>
+        </label>
+        <button type="button" class="btn btn--amber" id="calculateScript">Calculate Length</button>
+        <div class="readout"><span class="console__label">Total Script Length</span><output name="wlength" id="wlength">0</output></div>
+        <div class="readout"><span class="console__label">Word Count</span><output name="wcount" id="wcount">0</output></div>
+      </div>
+    </form>
+  </div>
+</section>

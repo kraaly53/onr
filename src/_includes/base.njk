@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ seoTitle or title }}</title>
+  <meta name="description" content="{{ seoDescription or description }}">
+  <link rel="icon" href="{{ '/favicon.ico' | asset }}">
+  <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | asset }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body class="{{ bodyClass }}">
+  {% include "icons.njk" %}
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="masthead">
+    <div class="wrap masthead__row">
+      <a class="brand" href="/index.html" aria-label="{{ site.name }} home">
+        {% include "mark.njk" %}
+        <span class="brand__name">Overnight Radio <span>Inc.</span></span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Menu</span><span class="nav-toggle__bars"></span>
+      </button>
+      <nav id="site-nav" class="nav" aria-label="Main">
+        <ul>
+          {% for item in site.nav %}
+          <li><a href="{{ item.url }}"{% if item.url == page.url %} aria-current="page"{% endif %}{% if section and item.url == section %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    {{ content | safe }}
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__grid">
+      <div class="footer__brand">
+        <a class="brand" href="/index.html">{% include "mark.njk" %}<span class="brand__name">Overnight Radio <span>Inc.</span></span></a>
+        <p class="footer__line">{{ site.city }}</p>
+        <p class="footer__line"><a href="{{ site.phoneHref }}">{{ site.phone }}</a> &nbsp;·&nbsp; <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        {% for item in site.nav %}<a href="{{ item.url }}">{{ item.label }}</a>{% endfor %}
+        <a href="/privacypolicy.html">Privacy Policy</a>
+      </nav>
+      <div class="footer__aside">
+        <ul class="social">
+          {% for s in site.social %}
+          <li><a href="{{ s.url }}" target="_blank" rel="noopener" aria-label="{{ s.name }}"><svg aria-hidden="true"><use href="#i-{{ s.icon }}"/></svg></a></li>
+          {% endfor %}
+        </ul>
+        <a class="bbb" href="{{ site.bbbUrl }}" target="_blank" rel="noopener" title="Overnight Radio Inc., Radio Program Producers, London, ON">
+          <img src="{{ site.bbbImage }}" height="57" alt="Overnight Radio Inc., Radio Program Producers, London, ON">
+        </a>
+      </div>
+    </div>
+    <div class="wrap footer__legal">
+      <p>&copy; Copyright. All rights reserved. {{ site.legalName }} - <a href="/privacypolicy.html">Privacy Policy</a></p>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js" defer></script>
+  {% if scripts %}{% for s in scripts %}<script src="{{ s }}" defer></script>{% endfor %}{% endif %}
+</body>
+</html>

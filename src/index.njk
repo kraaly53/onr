@@ -1,0 +1,63 @@
+---
+layout: base.njk
+permalink: /index.html
+seoTitle: "Voice Overs, Radio, Advertising & Commercial Production | Overnight Radio Inc."
+seoDescription: "Independent production house for GREAT Radio Commercials, Jingles & Ads the very next day!"
+bodyClass: home
+---
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow"><span class="onair-dot"></span> London, Ontario, Canada</p>
+      <h1 class="hero__title">Welcome to <span>Overnight Radio Inc.</span></h1>
+      <p class="hero__lede">A commercial production house delivering top quality radio ads...<em>the very next day.</em></p>
+      <div class="hero__cta">
+        <a class="btn btn--amber" href="/services.html">Learn more</a>
+        <a class="btn btn--ghost" href="/work.html"><svg aria-hidden="true"><use href="#i-play"/></svg> Our Work</a>
+      </div>
+    </div>
+    <div class="hero__visual" aria-hidden="true">
+      <div class="rings rings--hero"><i></i><i></i><i></i><i></i><i></i></div>
+      <svg class="hero__ring" viewBox="0 0 200 200">
+        <defs><path id="hero-arc" d="M100,100 m-57,0 a57,57 0 1,1 114,0 a57,57 0 1,1 -114,0"/></defs>
+        <text><textPath href="#hero-arc" textLength="356" lengthAdjust="spacing">OVERNIGHT RADIO INC. · LONDON, ONTARIO · SINCE 1998 ·</textPath></text>
+      </svg>
+      <div class="hero__badge">{% include "mark.njk" %}</div>
+    </div>
+  </div>
+  <div class="wrap">
+    <ul class="facts">
+      <li><span class="facts__k">Founded in</span><span class="facts__v">1998</span></li>
+      <li><span class="facts__k">Over</span><span class="facts__v">50,000</span><span class="facts__k">spots delivered</span></li>
+      <li class="facts__wide"><span class="facts__k">Servicing clients around the world ...</span><span class="facts__route">From North America to Europe ... And Australia to Asia</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section section--paper">
+  <div class="wrap split">
+    <div class="split__head">
+      <p class="eyebrow eyebrow--ink">About</p>
+      <h2 class="h2">What Overnight Radio Can Do For You</h2>
+      <div class="vu" aria-hidden="true">{% for i in range(0, 18) %}<i style="--i:{{ i }}"></i>{% endfor %}</div>
+    </div>
+    <div class="split__body prose">
+      <p class="lead">Whether you’re a radio station, a media group, a podcaster, steaming audio productions, or a private business, we can be of service to you... for commercial voice overs, radio commercial production and radio commercial scripts.</p>
+      <p>We serve clients all over the world, from Toronto to Miami to Vancouver, the Caribbean, Europe to Dubai. We can provide you high quality radio ads. All produced from our studios in London, Canada, west of Toronto.</p>
+      <p>Since 1998, Overnight Radio has been delivering high end commercial productions.</p>
+      <p>We help stations have more commercial voice overs to choose from, expand station creative departments by providing commercial script writing and production... all for much less than adding staff, paying benefits, etc.</p>
+      <p>And we help businesses looking for a sound that will cut through the radio waves... working directly to create effective radio commercials that will make you well known in your market.</p>
+      <p>Anything to do with creating a radio commercial... we are your team... we’ve been honing our talents for more than two decades.</p>
+      <p class="callout">For radio commercial production, scripts and voice overs... put our experience and low rates to work for you. <a href="{{ site.phoneHref }}">Call</a> or <a href="mailto:{{ site.email }}">email</a> today.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--paper section--tight">
+  <div class="wrap tiles">
+    <a class="tile" href="/services.html"><span class="tile__k">01</span><span class="tile__t">Our Services</span><span class="tile__d">Professional Voice Over Services &amp; rates</span><svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="tile" href="/work.html"><span class="tile__k">02</span><span class="tile__t">Our Work</span><span class="tile__d">Hardsell, Medium, Softsell &amp; Creative</span><svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="tile" href="/team.html"><span class="tile__k">03</span><span class="tile__t">Team</span><span class="tile__d">{{ collections.talent.length }} voices &amp; the production team</span><svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="tile" href="/calculator.html"><span class="tile__k">04</span><span class="tile__t">Script Calculator</span><span class="tile__d">How long will your commercial be?</span><svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+  </div>
+</section>

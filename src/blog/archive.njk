@@ -1,0 +1,31 @@
+---
+layout: base.njk
+section: /blog/
+pagination:
+  data: collections.blogArchives
+  size: 1
+  alias: archive
+  addAllPagesToCollections: false
+permalink: "{{ archive.url }}index.html"
+eleventyComputed:
+  seoTitle: "{{ archive.name }}{% if archive.pageNumber > 1 %} - Page {{ archive.pageNumber }}{% endif %} - Blog | Overnight Radio Inc."
+  heading: "{{ archive.name }}"
+  eyebrow: "{% if archive.kind == 'category' %}Blog · Category{% elif archive.kind == 'tag' %}Blog · Tag{% else %}Blog · Archive{% endif %}"
+  lede: "{{ archive.total }} post{% if archive.total != 1 %}s{% endif %}"
+  currentArchive: "{{ archive.url if archive.pageNumber == 1 else '' }}"
+seoDescription: "Independent production house for GREAT Radio Commercials, Jingles & Ads the very next day!"
+---
+{% include "page-head.njk" %}
+
+<section class="section section--paper section--flush-top">
+  <div class="wrap bloglayout">
+    <div class="bloglist">
+      <a class="back back--ink" href="/blog/"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg> All posts</a>
+      {% for post in archive.posts %}{% include "post-card.njk" %}{% endfor %}
+      {% set newer = archive.newer %}{% set older = archive.older %}
+      {% set pageNumber = archive.pageNumber %}{% set totalPages = archive.totalPages %}
+      {% include "blog-pager.njk" %}
+    </div>
+    {% include "blog-sidebar.njk" %}
+  </div>
+</section>

@@ -1,0 +1,8 @@
+{
+  "layout": "post.njk",
+  "section": "/blog/",
+  "permalink": "/blog/{{ page.fileSlug }}/index.html",
+  "eleventyComputed": {
+    "seoTitle": "{{ title }} | Overnight Radio Inc. Blog"
+  }
+}

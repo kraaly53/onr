@@ -1,0 +1,8 @@
+{# needs: newer, older, pageNumber, totalPages #}
+{% if totalPages > 1 %}
+<nav class="blogpager" aria-label="Blog pages">
+  {% if newer %}<a class="blogpager__link" href="{{ newer }}" rel="prev"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg> Newer posts</a>{% else %}<span class="blogpager__link is-off" aria-hidden="true"><svg><use href="#i-arrow-left"/></svg> Newer posts</span>{% endif %}
+  <span class="blogpager__count">Page {{ pageNumber }} of {{ totalPages }}</span>
+  {% if older %}<a class="blogpager__link" href="{{ older }}" rel="next">Older posts <svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>{% else %}<span class="blogpager__link is-off" aria-hidden="true">Older posts <svg><use href="#i-arrow-right"/></svg></span>{% endif %}
+</nav>
+{% endif %}

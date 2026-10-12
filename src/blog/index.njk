@@ -1,0 +1,29 @@
+---
+layout: base.njk
+section: /blog/
+pagination:
+  data: collections.posts
+  size: 5 # keep in sync with POSTS_PER_PAGE in eleventy.config.js
+  alias: pagePosts
+permalink: "{% if pagination.pageNumber == 0 %}/blog/index.html{% else %}/blog/page/{{ pagination.pageNumber + 1 }}/index.html{% endif %}"
+eleventyComputed:
+  seoTitle: "Blog{% if pagination.pageNumber > 0 %} - Page {{ pagination.pageNumber + 1 }}{% endif %} - Voice Overs, Radio Jingle, Advertising & Commercial Production | Overnight Radio Inc."
+seoDescription: "Independent production house for GREAT Radio Commercials, Jingles & Ads the very next day!"
+eyebrow: Blog
+heading: "The Overnight Radio <strong>Blog</strong>"
+lede: "We will be discussing issues relevant to the world of radio production and scripting."
+---
+{% include "page-head.njk" %}
+<script>if (new URLSearchParams(location.search).get("s")) location.replace("/blog/search/" + location.search);</script>
+
+<section class="section section--paper section--flush-top">
+  <div class="wrap bloglayout">
+    <div class="bloglist">
+      {% for post in pagePosts %}{% include "post-card.njk" %}{% endfor %}
+      {% set newer = pagination.href.previous %}{% set older = pagination.href.next %}
+      {% set pageNumber = pagination.pageNumber + 1 %}{% set totalPages = pagination.pages.length %}
+      {% include "blog-pager.njk" %}
+    </div>
+    {% include "blog-sidebar.njk" %}
+  </div>
+</section>

@@ -1,0 +1,8 @@
+<section class="pagehead">
+  <div class="rings rings--head" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="rings__logo">{% include "mark.njk" %}</span></div>
+  <div class="wrap">
+    {% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
+    <h1 class="pagehead__title">{{ heading | safe }}</h1>
+    {% if lede %}<p class="pagehead__lede">{{ lede | safe }}</p>{% endif %}
+  </div>
+</section>

@@ -1,0 +1,22 @@
+---
+layout: base.njk
+section: /work.html
+---
+<section class="profile profile--spot">
+  <div class="rings rings--profile" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="rings__logo">{% include "mark.njk" %}</span></div>
+  <div class="wrap wrap--narrow">
+    <a class="back" href="/work.html"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg> Our Work</a>
+    <p class="tag tag--amber">{{ category }}</p>
+    <h1 class="profile__name">{{ title }}</h1>
+    {% set p = { mp3: spotMp3, ogg: spotOgg, label: title + " · " + category } %}
+    {% include "player.njk" %}
+  </div>
+</section>
+{% if content | trim %}
+<section class="section section--paper">
+  <div class="wrap wrap--narrow">
+    <p class="eyebrow eyebrow--ink">Script</p>
+    <div class="script">{{ content | replace("</strong>: ", "</strong> ") | replace("</strong>:", "</strong> ") | safe }}</div>
+  </div>
+</section>
+{% endif %}

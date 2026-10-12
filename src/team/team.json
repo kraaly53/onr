@@ -1,0 +1,4 @@
+{
+  "layout": "announcer.njk",
+  "permalink": "/team/{{ page.fileSlug }}.html"
+}

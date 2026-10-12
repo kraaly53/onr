@@ -1,0 +1,18 @@
+{# Usage: {% set p = { mp3: "...", ogg: "...", label: "..." } %}{% include "player.njk" %} #}
+<div class="player" data-player>
+  <button class="player__btn" type="button" aria-label="Play {{ p.label }}">
+    <svg class="player__play" aria-hidden="true"><use href="#i-play"/></svg>
+    <svg class="player__pause" aria-hidden="true"><use href="#i-pause"/></svg>
+  </button>
+  <div class="player__body">
+    <div class="player__meta"><span class="player__label">{{ p.label }}</span><span class="player__time"><span data-cur>0:00</span> / <span data-dur>–:––</span></span></div>
+    <div class="player__track" data-track role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="player__wave" aria-hidden="true"></div>
+      <div class="player__fill" data-fill aria-hidden="true"></div>
+    </div>
+  </div>
+  <audio preload="metadata" controls>
+    <source src="{{ p.mp3 | asset }}" type="audio/mpeg">
+    {% if p.ogg %}<source src="{{ p.ogg | asset }}" type="audio/ogg">{% endif %}
+  </audio>
+</div>

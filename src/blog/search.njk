@@ -1,0 +1,22 @@
+---
+layout: base.njk
+section: /blog/
+permalink: /blog/search/index.html
+seoTitle: "Search - Blog | Overnight Radio Inc."
+seoDescription: "Search the Overnight Radio blog."
+eyebrow: Blog · Search
+heading: "Search the <strong>Blog</strong>"
+scripts: ["/assets/js/blog-search.js"]
+---
+{% include "page-head.njk" %}
+
+<section class="section section--paper section--flush-top">
+  <div class="wrap bloglayout">
+    <div class="bloglist">
+      <a class="back back--ink" href="/blog/"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg> All posts</a>
+      <p class="searchsummary" data-search-summary role="status">Type a word or phrase to search all posts.</p>
+      <div data-search-results></div>
+    </div>
+    {% include "blog-sidebar.njk" %}
+  </div>
+</section>

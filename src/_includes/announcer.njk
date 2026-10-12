@@ -1,0 +1,30 @@
+---
+layout: base.njk
+section: /team.html
+---
+{%- set list = collections.team -%}
+{%- set prev = list | getPreviousCollectionItem(page) -%}
+{%- set next = list | getNextCollectionItem(page) -%}
+<section class="profile">
+  <div class="rings rings--profile" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="rings__logo">{% include "mark.njk" %}</span></div>
+  <div class="wrap">
+    <a class="back" href="/team.html"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg> Team</a>
+    <div class="profile__grid">
+      <figure class="profile__photo">
+        <img src="{{ photo | asset }}" alt="{{ name }}">
+      </figure>
+      <div class="profile__body">
+        {% if role %}<p class="tag tag--amber">{{ role }}</p>{% endif %}
+        <h1 class="profile__name">{{ name }}</h1>
+        <div class="profile__bio prose prose--night">{{ content | safe }}</div>
+        {% set p = { mp3: sampleMp3, ogg: sampleOgg, label: sampleLabel } %}
+        {% include "player.njk" %}
+      </div>
+    </div>
+  </div>
+</section>
+<nav class="pager wrap" aria-label="More voices">
+  {% if prev %}<a class="pager__link" href="{{ prev.url }}"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg><span><small>Previous</small>{{ prev.data.cardName or prev.data.name }}</span></a>{% else %}<span></span>{% endif %}
+  <a class="pager__all" href="/team.html">All voices</a>
+  {% if next %}<a class="pager__link pager__link--next" href="{{ next.url }}"><span><small>Next</small>{{ next.data.cardName or next.data.name }}</span><svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>{% else %}<span></span>{% endif %}
+</nav>

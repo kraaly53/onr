@@ -1,0 +1,25 @@
+<aside class="blogside">
+  <form class="blogside__search" action="/blog/search/" method="get" role="search">
+    <label class="search search--block">
+      <svg aria-hidden="true"><use href="#i-search"/></svg>
+      <span class="sr-only">Search for:</span>
+      <input type="search" name="s" placeholder="Search the blog" value="{{ searchValue }}">
+    </label>
+  </form>
+  <section class="blogside__box">
+    <h2>Categories</h2>
+    <ul>
+      {% for c in collections.blogCategories %}
+      <li><a href="{{ c.url }}"{% if c.url == currentArchive %} aria-current="page"{% endif %}>{{ c.name }}</a><span>{{ c.count }}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section class="blogside__box">
+    <h2>Archives</h2>
+    <ul class="blogside__months">
+      {% for m in collections.blogMonths %}
+      <li><a href="{{ m.url }}"{% if m.url == currentArchive %} aria-current="page"{% endif %}>{{ m.name }}</a><span>{{ m.count }}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+</aside>

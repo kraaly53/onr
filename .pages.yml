@@ -1,0 +1,109 @@
+# Pages CMS (https://pagescms.org) — a free web editor that sits on top of the GitHub repo.
+# Once the repo is on GitHub, the owner signs in with GitHub at app.pagescms.org and gets
+# simple forms for announcers and spots. Every save is a normal commit.
+
+media:
+  - name: photos
+    label: Announcer photos
+    input: src/images/announcers
+    output: /images/announcers
+    categories: [image]
+  - name: audio
+    label: Audio samples
+    input: src/audio
+    output: /audio
+    extensions: [mp3, ogg]
+
+content:
+  - name: blog
+    label: Blog posts
+    type: collection
+    path: src/blog/posts
+    filename: "{fields.title}.md"
+    view:
+      primary: title
+      fields: [title, date, categories]
+      sort: [date]
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - { name: author, label: Author, type: string, default: Overnight Radio }
+      - name: categories
+        label: Categories
+        type: select
+        list: true
+        options: { values: [Commercials, General, Music], creatable: true }
+      - { name: keywords, label: Tags, type: string, list: true }
+      - { name: description, label: Google description (1–2 sentences), type: text }
+      - { name: body, label: Post, type: rich-text }
+
+  - name: team
+    label: Team (announcers)
+    type: collection
+    path: src/team
+    filename: "{primary}.md"
+    view:
+      primary: name
+      fields: [name, role, roster, order]
+      sort: [order, name]
+    fields:
+      - { name: name, label: Name (on their page), type: string, required: true }
+      - { name: cardName, label: Name on the Team grid (optional), type: string }
+      - { name: role, label: Role, type: string, description: "e.g. Announcer, Production, Child Announcer" }
+      - name: group
+        label: Section on the Team page
+        type: select
+        default: talent
+        options: { values: [ { value: talent, label: Talent }, { value: production, label: The Production Team } ] }
+      - { name: summary, label: Short blurb (Production Team only), type: text }
+      - name: roster
+        label: Roster status
+        type: select
+        default: roster
+        options: { values: [ { value: roster, label: Roster }, { value: non-roster, label: "Non-roster (extra units apply)" } ] }
+      - { name: order, label: Position on the Team page, type: number, description: "Lower numbers show first" }
+      - { name: photo, label: Photo, type: image, options: { media: photos } }
+      - { name: sampleLabel, label: Sample label, type: string, default: Announcer Sample }
+      - { name: sampleMp3, label: Voice sample (MP3), type: file, options: { media: audio } }
+      - { name: sampleOgg, label: Voice sample (OGG, optional), type: file, options: { media: audio } }
+      - { name: seoTitle, label: Browser tab / Google title, type: string }
+      - { name: seoDescription, label: Google description, type: text }
+      - { name: body, label: Bio, type: rich-text }
+
+  - name: work
+    label: Our Work (spots)
+    type: collection
+    path: src/work
+    view:
+      primary: title
+      fields: [title, category, order]
+      sort: [order]
+    fields:
+      - { name: title, label: Client / spot name, type: string, required: true }
+      - name: category
+        label: Style
+        type: select
+        options: { values: [Hardsell, Medium, Softsell, Creative, Sample] }
+      - { name: order, label: Position, type: number }
+      - { name: spotMp3, label: Spot audio (MP3), type: file, options: { media: audio } }
+      - { name: spotOgg, label: Spot audio (OGG, optional), type: file, options: { media: audio } }
+      - { name: seoTitle, label: Browser tab / Google title, type: string }
+      - { name: seoDescription, label: Google description, type: text }
+      - { name: body, label: Script, type: rich-text }
+
+  - name: pricing
+    label: Pricing
+    type: file
+    path: src/_data/pricing.json
+    format: json
+  - name: testimonials
+    label: Testimonials
+    type: file
+    path: src/_data/testimonials.json
+    format: json
+  - name: site
+    label: Contact details & menu
+    type: file
+    path: src/_data/site.json
+    format: json

@@ -1,0 +1,14 @@
+{
+  "intro": "Below is a detailed list for radio station packages... units can be used for scripts, voice overs and radio production.",
+  "markets": [
+    { "name": "Small Market", "population": "Pop. 100,000 & under",
+      "gold":   { "monthly": "$1350", "units": 50, "perUnit": "$27" },
+      "silver": { "monthly": "$725",  "units": 25, "perUnit": "$29" } },
+    { "name": "Medium Market", "population": "Pop. 100,000 to 500,000",
+      "gold":   { "monthly": "$1850", "units": 50, "perUnit": "$37" },
+      "silver": { "monthly": "$975",  "units": 25, "perUnit": "$39" } },
+    { "name": "Large Market", "population": "Pop. 500,000 & over",
+      "gold":   { "monthly": "$2400", "units": 50, "perUnit": "$48" },
+      "silver": { "monthly": "$1325", "units": 25, "perUnit": "$53" } }
+  ]
+}

@@ -1,0 +1,24 @@
+---
+permalink: /blog/feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Overnight Radio Inc. Blog</title>
+    <link>{{ site.url }}/blog/</link>
+    <atom:link href="{{ site.url }}/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>We will be discussing issues relevant to the world of radio production and scripting.</description>
+    <language>en</language>
+    {% for post in collections.posts %}
+    <item>
+      <title>{{ post.data.title | escape }}</title>
+      <link>{{ site.url }}{{ post.url }}</link>
+      <guid>{{ site.url }}{{ post.url }}</guid>
+      <pubDate>{{ post.date | rfcDate }}</pubDate>
+      {% for c in post.data.categories %}<category>{{ c | escape }}</category>{% endfor %}
+      <description>{{ post.content | escape }}</description>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>

@@ -1,0 +1,33 @@
+---
+layout: base.njk
+---
+{%- set newerPost = collections.posts | getPreviousCollectionItem(page) -%}
+{%- set olderPost = collections.posts | getNextCollectionItem(page) -%}
+<section class="pagehead pagehead--post">
+  <div class="rings rings--head" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="rings__logo">{% include "mark.njk" %}</span></div>
+  <div class="wrap wrap--narrow">
+    <a class="back" href="/blog/"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg> Blog</a>
+    <p class="postmeta postmeta--night">
+      <time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time>
+      {% for c in categories %}<a class="tag tag--amber" href="/blog/category/{{ c | slug }}/">{{ c }}</a>{% endfor %}
+    </p>
+    <h1 class="pagehead__title pagehead__title--post">{{ title }}</h1>
+    <p class="postby">By {{ author or "Overnight Radio" }}</p>
+  </div>
+</section>
+
+<section class="section section--paper section--flush-top">
+  <div class="wrap wrap--narrow">
+    <div class="prose prose--post">{{ content | safe }}</div>
+    {% if keywords and keywords.length %}
+    <ul class="keywords" aria-label="Tags">
+      {% for t in keywords %}<li><a href="/blog/tag/{{ t | slug }}/">{{ t }}</a></li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</section>
+<nav class="pager wrap wrap--narrow" aria-label="More posts">
+  {% if newerPost %}<a class="pager__link" href="{{ newerPost.url }}"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg><span><small>Newer post</small>{{ newerPost.data.title }}</span></a>{% else %}<span></span>{% endif %}
+  <a class="pager__all" href="/blog/">All posts</a>
+  {% if olderPost %}<a class="pager__link pager__link--next" href="{{ olderPost.url }}"><span><small>Older post</small>{{ olderPost.data.title }}</span><svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>{% else %}<span></span>{% endif %}
+</nav>
