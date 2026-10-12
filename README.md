@@ -498,7 +498,7 @@ The repository is **github.com/kraaly53/onr**. Every push to `main` runs `.githu
 
 1. installs and builds the site with `PATH_PREFIX=/testing/onr/` (so every link points inside that folder), then
 2. uploads the finished `_site/` folder by FTP (using `lftp`, which reconnects if the server drops the connection)
-   to `/public_html/ordinaryspoon.com/testing/onr/`.
+   to `/ordinaryspoon.com/testing/onr/` (the FTP login starts in the hosting root, where each website has its own folder).
 
 The FTP login is stored as repository secrets (`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`) under
 Settings → Secrets and variables → Actions. Progress and errors show under the repository's **Actions** tab;
