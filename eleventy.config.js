@@ -25,6 +25,7 @@ export default function (eleventyConfig) {
   // Links in the finished HTML are rewritten for the folder the site is published in (PATH_PREFIX, e.g. "/testing/onr/").
   eleventyConfig.addPlugin(HtmlBasePlugin);
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
+  eleventyConfig.addPassthroughCopy("src/.htaccess"); // caching rules for the web server
   // Photos, audio and thumbnails live here once they're moved into the repo.
   eleventyConfig.addPassthroughCopy("src/images");
   eleventyConfig.addPassthroughCopy("src/audio");

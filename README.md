@@ -506,6 +506,10 @@ The FTP login is stored as repository secrets (`FTP_SERVER`, `FTP_USERNAME`, `FT
 Settings → Secrets and variables → Actions. Progress and errors show under the repository's **Actions** tab;
 a deploy can also be re-run from there (**Run workflow**).
 
+**Caching:** the hosting keeps copies of pages and files for up to an hour. To stop that hiding updates, every
+build adds a version (`?v=…`) to the CSS and JS links, and `src/.htaccess` asks for pages not to be cached. If a page
+still looks out of date right after a deploy, add `?v=1` to its address (or wait up to an hour).
+
 **Moving to the real domain later:** change `PATH_PREFIX` in the workflow to `/` (or remove it) and change
 `REMOTE_DIR` to the domain's web root.
 

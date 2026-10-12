@@ -58,9 +58,14 @@ jobs:
 
     - name: Check the site is live
       run: |
-        for page in "" team.html assets/css/site.css; do
-          code=$(curl -s -o /dev/null -w '%{http_code}' -L "https://www.ordinaryspoon.com/testing/onr/$page")
+        # ask for fresh copies (?check=...) so the hosting's cache can't hide a good or bad deploy
+        for page in "" team.html concepts/night/; do
+          code=$(curl -s -o /dev/null -w '%{http_code}' "https://www.ordinaryspoon.com/testing/onr/$page?check=$GITHUB_RUN_ID" || true)
           echo "$code  /testing/onr/$page"
           [ "$code" = "200" ] || failed=1
         done
+        css=$(curl -s "https://www.ordinaryspoon.com/testing/onr/?check=$GITHUB_RUN_ID" | grep -oE 'assets/css/site\.css\?v=[a-z0-9]+' | head -n 1)
+        code=$(curl -s -o /dev/null -w '%{http_code}' "https://www.ordinaryspoon.com/testing/onr/$css" || true)
+        echo "$code  /testing/onr/$css"
+        [ -n "$css" ] && [ "$code" = "200" ] || failed=1
         [ -z "$failed" ] || { echo "::error::The site isn't loading at https://www.ordinaryspoon.com/testing/onr/"; exit 1; }
