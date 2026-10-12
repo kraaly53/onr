@@ -1,0 +1,11 @@
+{
+  "layout": "concepts/bento/base.njk",
+  "cbase": "/concepts/bento",
+  "nav": [
+    { "key": "services", "label": "Our Services", "path": "/services.html" },
+    { "key": "work", "label": "Our Work", "path": "/work.html" },
+    { "key": "calculator", "label": "Script Calculator", "path": "/calculator.html" },
+    { "key": "blog", "label": "Blog", "path": "/blog/" },
+    { "key": "team", "label": "Team", "path": "/team.html" }
+  ]
+}

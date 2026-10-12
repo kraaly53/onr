@@ -1,0 +1,35 @@
+---
+pagination:
+  data: collections.team
+  size: 1
+  alias: m
+permalink: "/concepts/session/team/{{ m.fileSlug }}.html"
+station: team
+eleventyComputed:
+  seoTitle: "{{ m.data.seoTitle | safe }}"
+  seoDescription: "{{ m.data.seoDescription | safe }}"
+---
+{%- set prev = collections.team | getPreviousCollectionItem(m) -%}
+{%- set next = collections.team | getNextCollectionItem(m) -%}
+<nav class="crumbs"><a href="{{ cbase }}/team.html">← Team</a><span>/</span><span>{{ m.data.name }}.wav</span></nav>
+<section class="editor">
+  <aside class="inspector">
+    <p class="inspector__h">Inspector</p>
+    <img src="{{ m.data.photo | asset }}" alt="{{ m.data.name }}">
+    <dl>
+      <div><dt>Name</dt><dd>{{ m.data.name }}</dd></div>
+      <div><dt>Role</dt><dd>{{ m.data.role or "Announcer" }}</dd></div>
+      <div><dt>Status</dt><dd>{{ "Non-roster" if m.data.roster == "non-roster" else "Roster" }}</dd></div>
+    </dl>
+  </aside>
+  <div class="editor__main">
+    <h1 class="headline headline--name">{{ m.data.name }}</h1>
+    <div class="doc doc--bio">{{ m.content | safe }}</div>
+    {% set p = { mp3: m.data.sampleMp3, ogg: m.data.sampleOgg, label: m.data.sampleLabel } %}
+    {% include "concepts/session/clip.njk" %}
+    <nav class="nudge" aria-label="More voices">
+      {% if prev %}<a href="{{ cbase }}{{ prev.url }}"><small>⏮ Previous</small>{{ prev.data.cardName or prev.data.name }}</a>{% else %}<span></span>{% endif %}
+      {% if next %}<a class="nudge__next" href="{{ cbase }}{{ next.url }}"><small>Next ⏭</small>{{ next.data.cardName or next.data.name }}</a>{% else %}<span></span>{% endif %}
+    </nav>
+  </div>
+</section>

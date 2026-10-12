@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ seoTitle or title }}</title>
+  <meta name="description" content="{{ seoDescription or description }}">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/concepts/bento.css">
+  <link rel="stylesheet" href="/assets/css/designs/switcher.css">
+</head>
+<body class="{{ bodyClass }}">
+  {% include "icons.njk" %}
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="pillbar">
+    <a class="pillbar__brand" href="{{ cbase }}/index.html">{% include "mark.njk" %}<span>Overnight Radio</span></a>
+    <button class="nav-toggle pillbar__toggle" aria-expanded="false" aria-controls="bento-nav"><span class="sr-only">Menu</span><i></i><i></i></button>
+    <nav id="bento-nav" class="nav pillbar__nav" aria-label="Main">
+      <ul>
+        {% for n in nav %}<li><a href="{{ cbase }}{{ n.path }}"{% if n.key == station %} aria-current="page"{% endif %}>{{ n.label }}</a></li>{% endfor %}
+      </ul>
+      <a class="pillbar__cta{% if station == 'contact' %} is-current{% endif %}" href="{{ cbase }}/contact.html">Contact <svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    {{ content | safe }}
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot__grid">
+        <div class="foot__col">
+          <p class="eyebrow">Get in touch</p>
+          <p class="foot__big"><a href="{{ site.phoneHref }}">{{ site.phone }}</a><br><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+          <p class="muted">{{ site.city }}</p>
+        </div>
+        <nav class="foot__col foot__links" aria-label="Footer">
+          <a href="{{ cbase }}/index.html">Home</a>
+          {% for n in nav %}<a href="{{ cbase }}{{ n.path }}">{{ n.label }}</a>{% endfor %}
+          <a href="{{ cbase }}/contact.html">Contact</a>
+          <a href="{{ cbase }}/privacypolicy.html">Privacy Policy</a>
+        </nav>
+        <div class="foot__col foot__end">
+          <ul class="socials">{% for s in site.social %}<li><a href="{{ s.url }}" target="_blank" rel="noopener" aria-label="{{ s.name }}"><svg aria-hidden="true"><use href="#i-{{ s.icon }}"/></svg></a></li>{% endfor %}</ul>
+          <a class="bbb" href="{{ site.bbbUrl }}" target="_blank" rel="noopener"><img src="{{ site.bbbImage }}" height="57" alt="Overnight Radio Inc., Radio Program Producers, London, ON"></a>
+        </div>
+      </div>
+      <p class="foot__word" aria-hidden="true">Overnight Radio</p>
+      <p class="foot__legal">&copy; Copyright. All rights reserved. {{ site.legalName }}</p>
+    </div>
+  </footer>
+
+  {% if site.designSwitcher %}{% include "design-switcher.njk" %}<script src="/assets/js/design-switcher.js" defer></script>{% endif %}
+  <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/concepts/bento.js" defer></script>
+  {% if scripts %}{% for s in scripts %}<script src="{{ s }}" defer></script>{% endfor %}{% endif %}
+</body>
+</html>

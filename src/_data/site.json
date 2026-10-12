@@ -98,6 +98,16 @@
       "id": "night",
       "name": "Night Shift",
       "note": "Dusk to dawn in one scroll"
+    },
+    {
+      "id": "bento",
+      "name": "Bento",
+      "note": "Today’s look: bento grid & bold type"
+    },
+    {
+      "id": "session",
+      "name": "The Session",
+      "note": "The site as a recording studio session"
     }
   ]
 }

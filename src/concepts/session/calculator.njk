@@ -1,0 +1,31 @@
+---
+permalink: /concepts/session/calculator.html
+station: calculator
+seoTitle: "Commercial Script Calculator | Overnight Radio Inc."
+seoDescription: "Commerical Script Calculator that will calcuate the timing of the commercial."
+scripts: ["/assets/js/calculator.js"]
+---
+<section class="track track--title">
+  <div class="track__hdr"><span class="track__n">01</span><span class="track__name">Title</span><span class="ms"><b>M</b><b class="on">S</b></span></div>
+  <div class="track__lane"><div class="clip clip--big" style="--c: var(--track)"><span class="clip__label">Script Calculator</span><h1 class="headline">Commercial <span>Script Calculator</span></h1>
+    <p class="clip__text">Enter your script, select the read speed, click the button and we'll tell you how long you commercial will be.</p></div></div>
+</section>
+<form class="calc" onsubmit="return false">
+  <div class="calc__panes">
+    <label class="panel"><span class="panel__h">Script</span><textarea name="message" id="message" rows="9" placeholder="Enter script here" autofocus></textarea></label>
+    <label class="panel"><span class="panel__h">Results</span><textarea name="results" id="results" rows="9" placeholder="Results" readonly></textarea></label>
+  </div>
+  <div class="calc__bar">
+    <label class="panel panel--inline"><span class="panel__h">Script Read Speed</span>
+      <select id="speed" name="speed"><option value="1">Slow Read</option><option value="2" selected>Normal Read</option><option value="3">Fast Read</option></select>
+    </label>
+    <button type="button" class="pad" id="calculateScript">Calculate Length</button>
+    <div class="calc__out"><span class="panel__h">Total Script Length</span><output class="readout" id="wlength" name="wlength">0</output></div>
+    <div class="calc__out"><span class="panel__h">Word Count</span><output class="readout readout--sm" id="wcount" name="wcount">0</output></div>
+  </div>
+  {# Your script drawn as a clip on a 0–60 second timeline (session.js reads the calculated length) #}
+  <div class="timeline" aria-hidden="true">
+    <div class="timeline__ruler">{% for n in range(0, 61, 5) %}<span style="--x: {{ (n / 60 * 100) | round(2) }}%">{{ n }}s</span>{% endfor %}</div>
+    <div class="timeline__lane"><span class="timeline__mark" style="--x: 25%">:15</span><span class="timeline__mark" style="--x: 50%">:30</span><span class="timeline__mark" style="--x: 100%">:60</span><span class="timeline__clip" data-calc-clip><b>Your script</b></span></div>
+  </div>
+</form>

@@ -1,0 +1,48 @@
+{
+  "layout": "concepts/session/base.njk",
+  "cbase": "/concepts/session",
+  "markers": [
+    {
+      "key": "home",
+      "label": "Home",
+      "path": "/index.html",
+      "color": "#ff8a3d"
+    },
+    {
+      "key": "services",
+      "label": "Our Services",
+      "path": "/services.html",
+      "color": "#f5c84b"
+    },
+    {
+      "key": "work",
+      "label": "Our Work",
+      "path": "/work.html",
+      "color": "#6ee7a8"
+    },
+    {
+      "key": "calculator",
+      "label": "Script Calculator",
+      "path": "/calculator.html",
+      "color": "#5ad1f5"
+    },
+    {
+      "key": "blog",
+      "label": "Blog",
+      "path": "/blog/",
+      "color": "#8e9bff"
+    },
+    {
+      "key": "team",
+      "label": "Team",
+      "path": "/team.html",
+      "color": "#d78bff"
+    },
+    {
+      "key": "contact",
+      "label": "Contact",
+      "path": "/contact.html",
+      "color": "#ff7aa8"
+    }
+  ]
+}

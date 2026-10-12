@@ -1,0 +1,38 @@
+---
+permalink: /concepts/session/work.html
+station: work
+seoTitle: "Radio Ad Examples, Radio Commercial Scripts | Overnight Radio Inc."
+seoDescription: "A sample of Overnight Radio spots that were created from start to finish, in a broad range of styles (Hardsell, Medium, Softsell & Creative)."
+---
+<section class="track track--title">
+  <div class="track__hdr"><span class="track__n">01</span><span class="track__name">Title</span><span class="ms"><b>M</b><b class="on">S</b></span></div>
+  <div class="track__lane"><div class="clip clip--big" style="--c: var(--track)"><span class="clip__label">Our Work</span><h1 class="headline">Our Work, <span>Our Pride</span></h1>
+    <p class="clip__text">Overnight Radio has produced tens of thousands of top radio commercials from start to finish, covering a broad range of advertising styles from Hardsell, Medium, Softsell to Creative. Listen to some of the radio ad examples that we have produced. All made each client very happy.</p></div></div>
+</section>
+<section class="browser">
+  <div class="browser__bar" role="toolbar" aria-label="Filter by style" data-filters>
+    {% for f in ["all", "Hardsell", "Medium", "Softsell", "Creative", "Sample"] %}
+    <button type="button" class="{% if f == 'all' %}is-active{% endif %} f--{{ f | lower }}" data-filter="{{ f }}" aria-pressed="{{ 'true' if f == 'all' else 'false' }}">{{ "Show All" if f == "all" else f }}</button>
+    {% endfor %}
+  </div>
+  <ul class="files" data-spots>
+    {% for s in collections.spots %}
+    <li class="spot voice file file--{{ s.data.category | lower }}" data-category="{{ s.data.category }}">
+      <button class="voice__play file__play" type="button" data-quickplay="{{ s.data.spotMp3 | asset }}" aria-label="Play the {{ s.data.title }} spot"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z" fill="currentColor"/></svg></button>
+      <a class="file__name" href="{{ cbase }}{{ s.url }}">{{ s.data.title }}</a>
+      <span class="file__wave" aria-hidden="true"></span>
+      <span class="file__cat">{{ s.data.category }}</span>
+      <a class="file__open" href="{{ cbase }}{{ s.url }}">Open session →</a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+<section class="track track--tall">
+  <div class="track__hdr"><span class="track__n">02</span><span class="track__name">Client notes</span><span class="ms"><b>M</b><b>S</b></span></div>
+  <div class="track__lane track__lane--clips track__lane--notes">
+    <h2 class="sr-only">What our Clients say</h2>
+    {% for t in testimonials %}
+    <figure class="clip clip--note{% if t.featured %} clip--note-big{% endif %}" style="--c: {{ ['#ff8a3d','#f5c84b','#6ee7a8','#5ad1f5','#d78bff'][loop.index0 % 5] }}"><span class="clip__label">{{ t.name or "Client" }}</span><blockquote>“{{ t.quote }}”</blockquote></figure>
+    {% endfor %}
+  </div>
+</section>

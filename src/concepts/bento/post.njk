@@ -1,0 +1,26 @@
+---
+pagination:
+  data: collections.posts
+  size: 1
+  alias: post
+permalink: "/concepts/bento{{ post.url }}index.html"
+station: blog
+eleventyComputed:
+  seoTitle: "{{ post.data.title | safe }} | Overnight Radio Inc. Blog"
+  seoDescription: "{{ post.data.description | safe }}"
+---
+{%- set newerPost = collections.posts | getPreviousCollectionItem(post) -%}
+{%- set olderPost = collections.posts | getNextCollectionItem(post) -%}
+<article class="wrap wrap--read">
+  <header class="pagehead reveal">
+    <a class="back" href="{{ cbase }}/blog/"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg> Blog</a>
+    <p class="post__meta"><time datetime="{{ post.date | isoDate }}">{{ post.date | readableDate }}</time>{% for c in post.data.categories %}<span class="chip chip--sm">{{ c }}</span>{% endfor %}</p>
+    <h1 class="display display--post">{{ post.data.title }}</h1>
+    <p class="muted">By {{ post.data.author or "Overnight Radio" }}</p>
+  </header>
+  <div class="prose">{{ post.content | safe }}</div>
+</article>
+<nav class="wrap wrap--read pager" aria-label="More posts">
+  {% if newerPost %}<a class="pager__card" href="{{ cbase }}{{ newerPost.url }}"><small>Newer post</small>{{ newerPost.data.title }}</a>{% else %}<span></span>{% endif %}
+  {% if olderPost %}<a class="pager__card pager__card--next" href="{{ cbase }}{{ olderPost.url }}"><small>Older post</small>{{ olderPost.data.title }}</a>{% else %}<span></span>{% endif %}
+</nav>

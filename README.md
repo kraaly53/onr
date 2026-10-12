@@ -394,7 +394,7 @@ http://localhost:8080, then commit and push.
 ### Design versions (being reviewed)
 
 **The Design panel** (bottom-left corner of every page, preview only) lists the designs under review: **1 After
-Hours** (the original redesign) and the complete redesigns **2 The Dial**, **3 The Script** and **4 Night Shift**.
+Hours** (the original redesign) and the complete redesigns **2 The Dial**, **3 The Script**, **4 Night Shift**, **5 Bento** and **6 The Session**.
 After Hours has four themes — **A** After Hours, **B** Rate Card, **C** Golden Hour, **D** Signal — shown as
 small A–D buttons beside it (hover one to see its name). The arrow at the top of the panel tucks it away or brings
 it back, and the choice is remembered as you move between pages.
@@ -433,10 +433,10 @@ Version A as it was before the other designs were added is saved in git as the t
 
 ### Complete redesigns ("concepts", being reviewed)
 
-Besides the four themes, there are **three complete redesigns** — different layouts, navigation and
+Besides the four themes, there are **five complete redesigns** — different layouts, navigation and
 interactions, not just different colours. Each is a full copy of the site (every page, all announcer and spot
 pages, and the blog with 5 posts per page) under its own address, built from the **same content files**, so an
-edited bio, price or post shows up in every version automatically. They're listed as designs 2–4
+edited bio, price or post shows up in every version automatically. They're listed as designs 2–6
 in the Design panel; picking one opens the same page in that concept (blog tag/category/month pages and search
 fall back to the concept's blog listing).
 
@@ -445,6 +445,8 @@ fall back to the concept's blog listing).
 | **1** | The Dial | `/concepts/dial/` | The site is a vintage hi-fi FM receiver. The menu is a backlit tuning dial — each page is a "station" and the needle sweeps to it as you move around; the knob tunes to the next page. Facts are VU meters, the logo sits in a speaker grille, Work filters are car-radio preset buttons, the Team page is a scrolling **voice dial** you tune across (needle in the middle, frequency readout, quick-play), announcer pages have a receiver-style player with moving VU meters, and the footer is the rear panel with gold RCA jacks. |
 | **2** | The Script | `/concepts/script/` | The site is radio production paperwork on a desk. Every page is a typed, hole-punched script sheet with a production-order header; the menu is a taped-on **rundown** with a red-pencil check mark. Copy is laid out with ANNCR:/TAG: cues, highlighter and hand-written margin notes; prices are a typed rate card; the Team page is a **casting sheet**; announcers get a paper-clipped Polaroid one-sheet; spots are filed in a tabbed binder and shown as real scripts with a typed "tape" player; the calculator stamps its result; blog posts are **memos**. |
 | **3** | Night Shift | `/concepts/night/` | One night across the whole site. Each page sits at an hour, in menu order — Home at a 6 PM sunset, then Our Services, Our Work, Script Calculator, Blog, Team, and Contact at first light (~5 AM) — and a clock in the corner keeps time; clicking between pages, the sky, stars and clock glide on from the previous page's hour (time only runs forward, so going back carries on through the day to that hour the next evening). **The moon rests beside the last word of each page's title, growing a little as it settles, and lights the title up** with a soft moonlit glow: on a first visit to Home it starts up in the evening sky above "London, Ontario, Canada", then floats over to "Inc."; on other pages it floats from wherever it was on the previous page. On phones, where titles reach the edge, it rests just above the title instead, lined up with the last word; it never covers a letter. Once it has settled it's pinned to the title, so it scrolls with the page exactly (and off screen with the title); the next page floats it in from wherever it was last seen. The team appears as a **constellation** (each star is a voice), portraits are moon-round, studio windows glow, and the audio player is a horizon a little sun travels along. In browsers that support it, pages cross-fade while the menu bar stays put. |
+| **5** | Bento | `/concepts/bento/` | Where web design is right now. A calm, light palette with one bright orange accent, big tight-tracked sans headlines paired with italic serif words, and a floating pill-shaped menu. Home is a **bento grid** of rounded cards — the welcome, the 1998 and 50,000 stats (they count up into view), a "Now playing" card with the sample spot, the team's faces, the calculator and pricing — followed by the about copy and a scrolling strip of client quotes. Services has a **Gold / Silver toggle** for the packages; spots and voices play straight from their cards; cards rise into view as you scroll; the footer ends with a giant fading wordmark. |
+| **6** | The Session | `/concepts/session/` | The site as a recording session in the audio software a production house works in all day. A **transport bar** (skip back / play / skip forward / record light) with a running timecode that counts while anything plays; the menu is the **timeline ruler**, each page a coloured marker. Pages are laid out as colour-coded **tracks and clips** (Title, VO · Anncr, Stats…). The Team page is a **mixing desk** — a channel strip per voice with photo, fader and level meters that move while you **Solo** (play) it; announcer pages are a **clip editor** with an inspector and a big waveform with a playhead. Our Work is a file browser, and each spot's script becomes a **multitrack** — one lane per speaker (SFX, V1, V2, ANNCR, TAG) with each line as a clip in running order (click one to jump to that line). The calculator draws your script as a clip on a 0–60 s timeline; the footer is the master bus. |
 
 **Where the concept files live:**
 
@@ -452,6 +454,8 @@ fall back to the concept's blog listing).
 |---|---|---|---|
 | The Dial | `src/concepts/dial/*.njk` (+ `dial.json`: stations & frequencies) | `src/_includes/concepts/dial/` | `src/assets/concepts/dial.css`, `dial.js` |
 | The Script | `src/concepts/script/*.njk` (+ `script.json`: rundown) | `src/_includes/concepts/script/` | `src/assets/concepts/script.css` |
+| Bento | `src/concepts/bento/*.njk` (+ `bento.json`: menu) | `src/_includes/concepts/bento/` | `src/assets/concepts/bento.css`, `bento.js` |
+| The Session | `src/concepts/session/*.njk` (+ `session.json`: page markers & colours) | `src/_includes/concepts/session/` | `src/assets/concepts/session.css`, `session.js` |
 | Night Shift | `src/concepts/night/*.njk` (+ `night.json`: menu; each page sets its `hour`, 0 = 6 PM … 1 = 6 AM, in menu order) | `src/_includes/concepts/night/` | `src/assets/concepts/night.css`, `night.js` |
 
 All concepts reuse the main site's JavaScript (`site.js` for the player, filters, search, quick-play and contact

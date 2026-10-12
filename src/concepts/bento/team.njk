@@ -1,0 +1,43 @@
+---
+permalink: /concepts/bento/team.html
+station: team
+seoTitle: "Voice Over Artists, Voice Talent Toronto | Overnight Radio Inc."
+seoDescription: "Overnight's Staff consists of some of the most professional producers & announcers in the industry today. Bringing you the right voice for your radio ad."
+---
+<section class="wrap pagehead reveal">
+  <p class="eyebrow">Team</p>
+  <h1 class="display display--page">Meet the <i>Team</i></h1>
+  <p class="lede lede--page">Overnight's Staff consists of some of the most professional radio producers, male and female voice over artists working in the industry today. All of our voice over talent have major market experience and bring that "big sound" with them. Over the years, Overnight Radio has constantly been looking for the right voices to represent us and you in the best possible way, and we are proud to say that each one of our voice over talents does just that. Click on the name of a team member below to find out more about them, and to hear their commercial voice over sample.</p>
+</section>
+<section class="wrap bento bento--2">
+  {% for m in collections.production %}
+  <a class="tile person reveal" href="{{ cbase }}{{ m.url }}">
+    <span class="person__photo"><img src="{{ (m.data.cardPhoto or m.data.photo) | asset }}" alt="{{ m.data.name }}" loading="lazy"></span>
+    <span class="person__body">
+      <span class="chip">{{ m.data.role }}</span>
+      <span class="tile__title">{{ m.data.cardName or m.data.name }}</span>
+      <span class="muted">{{ m.data.summary }}</span>
+      <span class="tile__foot">Bio &amp; {{ m.data.sampleLabel | lower }} <svg aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+    </span>
+  </a>
+  {% endfor %}
+</section>
+<section class="wrap section-head section-head--row reveal">
+  <h2 class="h2">Talent</h2>
+  <label class="search"><svg aria-hidden="true"><use href="#i-search"/></svg><span class="sr-only">Find a voice</span><input type="search" placeholder="Find a voice" data-team-search autocomplete="off"></label>
+</section>
+<section class="wrap">
+  <ul class="voices" data-talent>
+    {% for m in collections.talent %}
+    <li class="voice vtile" data-name="{{ (m.data.cardName or m.data.name) | lower }}">
+      <a class="vtile__link" href="{{ cbase }}{{ m.url }}">
+        <span class="vtile__photo"><img src="{{ (m.data.cardPhoto or m.data.photo) | asset }}" alt="" loading="lazy"></span>
+        <span class="vtile__name">{{ m.data.cardName or m.data.name }}</span>
+        {% if m.data.roster == "non-roster" %}<span class="chip chip--sm">Non-roster</span>{% endif %}
+      </a>
+      <button class="voice__play vtile__play" type="button" data-quickplay="{{ m.data.sampleMp3 | asset }}" aria-label="Play {{ m.data.cardName or m.data.name }}’s sample"><svg class="i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="i-pause" aria-hidden="true"><use href="#i-pause"/></svg></button>
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="muted" data-team-empty hidden>No voices match that name.</p>
+</section>

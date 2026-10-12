@@ -1,0 +1,24 @@
+---
+pagination:
+  data: collections.posts
+  size: 1
+  alias: post
+permalink: "/concepts/session{{ post.url }}index.html"
+station: blog
+eleventyComputed:
+  seoTitle: "{{ post.data.title | safe }} | Overnight Radio Inc. Blog"
+  seoDescription: "{{ post.data.description | safe }}"
+---
+{%- set newerPost = collections.posts | getPreviousCollectionItem(post) -%}
+{%- set olderPost = collections.posts | getNextCollectionItem(post) -%}
+<nav class="crumbs"><a href="{{ cbase }}/blog/">← Blog</a><span>/</span><span>{{ post.fileSlug }}.txt</span></nav>
+<article class="notes">
+  <p class="clip__label clip__label--plain"><time datetime="{{ post.date | isoDate }}">{{ post.date | readableDate }}</time> · {{ post.data.categories | join(" · ") }}</p>
+  <h1 class="headline headline--post">{{ post.data.title }}</h1>
+  <p class="muted">By {{ post.data.author or "Overnight Radio" }}</p>
+  <div class="doc doc--post">{{ post.content | safe }}</div>
+</article>
+<nav class="nudge" aria-label="More posts">
+  {% if newerPost %}<a href="{{ cbase }}{{ newerPost.url }}"><small>⏮ Newer post</small>{{ newerPost.data.title }}</a>{% else %}<span></span>{% endif %}
+  {% if olderPost %}<a class="nudge__next" href="{{ cbase }}{{ olderPost.url }}"><small>Older post ⏭</small>{{ olderPost.data.title }}</a>{% else %}<span></span>{% endif %}
+</nav>
