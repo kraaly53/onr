@@ -1,5 +1,7 @@
 // Blog search: reads ?s= and searches a small JSON index of every post (built with the site).
 (() => {
+  // the site may live in a sub-folder: work it out from this script's own address
+  const base = (document.currentScript?.src || "/assets/js/").replace(/assets\/js\/[^/]*$/, "");
   const q = (new URLSearchParams(location.search).get("s") || "").trim();
   const input = document.querySelector('.blogside input[name="s"]');
   if (input) input.value = q;
@@ -10,7 +12,7 @@
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   summary.textContent = "Searching…";
 
-  fetch("/blog/search.json")
+  fetch(base + "blog/search.json")
     .then((r) => r.json())
     .then((posts) => {
       const words = q.toLowerCase().split(/\s+/).filter(Boolean);

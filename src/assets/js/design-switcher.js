@@ -4,6 +4,8 @@
 // After Hours has four themes, A–D, shown as buttons beside it: they restyle the site in place; the choice is
 // remembered and can be shared with ?design=b.
 (() => {
+  // The site may live in a sub-folder (e.g. /testing/onr/): work it out from this script's own address.
+  const base = new URL(document.currentScript?.src || "/assets/js/x.js", location.href).pathname.replace(/assets\/js\/[^/]*$/, "");
   const box = document.querySelector("[data-dswitch]");
   if (!box) return;
   const root = document.documentElement;
@@ -15,9 +17,11 @@
   const read = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
 
   // Where are we? /concepts/dial/team.html → concept "dial", main path "/team.html"
-  const m = location.pathname.match(/^\/concepts\/([^/]+)(\/.*)?$/);
+  const sitePath = "/" + location.pathname.slice(base.length).replace(/^\//, "");
+  const m = sitePath.match(/^\/concepts\/([^/]+)(\/.*)?$/);
   const concept = m ? m[1] : null;
-  const mainPath = concept ? m[2] || "/" : location.pathname;
+  const mainPath = concept ? m[2] || "/" : sitePath;
+  const link = (p) => base + p.replace(/^\//, "");
 
   // Pages every concept has; anything else (blog archives, search) falls back sensibly.
   const conceptPath = (p) => {
@@ -46,7 +50,7 @@
   };
 
   // From a concept, After Hours (or one of its themes) opens the same page on the main site.
-  const toMain = (id) => { store("design", id); location.href = `${mainPath}?design=${id}`; };
+  const toMain = (id) => { store("design", id); location.href = `${link(mainPath)}?design=${id}`; };
 
   themePicks.forEach((b) =>
     b.addEventListener("click", () => (concept ? toMain(b.dataset.designPick) : applyTheme(b.dataset.designPick)))
@@ -55,7 +59,7 @@
     b.addEventListener("click", () => {
       const id = b.dataset.conceptPick;
       if (id === "main") { if (concept) toMain(read("design") || "a"); return; }
-      if (id !== concept) location.href = `/concepts/${id}${conceptPath(mainPath)}`;
+      if (id !== concept) location.href = link(`/concepts/${id}${conceptPath(mainPath)}`);
     })
   );
 

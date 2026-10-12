@@ -14,7 +14,7 @@ heading: "The Overnight Radio <strong>Blog</strong>"
 lede: "We will be discussing issues relevant to the world of radio production and scripting."
 ---
 {% include "page-head.njk" %}
-<script>if (new URLSearchParams(location.search).get("s")) location.replace("/blog/search/" + location.search);</script>
+<script>if (new URLSearchParams(location.search).get("s")) location.replace("{{ '/blog/search/' | htmlBaseUrl }}" + location.search);</script>
 
 <section class="section section--paper section--flush-top">
   <div class="wrap bloglayout">

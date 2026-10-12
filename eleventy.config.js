@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { RenderPlugin } from "@11ty/eleventy";
+import { RenderPlugin, HtmlBasePlugin } from "@11ty/eleventy";
 
 const site = JSON.parse(fs.readFileSync("./src/_data/site.json", "utf8"));
 const byOrder = (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999);
@@ -22,6 +22,8 @@ function archivePages(kind, name, base, posts) {
 
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(RenderPlugin);
+  // Links in the finished HTML are rewritten for the folder the site is published in (PATH_PREFIX, e.g. "/testing/onr/").
+  eleventyConfig.addPlugin(HtmlBasePlugin);
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   // Photos, audio and thumbnails live here once they're moved into the repo.
   eleventyConfig.addPassthroughCopy("src/images");
@@ -104,6 +106,8 @@ export default function (eleventyConfig) {
 
   return {
     dir: { input: "src", output: "_site", includes: "_includes", data: "_data" },
+    // "/" locally; the deploy workflow sets PATH_PREFIX to the folder on the web server.
+    pathPrefix: process.env.PATH_PREFIX || "/",
     markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",
   };

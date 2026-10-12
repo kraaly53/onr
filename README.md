@@ -492,6 +492,22 @@ That's a planned piece of work rather than a settings change — ask for it once
 
 ## 8. Building and hosting
 
+### Current test deployment (GitHub → FTP)
+
+The repository is **github.com/kraaly53/onr**. Every push to `main` runs `.github/workflows/deploy.yml`, which:
+
+1. installs and builds the site with `PATH_PREFIX=/testing/onr/` (so every link points inside that folder), then
+2. uploads the finished `_site/` folder by FTP to `/public_html/ordinaryspoon.com/testing/onr/`.
+
+The FTP login is stored as repository secrets (`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`) under
+Settings → Secrets and variables → Actions. Progress and errors show under the repository's **Actions** tab;
+a deploy can also be re-run from there (**Run workflow**). Only changed files are uploaded after the first deploy.
+
+**Moving to the real domain later:** change `PATH_PREFIX` in the workflow to `/` (or remove it) and change
+`server-dir` to the domain's web root.
+
+### Any static host
+
 The site works on any host that serves static files. Settings for any of them:
 
 | Setting | Value |
@@ -499,11 +515,10 @@ The site works on any host that serves static files. Settings for any of them:
 | Build command | `npm run build` |
 | Output / publish folder | `_site` |
 | Node version | 18 or newer |
+| `PATH_PREFIX` (environment variable) | only if the site lives in a sub-folder, e.g. `/testing/onr/` |
 
-Recommended: **Netlify** or **Cloudflare Pages** — connect the GitHub repository and they rebuild and publish
-automatically on every commit (including edits from Pages CMS). Netlify also offers a built-in form service that
-can replace the WordPress contact form. GitHub Pages also works (it needs a small GitHub Actions workflow to run
-the build).
+Netlify and Cloudflare Pages can also connect to the GitHub repository and rebuild on every commit (including edits
+from Pages CMS); Netlify also offers a built-in form service that can replace the WordPress contact form.
 
 **Redirects to set up on the host** (old addresses that changed):
 
