@@ -66,7 +66,6 @@
 [data-design="c"] .masthead { background: rgb(44 26 16 / .96); }
 [data-design="c"] .brand__name { font-weight: 800; font-size: 21px; }
 [data-design="c"] .brand__name span { color: var(--amber); font-style: italic; }
-[data-design="c"] .mark circle:last-of-type { fill: var(--amber); }
 
 /* Buttons: chunky pills with a drop shadow */
 [data-design="c"] .btn { border: 2px solid var(--ink); font-weight: 600; }

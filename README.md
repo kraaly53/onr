@@ -478,8 +478,8 @@ That's a planned piece of work rather than a settings change — ask for it once
   (`--navy` #1e3f74); warm paper (`--paper` #f6f2ea) for reading sections; amber (`--amber` #ffb23f) for
   buttons, highlights and the play button; a small red "on air" dot (`--red`).
 - **Fonts:** *Bricolage Grotesque* for headings, *Inter* for text, *JetBrains Mono* for small labels.
-- **Logo:** drawn in code in `_includes/mark.njk` — a circle, a radio tower, signal arcs and an amber
-  dot. On Home and Services it sits in a badge with "OVERNIGHT RADIO INC. · LONDON, ONTARIO · SINCE 1998"
+- **Logo:** drawn in code in `_includes/mark.njk` — a circle, a radio tower, signal arcs and a centre
+  dot, all drawn in one colour (the surrounding text colour, so it's white on dark backgrounds). On Home and Services it sits in a badge with "OVERNIGHT RADIO INC. · LONDON, ONTARIO · SINCE 1998"
   slowly circling it, and signal rings radiating outward. On inner pages it sits in the centre of the signal
   rings at the top of the page (partly off the edge, by design).
 - **Highlighted words:** in page headings, wrap a word in `<strong>` to show it in the accent colour, e.g.

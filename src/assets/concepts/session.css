@@ -34,7 +34,6 @@ button { font: inherit; cursor: pointer; }
 .transport { display: flex; align-items: center; gap: 18px; padding: 10px 16px; border-bottom: 1px solid var(--edge); }
 .transport__brand { display: flex; align-items: center; gap: 10px; text-decoration: none; min-width: 0; }
 .transport__brand .mark { width: 30px; height: 30px; }
-.transport__brand .mark circle:last-of-type { fill: var(--track); }
 .transport__brand b { display: block; font-weight: 700; font-size: 15px; letter-spacing: -0.01em; white-space: nowrap; }
 .transport__brand small { display: block; font: 400 11px var(--mono); color: var(--dim); white-space: nowrap; }
 .transport__btns { display: flex; gap: 4px; margin-left: auto; }
@@ -134,7 +133,6 @@ a.clip:hover { filter: brightness(1.15); transform: translateY(-2px); }
 .clip--center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 12px; }
 .badge { width: 110px; height: 110px; border-radius: 50%; display: grid; place-items: center; background: var(--c); color: #111; }
 .badge .mark { width: 60%; height: 60%; }
-.badge .mark circle:last-of-type { fill: #fff; }
 .pad { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 6px; border: 1px solid var(--edge); background: var(--track); color: #111; font-weight: 700; text-decoration: none; box-shadow: inset 0 -3px 0 rgb(0 0 0 / .2); }
 .pad:active { box-shadow: inset 0 2px 4px rgb(0 0 0 / .3); transform: translateY(1px); }
 .pad--ghost { background: var(--panel-3); color: var(--text); }
