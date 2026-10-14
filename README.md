@@ -24,7 +24,7 @@ before; the look is new. The blog, which used to run on WordPress, is now part o
      [Blog posts](#43-blog-posts) · [Prices](#44-prices) · [Testimonials](#45-testimonials) ·
      [Contact details, social links and menu](#46-contact-details-social-links-and-menu) ·
      [Page wording](#47-page-wording) · [Script Calculator speeds](#48-script-calculator-read-speeds)
-5. [Ways to edit](#5-ways-to-edit) — GitHub website, Pages CMS, Claude Code, your own computer
+5. [Ways to edit](#5-ways-to-edit) — GitHub website, Pages CMS, an AI assistant (Codex / Claude Code), your own computer
 6. [What the site does (features)](#6-what-the-site-does-features)
 7. [Design guide](#7-design-guide)
 8. [Building and hosting](#8-building-and-hosting)
@@ -54,7 +54,8 @@ in `src/` instead.
 ```
 overnightradio/
 ├── README.md                 ← this guide
-├── CLAUDE.md                 ← short instructions for Claude Code (AI assistant)
+├── AGENTS.md                 ← instructions for AI coding assistants (Codex, Claude Code)
+├── CLAUDE.md                 ← points Claude Code at AGENTS.md
 ├── .pages.yml                ← settings for the Pages CMS editor (see section 5)
 ├── eleventy.config.js        ← build settings: collections, blog pagination, filters
 ├── package.json              ← the build tool and the npm commands
@@ -353,14 +354,17 @@ Its settings are in `.pages.yml`. If a field is added to a content file, add it 
 the form. The config hasn't been tested against the live repository yet — check it the first time it's
 connected.
 
-### C. Claude Code (AI assistant)
-Open the project in Claude Code and ask in plain English, for example:
+### C. An AI coding assistant (ChatGPT Codex, Claude Code)
+Codex is the shared workspace for the developer and the owner. Connect it to this GitHub repository and ask in
+plain English, for example:
 - "Add this as a new blog post: …" (paste the text; optionally give a title, date and category)
-- "Add a new announcer called Jordan — here's the bio; the photo and sample are in Downloads"
+- "Add a new announcer called Jordan — here's the bio" (and attach the photo and sample)
 - "Update Mike's bio to …" / "Move Sarah to the top of the Talent list" / "Mark Patrick as roster"
 - "Change the Large Market Gold price to $2500"
 
-Claude follows `CLAUDE.md` and this README, previews the change, and can commit and push it when asked.
+The assistant follows `AGENTS.md` (the shared instructions — Claude Code reads it via `CLAUDE.md`) and this
+README: it makes the change, builds and checks it, and opens a pull request. **Merging the pull request into
+`main` publishes it** to the test site (section 8), so review what it changed before merging.
 
 ### D. On your own computer
 Clone the repository, run `npm install` then `npm start`, edit files in `src/` and watch the preview at
