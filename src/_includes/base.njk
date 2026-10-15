@@ -9,21 +9,6 @@
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | asset }}">
   <link rel="stylesheet" href="/assets/fonts/main.css">
   <link rel="stylesheet" href="/assets/css/site.css">
-  {% if site.designSwitcher %}
-  {# Preview only: every design's fonts and styles, plus the saved choice applied before the page paints. #}
-  <script>
-    (function () {
-      var ok = [{% for d in site.designs %}"{{ d.id }}"{% if not loop.last %}, {% endif %}{% endfor %}];
-      var d = new URLSearchParams(location.search).get("design");
-      try { d = d || localStorage.getItem("design"); } catch (e) {}
-      document.documentElement.dataset.design = ok.indexOf(d) > -1 ? d : ok[0];
-    })();
-  </script>
-  <link rel="stylesheet" href="/assets/fonts/themes.css">
-  {% for d in site.designs %}{% if not loop.first %}<link rel="stylesheet" href="/assets/css/designs/{{ d.id }}.css">
-  {% endif %}{% endfor %}
-  <link rel="stylesheet" href="/assets/css/designs/switcher.css">
-  {% endif %}
 </head>
 <body class="{{ bodyClass }}">
   {% include "icons.njk" %}
@@ -79,7 +64,6 @@
     </div>
   </footer>
 
-  {% if site.designSwitcher %}{% include "design-switcher.njk" %}<script src="/assets/js/design-switcher.js" defer></script>{% endif %}
   <script src="/assets/js/site.js" defer></script>
   {% if scripts %}{% for s in scripts %}<script src="{{ s }}" defer></script>{% endfor %}{% endif %}
 </body>

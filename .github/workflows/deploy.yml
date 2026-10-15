@@ -39,6 +39,7 @@ jobs:
 
     - name: Upload to server
       # lftp reconnects and retries automatically, so a dropped FTP connection doesn't stop the deploy.
+      # --delete removes anything in REMOTE_DIR that is no longer part of the site (only inside that folder).
       env:
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
@@ -53,13 +54,13 @@ jobs:
           set net:reconnect-interval-base 5;
           set net:reconnect-interval-max 30;
           open --env-password -u \"$FTP_USERNAME\" -p 21 \"$FTP_SERVER\";
-          mirror --reverse --parallel=2 --verbose=1 _site/ \"$REMOTE_DIR\";
+          mirror --reverse --delete --parallel=2 --verbose=1 _site/ \"$REMOTE_DIR\";
         "
 
     - name: Check the site is live
       run: |
         # ask for fresh copies (?check=...) so the hosting's cache can't hide a good or bad deploy
-        for page in "" team.html concepts/night/; do
+        for page in "" team.html blog/; do
           code=$(curl -s -o /dev/null -w '%{http_code}' "https://www.ordinaryspoon.com/testing/onr/$page?check=$GITHUB_RUN_ID" || true)
           echo "$code  /testing/onr/$page"
           [ "$code" = "200" ] || failed=1

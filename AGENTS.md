@@ -27,19 +27,13 @@ site owner (the client), who is not technical and will ask for changes in plain 
   only convert it to Markdown.
 - **Keep URLs stable.** Don't rename files in `src/team/`, `src/work/` or `src/blog/posts/` — the file name is the
   page address and old links/Google results depend on it.
-- **Several designs are under review** (README section 7) and share the same content:
-  - *After Hours* (`src/*.njk`, `src/_includes/`, `src/assets/css/site.css`) with four themes A–D
-    (`src/assets/css/designs/b|c|d.css`). Layout or markup changes must work in all four — check with
-    `?design=a`, `?design=b`, `?design=c`, `?design=d`.
-  - Five complete redesigns ("concepts") under `src/concepts/<id>/` with their own layouts in
-    `src/_includes/concepts/<id>/` and styles/scripts in `src/assets/concepts/`: `dial`, `script`, `night`,
-    `bento`, `session`. Their pages are at `/concepts/<id>/…`.
-  - Content-file changes (a post, an announcer, a price) need no design work — every design picks them up.
-  - A new page or feature on the main site should be mirrored in each concept while they're under review, or
-    noted in the README.
+- **One design: After Hours (A).** The owner chose it in October 2026. All layout and styling is in
+  `src/*.njk`, `src/_includes/` and `src/assets/css/site.css`. The other designs from the review (themes B–D and
+  the Dial, Script, Night Shift, Bento and Session concepts) are archived on the `archive/design-review` branch —
+  don't merge that branch into `main`, and don't bring archived designs back unless asked (README section 7).
 - **Links must work in a sub-folder.** The test site lives at `/testing/onr/`; the build rewrites links in HTML
   automatically (`PATH_PREFIX`), but JavaScript must not hard-code root paths like `"/team.html"` — work out the
-  base folder the way `src/assets/js/design-switcher.js` does.
+  base folder from the script's own address the way `src/assets/js/blog-search.js` does.
 - **Fonts are self-hosted** in `src/assets/fonts/` — don't add Google Fonts (or other third-party) links.
 - **Photos and audio** currently load from the live overnightradio.com (`assetBase` in `src/_data/site.json`).
   New photos go in `src/images/announcers/`, new audio in `src/audio/`.
@@ -55,12 +49,12 @@ site owner (the client), who is not technical and will ask for changes in plain 
 - **New or updated announcer:** one file in `src/team/` (copy an existing one; README section 4.1 explains every
   field). Photo → `src/images/announcers/`, sample → `src/audio/`. `order` sets the position on the Team page.
 - **Prices / testimonials / phone / email / menu:** `src/_data/pricing.json`, `testimonials.json`, `site.json`.
-- **Page wording:** the page's `.njk` file in `src/` (and the same text in each concept under `src/concepts/`).
+- **Page wording:** the page's `.njk` file in `src/`.
 
 ## Before you finish
 
 1. `npm run build` — it must finish without errors.
-2. Look at the changed pages (and in each design if markup or styles changed). Check phone width too.
+2. Look at the changed pages, at desktop and phone width.
 3. Update `README.md` if anything it documents changed.
 4. Explain the change in plain English, then commit.
 
@@ -78,8 +72,9 @@ run's last step checks the pages load). So:
 - The hosting caches for up to an hour; CSS/JS links carry a `?v=<build>` version and `src/.htaccess` turns off
   caching for pages. If something looks stale after a deploy, add `?v=1` to the address.
 
-## Open items (see README section 9)
+## Open items before going live on overnightradio.com (README section 9)
 
-- Pick the final design with the owner, then remove the others and the Design panel (README section 7).
 - Replace the contact form's destination — it still posts to the old WordPress install.
-- Copy photos/audio into the repo and set `assetBase` to `""` before going live on overnightradio.com.
+- Copy photos/audio into the repo and set `assetBase` to `""`.
+- Point the deploy at the overnightradio.com web folder with `PATH_PREFIX` `/`, and set up the redirects in README
+  section 8.

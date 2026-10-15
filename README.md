@@ -90,11 +90,9 @@ overnightradio/
     │   ├── post-card.njk, blog-pager.njk, blog-sidebar.njk ← blog pieces
     │   ├── mark.njk          ← the logo (radio tower + rings), drawn in code
     │   └── icons.njk         ← small icons (play, arrows, social)
-    ├── concepts/             ← complete-redesign concepts (preview only): dial/, script/, night/
     ├── assets/
-    │   ├── concepts/         ← each concept's stylesheet and script
-    │   ├── css/site.css      ← all layout and styling; design A
-    │   ├── css/designs/      ← designs B, C, D and the switcher's styles (preview only)
+    │   ├── css/site.css      ← all layout and styling
+    │   ├── fonts/            ← self-hosted fonts
     │   └── js/
     │       ├── site.js       ← menu, audio player, team quick-play & search, work filter, contact form
     │       ├── calculator.js ← Script Calculator
@@ -315,7 +313,6 @@ revision`) is written directly in `src/services.njk`.
 | `bbbUrl`, `bbbImage` | Better Business Bureau seal in the footer. |
 | `assetBase` | Where photos/audio load from — see section 9. |
 | `contactEndpoint`, `contactFormId` | Where the contact form sends messages — see section 6 and 9. |
-| `designSwitcher`, `designs`, `concepts` | The preview-only design switcher, its themes and its complete-redesign concepts — see section 7. |
 
 ### 4.7 Page wording
 
@@ -389,94 +386,33 @@ http://localhost:8080, then commit and push.
 | Blog search | sidebar on every blog page | Goes to `/blog/search/?s=…`, which searches titles and full text of every post using `/blog/search.json` (built with the site). Old WordPress search links (`/blog/?s=…`) are redirected there. |
 | RSS feed | `/blog/feed.xml` | Full posts, for feed readers. |
 | Reduced motion | everywhere | Visitors who turn on "reduce motion" on their device see no animation. |
-| Design switcher | every page (preview only) | Switches between themes A–D and complete redesigns 1–3; see section 7. Turned off with `"designSwitcher": false`. |
 
 ---
 
 ## 7. Design guide
 
-### Design versions (being reviewed)
+### The chosen design: After Hours (A)
 
-**The Design panel** (bottom-left corner of every page, preview only) lists the designs under review: **1 After
-Hours** (the original redesign) and the complete redesigns **2 The Dial**, **3 The Script**, **4 Night Shift**, **5 Bento** and **6 The Session**.
-After Hours has four themes — **A** After Hours, **B** Rate Card, **C** Golden Hour, **D** Signal — shown as
-small A–D buttons beside it (hover one to see its name). The arrow at the top of the panel tucks it away or brings
-it back, and the choice is remembered as you move between pages.
+The owner chose **After Hours, theme A** in October 2026. It is now the only design on the site.
 
-The four After Hours themes share the same layout and content; only the styling changes.
+**The other designs are archived, not deleted.** During the review there were four After Hours colour themes
+(A After Hours, B Rate Card, C Golden Hour, D Signal) and five complete redesigns (The Dial, The Script,
+Night Shift, Bento, The Session), switchable from a Design panel. All of it is kept in git:
 
-| | Name | Look | Stylesheet |
-|---|---|---|---|
-| **A** | After Hours | Midnight navy from the logo, warm paper, amber "on-air" accent; modern grotesque type. The original redesign. | `assets/css/site.css` |
-| **B** | Rate Card | Editorial print: newsprint, black ink, tomato red, big serif headlines (Instrument Serif), hairline rules, square corners, drop caps on blog posts. | `assets/css/designs/b.css` |
-| **C** | Golden Hour | Warm 1970s AM radio: chocolate, cream, mustard and burnt orange; soft retro serif (Fraunces); sunset stripes, a striped sun behind the logo, chunky offset shadows, sepia photos. | `assets/css/designs/c.css` |
-| **D** | Signal | Loud and modern: black, off-white and signal lime; wide capitals (Unbounded); graph-paper grid, scrolling ticker, highlighter headlines, lime-duotone photos on hover, giant outlined footer wordmark. | `assets/css/designs/d.css` |
+| Saved as | What's in it |
+|---|---|
+| branch `archive/design-review` and tag `archive/design-review-2026-10-14` | the full review version: every design, every concept, the Design panel, and the README describing them |
+| tag `concepts-bento-session`, `concepts-dial-script-night` | the stages when the concepts were added |
+| tag `designs-a-b-c-d` | After Hours with its four themes |
+| tag `design-a-after-hours` | the very first version of After Hours |
 
-**Sharing a specific design:** add `?design=a`, `b`, `c` or `d` to any address, e.g.
-`/team.html?design=c` — or use **Copy link to this design** in the panel.
+To look at the archive: `git checkout archive/design-review`, `npm install`, `npm start`, then open
+http://localhost:8080 and use the Design panel (bottom-left). To bring one design back into the live site, copy
+its files from the archive branch (its `src/concepts/<name>/`, `src/_includes/concepts/<name>/` and
+`src/assets/concepts/<name>.*`, or `src/assets/css/designs/<letter>.css`) — the archive branch's README explains how
+each one fits together. Don't merge the archive branch into `main`.
 
-**How it works:** `site.css` is design A and holds every page's layout. Each colour, font and corner radius is a
-named setting at the top of `site.css` (`:root`). Designs B–D re-set those settings and restyle specific parts,
-and everything they change is scoped to `[data-design="b"]` (etc.), so they never affect each other. A short
-script in `_includes/base.njk` applies the saved design before the page appears (no flash). Some designs use
-decorative extras that are hidden in the others: `.deco-stripes` (C) and `.deco-ticker` (D) in the page markup.
-Version A as it was before the other designs were added is saved in git as the tag `design-a-after-hours`.
-
-**Adding another design:** add an entry to `designs` in `src/_data/site.json` (e.g. `{"id": "e", "name": "…",
-"note": "…"}`), create `src/assets/css/designs/e.css` with rules starting `:root[data-design="e"]` /
-`[data-design="e"]`, and add any new fonts to `src/assets/fonts/themes.css` (self-hosted .woff2 files).
-
-**Choosing the final design (before launch):**
-1. Set `"designSwitcher": false` in `src/_data/site.json`. This removes the panel, the extra fonts and the extra
-   stylesheets, and the site shows design A.
-2. If the chosen design is **not** A: copy the chosen file's settings into `:root` of `site.css` and its other rules
-   to the end of `site.css` with the `[data-design="x"]` prefixes removed; move its fonts from `assets/fonts/themes.css`
-   into `assets/fonts/main.css`. Then delete `src/assets/css/designs/`, `_includes/design-switcher.njk` and
-   `assets/js/design-switcher.js`, and the `designs` list in `site.json`.
-3. Check every page, then update this section to describe the one remaining design.
-
-### Complete redesigns ("concepts", being reviewed)
-
-Besides the four themes, there are **five complete redesigns** — different layouts, navigation and
-interactions, not just different colours. Each is a full copy of the site (every page, all announcer and spot
-pages, and the blog with 5 posts per page) under its own address, built from the **same content files**, so an
-edited bio, price or post shows up in every version automatically. They're listed as designs 2–6
-in the Design panel; picking one opens the same page in that concept (blog tag/category/month pages and search
-fall back to the concept's blog listing).
-
-| | Concept | Address | The idea |
-|---|---|---|---|
-| **2** | The Dial | `/concepts/dial/` | The site is a vintage hi-fi FM receiver. The menu is a backlit tuning dial — each page is a "station" and the needle sweeps to it as you move around; the knob tunes to the next page. Facts are VU meters, the logo sits in a speaker grille, Work filters are car-radio preset buttons, the Team page is a scrolling **voice dial** you tune across (needle in the middle, frequency readout, quick-play), announcer pages have a receiver-style player with moving VU meters, and the footer is the rear panel with gold RCA jacks. |
-| **3** | The Script | `/concepts/script/` | The site is radio production paperwork on a desk. Every page is a typed, hole-punched script sheet with a production-order header; the menu is a taped-on **rundown** with a red-pencil check mark. Copy is laid out with ANNCR:/TAG: cues, highlighter and hand-written margin notes; prices are a typed rate card; the Team page is a **casting sheet**; announcers get a paper-clipped Polaroid one-sheet; spots are filed in a tabbed binder and shown as real scripts with a typed "tape" player; the calculator stamps its result; blog posts are **memos**. |
-| **4** | Night Shift | `/concepts/night/` | One night across the whole site. Each page sits at an hour, in menu order — Home at a 6 PM sunset, then Our Services, Our Work, Script Calculator, Blog, Team, and Contact at first light (~5 AM) — and a clock in the corner keeps time; clicking between pages, the sky, stars and clock glide on from the previous page's hour (time only runs forward, so going back carries on through the day to that hour the next evening). **The moon rests beside the last word of each page's title, growing a little as it settles, and lights the title up** with a soft moonlit glow: on a first visit to Home it starts up in the evening sky above "London, Ontario, Canada", then floats over to "Inc."; on other pages it floats from wherever it was on the previous page. On phones, where titles reach the edge, it rests just above the title instead, lined up with the last word; it never covers a letter. Once it has settled it's pinned to the title, so it scrolls with the page exactly (and off screen with the title); the next page floats it in from wherever it was last seen. The team appears as a **constellation** (each star is a voice), portraits are moon-round, studio windows glow, and the audio player is a horizon a little sun travels along. In browsers that support it, pages cross-fade while the menu bar stays put. |
-| **5** | Bento | `/concepts/bento/` | Where web design is right now. A calm, light palette with one bright orange accent, big tight-tracked sans headlines paired with italic serif words, and a floating pill-shaped menu. Home is a **bento grid** of rounded cards — the welcome, the 1998 and 50,000 stats (they count up into view), a "Now playing" card with the sample spot, the team's faces, the calculator and pricing — followed by the about copy and a scrolling strip of client quotes. Services has a **Gold / Silver toggle** for the packages; spots and voices play straight from their cards; cards rise into view as you scroll; the footer ends with a giant fading wordmark. |
-| **6** | The Session | `/concepts/session/` | The site as a recording session in the audio software a production house works in all day. A **transport bar** (skip back / play / skip forward / record light) with a running timecode that counts while anything plays; the menu is the **timeline ruler**, each page a coloured marker. Pages are laid out as colour-coded **tracks and clips** (Title, VO · Anncr, Stats…). The Team page is a **mixing desk** — a channel strip per voice with photo, fader and level meters that move while you **Solo** (play) it; announcer pages are a **clip editor** with an inspector and a big waveform with a playhead. Our Work is a file browser, and each spot's script becomes a **multitrack** — one lane per speaker (SFX, V1, V2, ANNCR, TAG) with each line as a clip in running order (click one to jump to that line). The calculator draws your script as a clip on a 0–60 s timeline; the footer is the master bus. |
-
-**Where the concept files live:**
-
-| Concept | Pages | Layout & pieces | Style & behaviour |
-|---|---|---|---|
-| The Dial | `src/concepts/dial/*.njk` (+ `dial.json`: stations & frequencies) | `src/_includes/concepts/dial/` | `src/assets/concepts/dial.css`, `dial.js` |
-| The Script | `src/concepts/script/*.njk` (+ `script.json`: rundown) | `src/_includes/concepts/script/` | `src/assets/concepts/script.css` |
-| Bento | `src/concepts/bento/*.njk` (+ `bento.json`: menu) | `src/_includes/concepts/bento/` | `src/assets/concepts/bento.css`, `bento.js` |
-| The Session | `src/concepts/session/*.njk` (+ `session.json`: page markers & colours) | `src/_includes/concepts/session/` | `src/assets/concepts/session.css`, `session.js` |
-| Night Shift | `src/concepts/night/*.njk` (+ `night.json`: menu; each page sets its `hour`, 0 = 6 PM … 1 = 6 AM, in menu order) | `src/_includes/concepts/night/` | `src/assets/concepts/night.css`, `night.js` |
-
-All concepts reuse the main site's JavaScript (`site.js` for the player, filters, search, quick-play and contact
-form; `calculator.js`; the switcher), so features behave identically. The privacy policy text is shared through
-`_includes/privacy-body.njk`. Concept pages carry `noindex` so search engines ignore them during the review.
-A few short labels exist only in the concepts as part of their framing (e.g. station frequencies, "RUNDOWN",
-"Next in the rundown", the home page section labels); all real site copy is unchanged.
-
-**If a concept is chosen:** its templates become the main pages (replacing `src/index.njk`, `services.njk`, …,
-`_includes/announcer.njk`, `spot.njk`, `post.njk` and `base.njk`), its stylesheet replaces `site.css`, the
-blog archive/search pages are restyled to match, and `src/concepts/`, the themes and the switcher are removed.
-That's a planned piece of work rather than a settings change — ask for it once the choice is made.
-
-**If a concept is not chosen:** delete its folder in `src/concepts/`, its `_includes/concepts/` folder, its files in
-`src/assets/concepts/`, and its entry in `concepts` in `src/_data/site.json`.
-
-### Design A details (current default)
+### After Hours details
 
 - **Colours:** midnight navy (`--night` #0a1426) for headers, footer and dark sections; the logo blue
   (`--navy` #1e3f74); warm paper (`--paper` #f6f2ea) for reading sections; amber (`--amber` #ffb23f) for
@@ -487,9 +423,8 @@ That's a planned piece of work rather than a settings change — ask for it once
   slowly circling it, and signal rings radiating outward. On inner pages it sits in the centre of the signal
   rings at the top of the page (partly off the edge, by design).
 - **Highlighted words:** in page headings, wrap a word in `<strong>` to show it in the accent colour, e.g.
-  `heading: "Meet the <strong>Team</strong>"`. (Each design styles this its own way — amber, red italic,
-  mustard italic or a lime highlighter.)
-- **Phones:** every page is checked at 375px wide with no sideways scrolling, in all four designs.
+  `heading: "Meet the <strong>Team</strong>"`.
+- **Phones:** every page is checked at 375px wide with no sideways scrolling.
 
 ---
 
@@ -500,7 +435,8 @@ That's a planned piece of work rather than a settings change — ask for it once
 The repository is **github.com/kraaly53/onr**. Every push to `main` runs `.github/workflows/deploy.yml`, which:
 
 1. installs and builds the site with `PATH_PREFIX=/testing/onr/` (so every link points inside that folder), then
-2. uploads the finished `_site/` folder by FTP (using `lftp`, which reconnects if the server drops the connection)
+2. uploads the finished `_site/` folder by FTP (using `lftp`, which reconnects if the server drops the connection,
+   and removes files from that folder that are no longer part of the site)
    to `public_html/ordinaryspoon.com/testing/onr/`. The FTP login already starts inside `public_html`, so in the
    workflow the path is written `/ordinaryspoon.com/testing/onr` — adding `/public_html` would create a second
    `public_html` folder inside the first.
@@ -509,7 +445,7 @@ The FTP login is stored as repository secrets (`FTP_SERVER`, `FTP_USERNAME`, `FT
 Settings → Secrets and variables → Actions. Progress and errors show under the repository's **Actions** tab;
 a deploy can also be re-run from there (**Run workflow**).
 
-**Fonts are self-hosted** in `src/assets/fonts/` (one small CSS file per design, plus the .woff2 files; all
+**Fonts are self-hosted** in `src/assets/fonts/` (`main.css` plus the .woff2 files; all
 SIL Open Font License, latin characters only). Nothing loads from Google, so privacy/ad blockers can't strip the
 fonts out. To add a font, download its .woff2 and add an `@font-face` rule to the matching CSS file there.
 
@@ -545,8 +481,7 @@ from Pages CMS); Netlify also offers a built-in form service that can replace th
 
 ## 9. Before launch — checklist
 
-- [ ] **Pick the final design** — a theme (A–D) or a complete redesign (1–3) — and turn off the switcher
-      (section 7).
+- [x] **Pick the final design** — After Hours A chosen; the others are archived (section 7).
 - [ ] **Move photos and audio into the project.** During the preview they load from the live server
       (`"assetBase": "https://overnightradio.com"` in `site.json`). Copy these folders/files from the current
       server into `src/`: `images/`, `audio/`, `sample/`, `favicon.ico`, `apple-touch-icon*.png`,

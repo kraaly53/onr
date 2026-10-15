@@ -177,9 +177,6 @@ button { font: inherit; cursor: pointer; }
 .rings__logo .mark { width: 62%; height: 62%; }
 .rings i:nth-child(2) { inset: 12%; } .rings i:nth-child(3) { inset: 24%; } .rings i:nth-child(4) { inset: 36%; } .rings i:nth-child(5) { inset: 48%; }
 
-/* Decorative hooks used by alternative designs (hidden in this design) */
-.deco-stripes, .deco-ticker { display: none; }
-
 /* ---------- Sections ---------- */
 .section { padding: clamp(64px, 9vw, 112px) 0; position: relative; }
 .section--tight { padding-top: 0; }

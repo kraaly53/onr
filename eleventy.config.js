@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { RenderPlugin, HtmlBasePlugin } from "@11ty/eleventy";
+import { HtmlBasePlugin } from "@11ty/eleventy";
 
 const site = JSON.parse(fs.readFileSync("./src/_data/site.json", "utf8"));
 const byOrder = (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999);
@@ -21,7 +21,6 @@ function archivePages(kind, name, base, posts) {
 }
 
 export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(RenderPlugin);
   // Links in the finished HTML are rewritten for the folder the site is published in (PATH_PREFIX, e.g. "/testing/onr/").
   eleventyConfig.addPlugin(HtmlBasePlugin);
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
@@ -35,13 +34,6 @@ export default function (eleventyConfig) {
   eleventyConfig.amendLibrary("md", (md) => md.set({ linkify: true, typographer: false }));
 
   eleventyConfig.addFilter("slug", slug);
-  eleventyConfig.addFilter("findBy", (arr, key, value) => (arr || []).find((x) => x[key] === value));
-  // Night Shift concept: nth listing → a time after midnight, e.g. 0 → "12:15 AM"
-  eleventyConfig.addFilter("nightTime", (i, start = 15, step = 25) => {
-    const mins = (start + i * step) % 360, h = Math.floor(mins / 60), m = mins % 60;
-    return `${h === 0 ? 12 : h}:${String(m).padStart(2, "0")} AM`;
-  });
-  eleventyConfig.addFilter("pad2", (n) => String(n).padStart(2, "0"));
   eleventyConfig.addFilter("readableDate", (d) =>
     new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
   );

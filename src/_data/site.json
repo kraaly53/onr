@@ -59,55 +59,5 @@
       "url": "/contact.html"
     }
   ],
-  "url": "https://overnightradio.com",
-  "designSwitcher": true,
-  "designs": [
-    {
-      "id": "a",
-      "name": "After Hours",
-      "note": "Midnight navy, amber on-air lamp"
-    },
-    {
-      "id": "b",
-      "name": "Rate Card",
-      "note": "Editorial print, ink & red"
-    },
-    {
-      "id": "c",
-      "name": "Golden Hour",
-      "note": "Warm 70s AM radio"
-    },
-    {
-      "id": "d",
-      "name": "Signal",
-      "note": "Bold black & signal lime"
-    }
-  ],
-  "concepts": [
-    {
-      "id": "dial",
-      "name": "The Dial",
-      "note": "The site as a vintage FM receiver"
-    },
-    {
-      "id": "script",
-      "name": "The Script",
-      "note": "Typed up like a radio script"
-    },
-    {
-      "id": "night",
-      "name": "Night Shift",
-      "note": "Dusk to dawn in one scroll"
-    },
-    {
-      "id": "bento",
-      "name": "Bento",
-      "note": "Today’s look: bento grid & bold type"
-    },
-    {
-      "id": "session",
-      "name": "The Session",
-      "note": "The site as a recording studio session"
-    }
-  ]
+  "url": "https://overnightradio.com"
 }
