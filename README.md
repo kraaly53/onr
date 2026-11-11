@@ -12,6 +12,12 @@ before; the look is new. The blog, which used to run on WordPress, is now part o
   finished pages. Announcers, spots and blog posts are each **one small text file**, so updating the site
   means editing a file — not hand-editing HTML.
 
+> **At a glance**
+> - **Test site:** https://www.ordinaryspoon.com/testing/onr/ — every merge to `main` publishes here automatically.
+> - **Making changes:** with ChatGPT Codex (section 5C) — ask in plain English, review the pull request, merge it.
+> - **Design:** After Hours (A). The other designs from the review are archived on the `archive/design-review` branch.
+> - **Still to do before going live on overnightradio.com:** section 9, and the GitHub issues labelled `launch`.
+
 ---
 
 ## Contents
@@ -36,10 +42,10 @@ before; the look is new. The blog, which used to run on WordPress, is now part o
 
 ## 1. Quick start
 
-You need [Node.js](https://nodejs.org/) version 18 or newer (check with `node -v`).
+You need [Node.js](https://nodejs.org/) version 18 or newer (check with `node -v`; `.nvmrc` pins 20).
 
 ```bash
-npm install        # once, after downloading the project
+npm ci             # once, after downloading the project (installs exactly what package-lock.json lists)
 npm start          # preview at http://localhost:8080 — the page reloads as you save changes
 npm run build      # makes the finished website in the _site/ folder
 ```
@@ -54,7 +60,9 @@ in `src/` instead.
 ```
 overnightradio/
 ├── README.md                 ← this guide
-├── AGENTS.md                 ← instructions for AI coding assistants (Codex, Claude Code)
+├── AGENTS.md                 ← instructions for AI coding assistants (Codex, Claude Code) — includes setup
+├── .nvmrc                    ← Node version (20)
+├── .github/workflows/        ← deploy.yml (push to main → test site), build-check.yml (every pull request)
 ├── CLAUDE.md                 ← points Claude Code at AGENTS.md
 ├── .pages.yml                ← settings for the Pages CMS editor (see section 5)
 ├── eleventy.config.js        ← build settings: collections, blog pagination, filters
@@ -352,16 +360,23 @@ the form. The config hasn't been tested against the live repository yet — chec
 connected.
 
 ### C. An AI coding assistant (ChatGPT Codex, Claude Code)
-Codex is the shared workspace for the developer and the owner. Connect it to this GitHub repository and ask in
-plain English, for example:
+**ChatGPT Codex is the shared workspace** for the developer and the owner.
+
+Setting it up (once): in Codex, connect GitHub and choose the repository **kraaly53/onr**. In the environment
+settings use the setup command **`npm ci`** (Node version comes from `.nvmrc`); no secrets or environment variables
+are needed. Give the owner's account access to the Codex workspace (and, if they'll review on GitHub, add them as a
+collaborator on the repository).
+
+Then ask in plain English, for example:
 - "Add this as a new blog post: …" (paste the text; optionally give a title, date and category)
 - "Add a new announcer called Jordan — here's the bio" (and attach the photo and sample)
 - "Update Mike's bio to …" / "Move Sarah to the top of the Talent list" / "Mark Patrick as roster"
 - "Change the Large Market Gold price to $2500"
 
-The assistant follows `AGENTS.md` (the shared instructions — Claude Code reads it via `CLAUDE.md`) and this
-README: it makes the change, builds and checks it, and opens a pull request. **Merging the pull request into
-`main` publishes it** to the test site (section 8), so review what it changed before merging.
+Codex follows `AGENTS.md` (the shared instructions — Claude Code reads it via `CLAUDE.md`) and this README: it makes
+the change, builds it, and opens a **pull request**. The **Build check** runs on the pull request automatically;
+when it's green and the change looks right, **merge** it — merging publishes it to the test site (section 8)
+within a few minutes. The open launch tasks are GitHub issues labelled `launch`, which can be handed to Codex too.
 
 ### D. On your own computer
 Clone the repository, run `npm install` then `npm start`, edit files in `src/` and watch the preview at
@@ -529,5 +544,7 @@ Changed or added:
 | A new announcer or post doesn't appear | Check the file is in the right folder and ends in `.md`. |
 | A photo or sample doesn't load | Check the path in the file matches the real file name exactly (capital letters matter) and starts with `/`. |
 | Old audio still plays after replacing a file | The browser cached it — give the new file a different name. |
+| A deploy fails with `550 … No such file or directory` | A harmless clash while removing old files — re-run the deploy from the Actions tab. |
+| The Build check fails on a pull request | Open the check's log: it names the file and line that broke the build. Fix it on the same branch. |
 | Stray old pages appear in the local preview | Stop the preview, delete the `_site` folder, and run `npm start` again. |
 | A line in a post turned into a big heading | It started with `#`. Put `\` before it: `\#hashtag`. |
