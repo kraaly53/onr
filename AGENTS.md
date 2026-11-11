@@ -13,6 +13,15 @@ The site is the website for Overnight Radio Inc. (overnightradio.com), a radio c
 redesign of the original site: same pages, wording and URLs, new look. Two people work on it: the developer and the
 site owner (the client), who is not technical and will ask for changes in plain English.
 
+## Setting up (Codex environment / any fresh machine)
+
+- Node version: `.nvmrc` (Node 20; anything 18+ works).
+- Setup command: `npm ci` (uses `package-lock.json`; nothing else to install, no environment variables or secrets
+  needed to build).
+- Check command: `npm run build` — builds every page into `_site/` in under a second.
+- No browser? Check the built HTML in `_site/` (e.g. `_site/team.html`, `_site/blog/index.html`). Photos and
+  audio load from overnightradio.com, so they won't appear without internet access — that's expected.
+
 ## The project
 
 - Static site built with **Eleventy 3** (Node 18+). Edit only files in `src/`; `_site/` is generated — never edit it.
@@ -64,17 +73,24 @@ The repository is `github.com/kraaly53/onr`. **Every push to `main` builds the s
 test site at https://www.ordinaryspoon.com/testing/onr/ (`.github/workflows/deploy.yml`, about 3–6 minutes; the
 run's last step checks the pages load). So:
 
-- Work on a branch / pull request; merging to `main` is what publishes. Don't push straight to `main` unless asked.
+- Work on a branch and open a pull request; merging to `main` is what publishes. Don't push straight to `main`
+  unless asked. Every pull request runs the **Build check** workflow (`.github/workflows/build-check.yml`) — it
+  must pass before merging.
+- In the pull request description, say in plain English what changed and which pages to look at, so the owner can
+  review it.
 - Never print, log or commit the FTP secrets (`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`). The repository is
   public, and so are its Actions logs.
 - On the server the FTP login starts inside `public_html`, so the upload path is `/ordinaryspoon.com/testing/onr`
   — don't add `/public_html` to it.
+- The upload also deletes files on the server that are no longer part of the site (only inside that folder).
+  Rarely it fails with `550 … No such file or directory` — just re-run the deploy from the Actions tab.
 - The hosting caches for up to an hour; CSS/JS links carry a `?v=<build>` version and `src/.htaccess` turns off
   caching for pages. If something looks stale after a deploy, add `?v=1` to the address.
 
-## Open items before going live on overnightradio.com (README section 9)
+## Open items before going live on overnightradio.com (README section 9; also GitHub issues labelled `launch`)
 
 - Replace the contact form's destination — it still posts to the old WordPress install.
 - Copy photos/audio into the repo and set `assetBase` to `""`.
 - Point the deploy at the overnightradio.com web folder with `PATH_PREFIX` `/`, and set up the redirects in README
-  section 8.
+  section 8. Needs the owner/developer to confirm the hosting folder first — don't guess server paths.
+- Decide on the old "Musical Tags" page (`/tags.html`): rebuild it or redirect it.

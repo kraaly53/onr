@@ -1,0 +1,28 @@
+# Builds the site on every pull request, so a broken change shows up before it's merged (and published).
+name: Build check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build the site
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+        cache: npm
+    - run: npm ci
+    - name: Build (as deployed, in the /testing/onr/ sub-folder)
+      run: npm run build
+      env:
+        PATH_PREFIX: /testing/onr/
+    - name: Check the main pages were built
+      run: |
+        for f in index.html services.html work.html team.html calculator.html contact.html privacypolicy.html blog/index.html blog/feed.xml; do
+          [ -s "_site/$f" ] || { echo "::error::Missing _site/$f"; exit 1; }
+        done
+        echo "$(find _site -name '*.html' | wc -l) pages built"
