@@ -14,7 +14,8 @@ before; the look is new. The blog, which used to run on WordPress, is now part o
 
 > **At a glance**
 > - **Test site:** https://www.ordinaryspoon.com/testing/onr/ — every merge to `main` publishes here automatically.
-> - **Making changes:** with ChatGPT Codex (section 5C) — ask in plain English, review the pull request, merge it.
+> - **Making changes:** with ChatGPT Codex — ask in plain English, review the pull request, merge it.
+>   New to it? Follow the step-by-step **[Codex setup guide](docs/CODEX-SETUP.md)**.
 > - **Design:** After Hours (A). The other designs from the review are archived on the `archive/design-review` branch.
 > - **Still to do before going live on overnightradio.com:** section 9, and the GitHub issues labelled `launch`.
 
@@ -61,6 +62,7 @@ in `src/` instead.
 overnightradio/
 ├── README.md                 ← this guide
 ├── AGENTS.md                 ← instructions for AI coding assistants (Codex, Claude Code) — includes setup
+├── docs/CODEX-SETUP.md       ← step-by-step: setting up ChatGPT Codex for this site
 ├── .nvmrc                    ← Node version (20)
 ├── .github/workflows/        ← deploy.yml (push to main → test site), build-check.yml (every pull request)
 ├── CLAUDE.md                 ← points Claude Code at AGENTS.md
@@ -362,7 +364,7 @@ connected.
 ### C. An AI coding assistant (ChatGPT Codex, Claude Code)
 **ChatGPT Codex is the shared workspace** for the developer and the owner.
 
-Setting it up (once): in Codex, connect GitHub and choose the repository **kraaly53/onr**. In the environment
+Setting it up (once) — full walkthrough in **[docs/CODEX-SETUP.md](docs/CODEX-SETUP.md)**: in Codex, connect GitHub and choose the repository **kraaly53/onr**. In the environment
 settings use the setup command **`npm ci`** (Node version comes from `.nvmrc`); no secrets or environment variables
 are needed. Give the owner's account access to the Codex workspace (and, if they'll review on GitHub, add them as a
 collaborator on the repository).
