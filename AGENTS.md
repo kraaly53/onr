@@ -19,8 +19,8 @@ site owner (the client), who is not technical and will ask for changes in plain 
 - Setup command: `npm ci` (uses `package-lock.json`; nothing else to install, no environment variables or secrets
   needed to build).
 - Check command: `npm run build` — builds every page into `_site/` in under a second.
-- No browser? Check the built HTML in `_site/` (e.g. `_site/team.html`, `_site/blog/index.html`). Photos and
-  audio load from overnightradio.com, so they won't appear without internet access — that's expected.
+- No browser? Check the built HTML in `_site/` (e.g. `_site/team.html`, `_site/blog/index.html`), and that any
+  photo or sample a page uses exists in `_site/images/` or `_site/audio/`.
 
 ## The project
 
@@ -44,8 +44,10 @@ site owner (the client), who is not technical and will ask for changes in plain 
   automatically (`PATH_PREFIX`), but JavaScript must not hard-code root paths like `"/team.html"` — work out the
   base folder from the script's own address the way `src/assets/js/blog-search.js` does.
 - **Fonts are self-hosted** in `src/assets/fonts/` — don't add Google Fonts (or other third-party) links.
-- **Photos and audio** currently load from the live overnightradio.com (`assetBase` in `src/_data/site.json`).
-  New photos go in `src/images/announcers/`, new audio in `src/audio/`.
+- **Photos and audio are in the repository:** announcer photos in `src/images/announcers/`, voice samples and spots
+  in `src/audio/` (an `.mp3` and an `.ogg` of each; the `.mp3` is required). Keep `assetBase` in
+  `src/_data/site.json` as `""`. Use lowercase file names without spaces; to replace a sample, give the new file
+  a new name (browsers cache audio).
 - Match the surrounding code's style; keep changes small and focused.
 
 ## Common requests
@@ -90,7 +92,6 @@ run's last step checks the pages load). So:
 ## Open items before going live on overnightradio.com (README section 9; also GitHub issues labelled `launch`)
 
 - Replace the contact form's destination — it still posts to the old WordPress install.
-- Copy photos/audio into the repo and set `assetBase` to `""`.
 - Point the deploy at the overnightradio.com web folder with `PATH_PREFIX` `/`, and set up the redirects in README
   section 8. Needs the owner/developer to confirm the hosting folder first — don't guess server paths.
 - Decide on the old "Musical Tags" page (`/tags.html`): rebuild it or redirect it.

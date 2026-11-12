@@ -105,9 +105,10 @@ overnightradio/
     │       ├── site.js       ← menu, audio player, team quick-play & search, work filter, contact form
     │       ├── calculator.js ← Script Calculator
     │       └── blog-search.js← blog search
-    ├── images/               ← photos & thumbnails  (to be copied in before launch — see section 9)
-    ├── audio/                ← voice samples & spots (to be copied in before launch)
-    └── sample/               ← the "Sample" spot audio (to be copied in before launch)
+    ├── images/               ← announcer & producer photos (images/announcers/), the "Need a spot?" graphic
+    ├── audio/                ← voice samples & spots (an .mp3 and an .ogg of each)
+    ├── sample/               ← the "Sample" spot audio
+    ├── favicon.ico, apple-touch-icon.png ← browser tab and phone home-screen icons
 ```
 
 **File types:** `.md` files are content (a header between `---` lines, then text). `.njk` files are page
@@ -319,7 +320,7 @@ revision`) is written directly in `src/services.njk`.
 | `social` | Footer and contact page icons. `icon` must be one of `x`, `facebook`, `youtube`, `linkedin` (icons live in `_includes/icons.njk`). |
 | `nav` | The main menu, in order. |
 | `bbbUrl`, `bbbImage` | Better Business Bureau seal in the footer. |
-| `assetBase` | Where photos/audio load from — see section 9. |
+| `assetBase` | Leave as `""`: photos and audio are part of the site (`src/images/`, `src/audio/`, `src/sample/`). Only set it to a web address to load media from another site. |
 | `contactEndpoint`, `contactFormId` | Where the contact form sends messages — see section 6 and 9. |
 
 ### 4.7 Page wording
@@ -497,10 +498,8 @@ from Pages CMS); Netlify also offers a built-in form service that can replace th
 ## 9. Before launch — checklist
 
 - [x] **Pick the final design** — After Hours A chosen; the others are archived (section 7).
-- [ ] **Move photos and audio into the project.** During the preview they load from the live server
-      (`"assetBase": "https://overnightradio.com"` in `site.json`). Copy these folders/files from the current
-      server into `src/`: `images/`, `audio/`, `sample/`, `favicon.ico`, `apple-touch-icon*.png`,
-      `icon-*.png`. Then set `"assetBase": ""`.
+- [x] **Move photos and audio into the project** — all 179 files (photos, voice samples, spots, icons) are in
+      `src/images/`, `src/audio/`, `src/sample/` and `src/`; `assetBase` is `""`.
 - [ ] **Replace the contact form's destination.** It currently posts to WordPress's Contact Form 7
       (`contactEndpoint` in `site.json`, handled in `site.js`). Pick a replacement — Netlify Forms (if hosting
       on Netlify), Formspree, or a plain email link — and update the form in `src/contact.njk` and the
