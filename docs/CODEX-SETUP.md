@@ -46,7 +46,8 @@ You need two accounts:
 
 1. Back in Codex, select the repository **kraaly53/onr** and choose **Get started**.
    Codex looks at the project and prepares it. It should find everything it needs on its own.
-2. Check these settings (Codex usually fills them in for you):
+2. Check these settings (Codex usually fills them in for you). These are typed into Codex's settings — they run
+   on Codex's computer in the cloud, **not** on yours, so you still don't install anything:
 
    | Setting | What to use |
    |---|---|
