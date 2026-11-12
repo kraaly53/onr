@@ -23,7 +23,7 @@ before; the look is new. The blog, which used to run on WordPress, is now part o
 
 ## Contents
 
-1. [Quick start](#1-quick-start)
+1. [Getting started — no installs needed](#1-getting-started--no-installs-needed)
 2. [How the project is organised](#2-how-the-project-is-organised)
 3. [Pages and their addresses](#3-pages-and-their-addresses)
 4. [Updating content](#4-updating-content)
@@ -41,9 +41,24 @@ before; the look is new. The blog, which used to run on WordPress, is now part o
 
 ---
 
-## 1. Quick start
+## 1. Getting started — no installs needed
 
-You need [Node.js](https://nodejs.org/) version 18 or newer (check with `node -v`; `.nvmrc` pins 20).
+You **don't need to install anything** to update this website. Every change is built and published by GitHub
+automatically; nothing runs on your computer. Pick one of these:
+
+| Way | Good for | How |
+|---|---|---|
+| **ChatGPT Codex** | asking for changes in plain English | [Codex setup guide](docs/CODEX-SETUP.md), then section 5C |
+| **github.com** | small text edits and uploading photos/audio | section 5A |
+| **Pages CMS** | filling in forms for announcers, posts, prices | section 5B |
+
+Either way, your change becomes a pull request (or a commit); once it's on `main`, the test site updates within a
+few minutes.
+
+### Optional: preview on your own computer (developers only)
+
+Only needed if you want to see changes on your own machine before publishing. Install
+[Node.js](https://nodejs.org/) 18 or newer (`.nvmrc` pins 20), then in the project folder:
 
 ```bash
 npm ci             # once, after downloading the project (installs exactly what package-lock.json lists)
@@ -381,8 +396,8 @@ the change, builds it, and opens a **pull request**. The **Build check** runs on
 when it's green and the change looks right, **merge** it — merging publishes it to the test site (section 8)
 within a few minutes. The open launch tasks are GitHub issues labelled `launch`, which can be handed to Codex too.
 
-### D. On your own computer
-Clone the repository, run `npm install` then `npm start`, edit files in `src/` and watch the preview at
+### D. On your own computer (developers)
+Install Node.js (section 1), clone the repository, run `npm ci` then `npm start`, edit files in `src/` and watch the preview at
 http://localhost:8080, then commit and push.
 
 ---
