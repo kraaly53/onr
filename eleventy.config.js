@@ -29,6 +29,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/images");
   eleventyConfig.addPassthroughCopy("src/audio");
   eleventyConfig.addPassthroughCopy("src/sample");
+  eleventyConfig.addPassthroughCopy({ "src/favicon.ico": "favicon.ico", "src/apple-touch-icon.png": "apple-touch-icon.png" });
 
   // Prefix media paths with site.assetBase (the live site during the preview; "" once media is in the repo).
   eleventyConfig.amendLibrary("md", (md) => md.set({ linkify: true, typographer: false }));

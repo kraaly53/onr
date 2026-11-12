@@ -6,7 +6,7 @@
   "phoneHref": "tel:+15196600742",
   "email": "info@overnightradio.com",
   "blogUrl": "/blog/",
-  "assetBase": "https://overnightradio.com",
+  "assetBase": "",
   "contactEndpoint": "https://overnightradio.com/blog/wp-json/contact-form-7/v1/contact-forms/315/feedback",
   "contactFormId": "315",
   "bbbUrl": "https://www.bbb.org/western-ontario/business-reviews/radio-program-producers/overnight-radio-in-london-on-1057314#bbbseal",
