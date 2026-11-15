@@ -39,7 +39,7 @@ heading: "<strong>Professional</strong> Voice Over Services"
       {% for m in pricing.markets %}
       <article class="market">
         <header class="market__head"><h3>{{ m.name }}</h3><p>{{ m.population }}</p></header>
-        {% for tier in ["gold", "silver"] %}{% set t = m[tier] %}
+        {% for tier in ["silver"] %}{% set t = m[tier] %}
         <div class="plan plan--{{ tier }}">
           <p class="plan__name">{{ m.name }} {{ tier | capitalize }}</p>
           <p class="plan__price">{{ t.monthly }}<span>/month</span></p>
